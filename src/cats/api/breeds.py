@@ -7,7 +7,4 @@ breeds_router = APIRouter(prefix="/breeds")
 
 @breeds_router.get("/breeds", response_model=list[Breed])
 async def get_all_breeds() -> list[Breed]:
-    return [
-        Breed(name="breed1", results=["cat1", "cat2"]),
-        Breed(name="breed2", results=["cat3", "cat4"]),
-    ]
+    return [Breed(title="muy"), Breed(title="muy2"), Breed(title="muy3")]
