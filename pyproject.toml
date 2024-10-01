@@ -117,8 +117,6 @@ ignore = [
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
     "W191",  # indentation contains tabs
-    'UP007', # PEP 604 introduced a new syntax for union type annotations based on the | operator.
-    'T201',  # Checks for print statements.
 ]
 
 [tool.ruff.format]
