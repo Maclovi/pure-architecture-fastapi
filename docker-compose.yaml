@@ -1,0 +1,32 @@
+---
+services:
+  postgres:
+    image: postgres:alpine
+    restart: unless-stopped
+    env_file: ".env"
+    ports:
+      - 127.0.0.1:5432:5432
+    volumes:
+      - postgres:/data/postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web-backend:
+    build: .
+    restart: unless-stopped
+    env_file: ".env"
+    environment:
+      - POSTGRES_HOST=postgres
+      - UVICORN_HOST=0.0.0.0
+    command: /bin/sh -cx "./scripts/start.sh"
+    ports:
+      - 127.0.0.1:8000:8000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres:

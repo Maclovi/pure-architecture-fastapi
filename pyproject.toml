@@ -3,65 +3,77 @@ requires = ["setuptools>=66.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-package-dir = { "" = "src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [project]
 name = "cats"
 dynamic = ["version"]
 description = "Simple api cats"
 readme = "README.md"
-requires-python = ">=3.12"
+authors = [
+    { name = "Sergey Yavorsky", email = "maclovi.dev@gmail.com" },
+]
+requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
 dependencies = [
-  "fastapi == 0.115.*",
-  "uvicorn == 0.31.*",
-  "sqlalchemy == 2.*",
-  "alembic == 1.13.*",
-  "psycopg[binary] == 3.*",
+    "dishka==1.*",
+    "uvloop==0.21.*",
+    "orjson==3.*",
+    "fastapi==0.115.*",
+    "uvicorn==0.31.*",
+    "httptools==0.6.*",
+    "alembic==1.13.*",
+    "sqlalchemy==2.*",
+    "psycopg[binary]==3.*",
+    "python-json-logger==2.*",
 ]
 
 [project.optional-dependencies]
 test = [
     "pytest",
     "pytest-asyncio",
-]
-types = [
-    "mypy",
-    # mypy extensions
-    "types-setuptools",
-    "types-redis",
+    "coverage==7.*",
+    "httpx==0.28.*",
 ]
 lint = [
-    "cats[types]",
     "ruff",
     "bandit",
     "semgrep",
     "codespell",
+    #types
+    "mypy",
 ]
-dev = ["cats[test,lint]"]
+dev = [
+    "cats[test,lint]",
+    "pre-commit==4.*",
+    "detect-secrets==1.*",
+]
 
 [project.urls]
-Homepage = "https://github.com/Maclovi/cats"
-Documentation = "https://github.com/Maclovi/README.md"
-Repository = "https://github.com/Maclovi/cats"
-Issues = "https://github.com/Maclovi/cats/issues"
-# Changelog = "https://fastapi.tiangolo.com/release-notes/" -- uncomment if there is 
+Homepage = "https://github.com/Maclovi/pure-architecture-fastapi"
+Documentation = "https://github.com/Maclovi/pure-architecture-fastapi/README.md"
+Repository = "https://github.com/Maclovi/pure-architecture-fastapi"
+Issues = "https://github.com/Maclovi/pure-architecture-fastapi/issues"
 
 
 [tool.pytest.ini_options]
-addopts = "--asyncio-mode=auto"
-xfail_strict=true
-markers = []
+xfail_strict = true
 testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+markers = ["container"]
 filterwarnings = []
 
 [tool.mypy]
 exclude = [".venv"]
-python_version = "3.12"
+python_version = "3.10"
 strict = true
 pretty = true
 
@@ -72,8 +84,9 @@ implicit_reexport = true
 namespace_packages = true
 ignore_missing_imports = true
 
-warn_unused_ignores = false
+warn_unused_ignores = true
 warn_return_any = true
+warn_redundant_casts = true
 
 allow_untyped_calls = true
 allow_subclassing_any = true
@@ -82,40 +95,21 @@ allow_untyped_decorators = true
 disallow_incomplete_defs = true
 disallow_any_unimported = false
 
-[tool.isort]
-profile = "black"
-line_length = 79
-
 [tool.ruff]
+src = ["src"]
+include = ["src/**.py", "tests/**.py"]
+target-version = "py310"
 line-length = 79
 fix = true
 
 [tool.ruff.lint]
-select = [
-    "I",     # isort                  https://docs.astral.sh/ruff/rules/#isort-i
-    "E",     # pycodestyle errors     https://docs.astral.sh/ruff/rules/#error-e
-    "W",     # pycodestyle warnings   https://docs.astral.sh/ruff/rules/#warning-w
-    "F",     # pyflakes               https://docs.astral.sh/ruff/rules/#pyflakes-f
-    # "D",     # pydocstyle             https://docs.astral.sh/ruff/rules/#pydocstyle-d
-    "B",     # flake8-bugbear         https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
-    "Q",     # flake8-quotes          https://docs.astral.sh/ruff/rules/#flake8-quotes-q
-    "N",     # pep8-naming            https://docs.astral.sh/ruff/rules/#pep8-naming-n
-    "UP",    # pyupgrade              https://docs.astral.sh/ruff/rules/#pyupgrade-up
-    "C4",    # flake8-comprehensions  https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
-    "PT",    # flake8-pytest-style    https://docs.astral.sh/ruff/rules/#flake8-pytest-style-pt
-    "PTH",   # flake8-use-pathlib     https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
-    "TCH",   # flake8-type-checking   https://docs.astral.sh/ruff/rules/#flake8-type-checking-tch
-    "C90",   # mccabe                 https://docs.astral.sh/ruff/rules/#mccabe-c90
-    "T20",   # flake8-print           https://docs.astral.sh/ruff/rules/#flake8-print-t20
-    "SIM",   # flake8-simplify        https://docs.astral.sh/ruff/rules/#flake8-simplify-sim
-    "RUF",   # Ruff-specific rules    https://docs.astral.sh/ruff/rules/#ruff-specific-rules-ruf
-    "PERF",  # Perflint               https://docs.astral.sh/ruff/rules/#perflint-perf
-    "ASYNC", # flake8-async           https://docs.astral.sh/ruff/rules/#flake8-async-async
-]
+select = ["ALL"]
 ignore = [
-    "B008",  # do not perform function calls in argument defaults
-    "C901",  # too complex
-    "W191",  # indentation contains tabs
+    "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
+    "A002",   # https://docs.astral.sh/ruff/rules/raw-string-in-exception/
+    "EM101",  # https://docs.astral.sh/ruff/rules/raw-string-in-exception/
+    "TRY003", # https://docs.astral.sh/ruff/rules/raise-vanilla-args/
+    "COM812", # https://docs.astral.sh/ruff/rules/missing-trailing-comma/
 ]
 
 [tool.ruff.format]
@@ -125,8 +119,9 @@ docstring-code-format = true
 convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]
+"src/cats/infrastructure/persistence/alembic/**" = ["ERA001", "INP001"]
+"src/cats/application/**" = ["S101"]
+"tests/**" = ["S101"]
 
-[tool.ruff.lint.pyupgrade]
-# Preserve types, even if a file imports `from __future__ import annotations`.
-keep-runtime-typing = true
+[lint.isort]
+no-lines-before = ["local-folder"]
