@@ -34,7 +34,6 @@ types = [
     # mypy extensions
     "types-setuptools",
     "types-redis",
-    "types-aiofiles",
 ]
 lint = [
     "cats[types]",
