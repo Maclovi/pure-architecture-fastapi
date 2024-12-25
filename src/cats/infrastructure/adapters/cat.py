@@ -53,7 +53,9 @@ class CatReaderAlchemy(CatReader):
         )
 
     async def all(
-        self, filters: CatFilters, pagination: Pagination
+        self,
+        filters: CatFilters,
+        pagination: Pagination,
     ) -> list[CatView]:
         stmt = self._make_join(isouter=True)
         if filters.breed:
@@ -70,7 +72,9 @@ class CatReaderAlchemy(CatReader):
         return [self._load_catview(row) for row in result.mappings()]
 
     async def with_breed_name(
-        self, breed_name: BreedName, pagination: Pagination
+        self,
+        breed_name: BreedName,
+        pagination: Pagination,
     ) -> list[CatView]:
         stmt = self._make_join(isouter=True)
         stmt = stmt.where(breeds_table.c.breed_name == breed_name.value)

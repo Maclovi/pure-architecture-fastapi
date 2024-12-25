@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from cats.application.common.interactor import Interactor
 from cats.application.common.persistence.cat import CatGateway
 from cats.application.common.validators import validate_cat
 from cats.entities.cat.models import Cat, CatID
@@ -16,7 +15,7 @@ class CatOutput:
     cat: Cat
 
 
-class GetCatWithIDQueryHandler(Interactor[GetCatWithIDQuery, CatOutput]):
+class GetCatWithIDQueryHandler:
     def __init__(self, cat_gateway: CatGateway) -> None:
         self._cat_gateway = cat_gateway
 

@@ -23,7 +23,10 @@ def upgrade() -> None:
     op.create_table(
         "breeds",
         sa.Column(
-            "breed_id", sa.BigInteger(), autoincrement=True, nullable=False
+            "breed_id",
+            sa.BigInteger(),
+            autoincrement=True,
+            nullable=False,
         ),
         sa.Column("breed_name", sa.String(length=50), nullable=False),
         sa.Column(
@@ -44,7 +47,10 @@ def upgrade() -> None:
     op.create_table(
         "cats",
         sa.Column(
-            "cat_id", sa.BigInteger(), autoincrement=True, nullable=False
+            "cat_id",
+            sa.BigInteger(),
+            autoincrement=True,
+            nullable=False,
         ),
         sa.Column("cat_age", sa.Integer(), nullable=False),
         sa.Column("cat_color", sa.String(length=50), nullable=False),

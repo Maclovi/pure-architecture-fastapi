@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from cats.application.common.interactor import Interactor
 from cats.application.common.persistence.cat import (
     CatFilters,
     CatReader,
@@ -15,7 +14,7 @@ class GetCatsQuery:
     pagination: Pagination
 
 
-class GetCatsQueryHandler(Interactor[GetCatsQuery, CatsOutput]):
+class GetCatsQueryHandler:
     def __init__(self, cat_reader: CatReader) -> None:
         self._cat_reader = cat_reader
 

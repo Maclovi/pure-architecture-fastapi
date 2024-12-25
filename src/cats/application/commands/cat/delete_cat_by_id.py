@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from cats.application.common.interactor import Interactor
 from cats.application.common.persistence.cat import CatGateway
 from cats.application.common.transaction import Transaction
 from cats.application.common.validators import validate_cat
@@ -13,7 +12,7 @@ class DeleteCatCommand:
     id: int
 
 
-class DeleteCatCommandHandler(Interactor[DeleteCatCommand, None]):
+class DeleteCatCommandHandler:
     def __init__(
         self,
         transaction: Transaction,

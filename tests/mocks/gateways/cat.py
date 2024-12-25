@@ -45,7 +45,9 @@ class FakeCatGateway(CatGateway):
         return [*self.cats.values()]
 
     async def all(
-        self, filters: CatFilters, pagination: Pagination
+        self,
+        filters: CatFilters,
+        pagination: Pagination,
     ) -> list[Cat]:
         if filters and pagination:
             pass

@@ -22,10 +22,14 @@ class CatGateway(Protocol):
 class CatReader(Protocol):
     @abstractmethod
     async def with_breed_name(
-        self, breed_name: BreedName, pagination: Pagination
+        self,
+        breed_name: BreedName,
+        pagination: Pagination,
     ) -> list[CatView]: ...
 
     @abstractmethod
     async def all(
-        self, filters: CatFilters, pagination: Pagination
+        self,
+        filters: CatFilters,
+        pagination: Pagination,
     ) -> list[CatView]: ...
