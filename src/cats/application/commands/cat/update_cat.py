@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from cats.application.common.interactor import Interactor
 from cats.application.common.persistence.cat import CatGateway
 from cats.application.common.transaction import Transaction
 from cats.application.common.validators import validate_cat
@@ -15,9 +14,7 @@ class UpdateCatDescriptionCommand:
     description: str
 
 
-class UpdateCatDescriptionCommandHandler(
-    Interactor[UpdateCatDescriptionCommand, None]
-):
+class UpdateCatDescriptionCommandHandler:
     def __init__(
         self,
         cat_gateway: CatGateway,

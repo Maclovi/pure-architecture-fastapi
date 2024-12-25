@@ -44,12 +44,15 @@ def map_cat_table() -> None:
         properties={
             "oid": cats_table.c.cat_id,
             "breed": relationship(
-                "Breed", back_populates="cats", lazy="joined"
+                "Breed",
+                back_populates="cats",
+                lazy="joined",
             ),
             "age": composite(CatAge, cats_table.c.cat_age),
             "color": composite(CatColor, cats_table.c.cat_color),
             "description": composite(
-                CatDescription, cats_table.c.cat_description
+                CatDescription,
+                cats_table.c.cat_description,
             ),
         },
     )

@@ -37,6 +37,7 @@ dependencies = [
 
 [project.optional-dependencies]
 test = [
+    "coverage[toml]==7.*",
     "pytest",
     "pytest-asyncio",
     "coverage==7.*",
@@ -109,7 +110,6 @@ ignore = [
     "A002",   # https://docs.astral.sh/ruff/rules/raw-string-in-exception/
     "EM101",  # https://docs.astral.sh/ruff/rules/raw-string-in-exception/
     "TRY003", # https://docs.astral.sh/ruff/rules/raise-vanilla-args/
-    "COM812", # https://docs.astral.sh/ruff/rules/missing-trailing-comma/
 ]
 
 [tool.ruff.format]
@@ -125,3 +125,28 @@ convention = "google"
 
 [lint.isort]
 no-lines-before = ["local-folder"]
+
+[tool.coverage.run]
+parallel = true
+branch = true
+concurrency = ["multiprocessing", "thread"]
+source = ["src", "tests"]
+omit = ["**/__init__.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+exclude_also = [
+    "if __name__ == .__main__.:",
+    "lambda: None",
+    "from .*",
+    "import .*",
+    '@(abc\.)?abstractmethod',
+    "raise NotImplementedError",
+    "pass",
+    '\.\.\.',
+]
+omit = [
+    '*/__main__.py',
+    '*/__init__.py',
+]

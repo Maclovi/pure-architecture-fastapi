@@ -5,8 +5,8 @@ from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from fastapi import APIRouter, Path, Query, status
 
 from cats.application.commands.cat.add_cat import (
-    AddCatCommand,
-    AddCatCommandHandler,
+    NewCatCommand,
+    NewCatCommandHandler,
 )
 from cats.application.commands.cat.delete_cat_by_id import (
     DeleteCatCommand,
@@ -85,8 +85,8 @@ async def get_by_id(
 
 @router.post("/add", summary="Add cat", status_code=status.HTTP_201_CREATED)
 async def add(
-    command_data: AddCatCommand,
-    interactor: FromDishka[AddCatCommandHandler],
+    command_data: NewCatCommand,
+    interactor: FromDishka[NewCatCommandHandler],
 ) -> int:
     return await interactor.run(command_data)
 

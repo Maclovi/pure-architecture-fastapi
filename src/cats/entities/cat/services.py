@@ -10,25 +10,26 @@ class CatService:
     def __init__(self, tracker: Tracker) -> None:
         self._tracker = tracker
 
-    def add_cat(
+    def new_cat(
         self,
         breed_id: BreedID | None,
-        age: CatAge,
-        color: CatColor,
-        description: CatDescription,
+        age: int,
+        color: str,
+        description: str,
     ) -> Cat:
-        new_cat = Cat(
+        return Cat(
             oid=cast(CatID, None),
             breed_id=breed_id,
-            age=age,
-            color=color,
-            description=description,
+            age=CatAge(age),
+            color=CatColor(color),
+            description=CatDescription(description),
         )
-        self._tracker.add_one(new_cat)
-        return new_cat
 
     def change_description(self, cat: Cat, new: CatDescription) -> None:
         cat.description = new
+
+    def add_cat(self, new_cat: Cat) -> None:
+        self._tracker.add_one(new_cat)
 
     async def remove_cat(self, cat: Cat) -> None:
         await self._tracker.delete(cat)

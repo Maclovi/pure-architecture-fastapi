@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from cats.application.common.interactor import Interactor
 from cats.application.common.persistence.breed import BreedGateway
 from cats.application.common.persistence.filters import Pagination
 from cats.entities.breed.models import Breed
@@ -17,7 +16,7 @@ class BreedsOutput:
     breeds: list[Breed]
 
 
-class GetBreedsQueryHandler(Interactor[GetBreedsQuery, BreedsOutput]):
+class GetBreedsQueryHandler:
     def __init__(self, breed_gateway: BreedGateway) -> None:
         self._breed_gateway = breed_gateway
 

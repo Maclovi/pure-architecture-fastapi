@@ -1,7 +1,7 @@
 from dishka import AnyOf, Provider, Scope
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from cats.application.commands.cat.add_cat import AddCatCommandHandler
+from cats.application.commands.cat.add_cat import NewCatCommandHandler
 from cats.application.commands.cat.delete_cat_by_id import (
     DeleteCatCommandHandler,
 )
@@ -72,7 +72,7 @@ def interactors_provider() -> Provider:
         GetCatsQueryHandler,
         GetCatWithIDQueryHandler,
         GetCatsWithBreedQueryHandler,
-        AddCatCommandHandler,
+        NewCatCommandHandler,
         DeleteCatCommandHandler,
         UpdateCatDescriptionCommandHandler,
     )
