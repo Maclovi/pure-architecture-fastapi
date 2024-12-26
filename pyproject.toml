@@ -40,7 +40,6 @@ test = [
     "coverage[toml]==7.*",
     "pytest",
     "pytest-asyncio",
-    "coverage==7.*",
     "httpx==0.28.*",
 ]
 lint = [
@@ -63,13 +62,12 @@ Documentation = "https://github.com/Maclovi/pure-architecture-fastapi/README.md"
 Repository = "https://github.com/Maclovi/pure-architecture-fastapi"
 Issues = "https://github.com/Maclovi/pure-architecture-fastapi/issues"
 
-
 [tool.pytest.ini_options]
 xfail_strict = true
 testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
-markers = ["container"]
+markers = ["value_objects"]
 filterwarnings = []
 
 [tool.mypy]
@@ -129,7 +127,7 @@ no-lines-before = ["local-folder"]
 [tool.coverage.run]
 parallel = true
 branch = true
-concurrency = ["multiprocessing", "thread"]
+concurrency = ["thread", "multiprocessing"]
 source = ["src", "tests"]
 omit = ["**/__init__.py"]
 
@@ -138,9 +136,6 @@ show_missing = true
 skip_empty = true
 exclude_also = [
     "if __name__ == .__main__.:",
-    "lambda: None",
-    "from .*",
-    "import .*",
     '@(abc\.)?abstractmethod',
     "raise NotImplementedError",
     "pass",

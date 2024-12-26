@@ -21,6 +21,9 @@ class CatGateway(Protocol):
 
 class CatReader(Protocol):
     @abstractmethod
+    async def with_id(self, cat_id: CatID) -> CatView | None: ...
+
+    @abstractmethod
     async def with_breed_name(
         self,
         breed_name: BreedName,

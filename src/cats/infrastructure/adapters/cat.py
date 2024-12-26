@@ -52,6 +52,14 @@ class CatReaderAlchemy(CatReader):
             row.cat_description,
         )
 
+    async def with_id(self, cat_id: CatID) -> CatView | None:
+        stmt = self._make_join(isouter=True).where(
+            cats_table.c.cat_id == cat_id,
+        )
+        result = await self._session.execute(stmt)
+        row = result.mappings().one_or_none()
+        return self._load_catview(row) if row else None
+
     async def all(
         self,
         filters: CatFilters,
