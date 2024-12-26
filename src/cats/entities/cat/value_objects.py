@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Final
 
 from cats.entities.cat.errors import (
     CatAgeMaxError,
@@ -7,18 +6,15 @@ from cats.entities.cat.errors import (
     CatDescriptionLengthError,
 )
 
-MAX_AGE: Final = 99
-COLOR_MIN_LENGTH: Final = 3
-COLOR_MAX_LENGTH: Final = 50
-DESCRIPTION_MAX_LENGTH: Final = 1000
-
 
 @dataclass(slots=True, frozen=True, eq=True, unsafe_hash=True)
 class CatAge:
     value: int
 
     def __post_init__(self) -> None:
-        if self.value > MAX_AGE:
+        min_age = 0
+        max_age = 99
+        if not (min_age <= self.value <= max_age):
             raise CatAgeMaxError(self.value)
 
 
@@ -27,8 +23,10 @@ class CatColor:
     value: str
 
     def __post_init__(self) -> None:
-        if not (COLOR_MIN_LENGTH <= len(self.value) <= COLOR_MAX_LENGTH):
-            raise CatColorLengthError(COLOR_MAX_LENGTH)
+        color_min_length = 3
+        color_max_length = 50
+        if not (color_min_length <= len(self.value) <= color_max_length):
+            raise CatColorLengthError(color_min_length)
 
 
 @dataclass(slots=True, frozen=True, eq=True, unsafe_hash=True)
@@ -36,5 +34,6 @@ class CatDescription:
     value: str
 
     def __post_init__(self) -> None:
-        if len(self.value) > DESCRIPTION_MAX_LENGTH:
-            raise CatDescriptionLengthError(DESCRIPTION_MAX_LENGTH)
+        description_max_length = 1000
+        if len(self.value) > description_max_length:
+            raise CatDescriptionLengthError(description_max_length)
