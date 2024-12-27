@@ -10,7 +10,7 @@ class CatService:
     def __init__(self, tracker: Tracker) -> None:
         self._tracker = tracker
 
-    def new_cat(
+    def create_cat(
         self,
         breed_id: BreedID | None,
         age: int,

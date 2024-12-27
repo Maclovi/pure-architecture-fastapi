@@ -35,7 +35,7 @@ class NewCatCommandHandler:
             breed_id = await self._get_breed_id(BreedName(data.breed_name))
         else:
             breed_id = None
-        new_cat = self._cat_service.new_cat(
+        new_cat = self._cat_service.create_cat(
             breed_id,
             data.age,
             data.color,
@@ -52,6 +52,7 @@ class NewCatCommandHandler:
         return breed.oid
 
     async def _create_breed(self, breed_name: BreedName) -> Breed:
-        breed = self._breed_service.add_breed(breed_name)
+        new_breed = self._breed_service.create_breed(breed_name)
+        self._breed_service.add_breed(new_breed)
         await self._transaction.flush()
-        return breed
+        return new_breed

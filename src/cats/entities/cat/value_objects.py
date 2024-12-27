@@ -2,7 +2,9 @@ from dataclasses import dataclass
 
 from cats.entities.cat.errors import (
     CatAgeMaxError,
-    CatColorLengthError,
+    CatAgeMinError,
+    CatColorMaxLengthError,
+    CatColorMinLengthError,
     CatDescriptionLengthError,
 )
 
@@ -14,8 +16,10 @@ class CatAge:
     def __post_init__(self) -> None:
         min_age = 0
         max_age = 99
-        if not (min_age <= self.value <= max_age):
-            raise CatAgeMaxError(self.value)
+        if self.value < min_age:
+            raise CatAgeMinError(min_age)
+        if self.value > max_age:
+            raise CatAgeMaxError(max_age)
 
 
 @dataclass(slots=True, frozen=True, eq=True, unsafe_hash=True)
@@ -25,8 +29,10 @@ class CatColor:
     def __post_init__(self) -> None:
         color_min_length = 3
         color_max_length = 50
-        if not (color_min_length <= len(self.value) <= color_max_length):
-            raise CatColorLengthError(color_min_length)
+        if len(self.value) < color_min_length:
+            raise CatColorMinLengthError(color_min_length)
+        if len(self.value) > color_max_length:
+            raise CatColorMaxLengthError(color_max_length)
 
 
 @dataclass(slots=True, frozen=True, eq=True, unsafe_hash=True)
