@@ -9,4 +9,4 @@ class BreedNamelengthError(FieldError):
 
     @property
     def message(self) -> str:
-        return f"Length of title should be a less than {self.length!r}"
+        return f"Maximum length must be less than or equal to {self.length!r}"

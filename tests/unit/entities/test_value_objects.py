@@ -4,7 +4,9 @@ from cats.entities.breed.errors import BreedNamelengthError
 from cats.entities.breed.value_objects import BreedName
 from cats.entities.cat.errors import (
     CatAgeMaxError,
-    CatColorLengthError,
+    CatAgeMinError,
+    CatColorMaxLengthError,
+    CatColorMinLengthError,
     CatDescriptionLengthError,
 )
 from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
@@ -15,16 +17,20 @@ from cats.entities.common.errors import FieldError
 @pytest.mark.parametrize(
     ("value", "exc_class"),
     [
-        ("determinateness", None),
+        ("a", BreedNamelengthError),
+        ("a" * 13, None),
         ("a" * 50, None),
-        ("c" * 51, BreedNamelengthError),
-        ("b", BreedNamelengthError),
+        ("a" * 51, BreedNamelengthError),
     ],
 )
 def test_breed_name(value: str, exc_class: type[FieldError] | None) -> None:
     if exc_class:
-        with pytest.raises(exc_class):
+        with pytest.raises(exc_class) as excinfo:
             BreedName(value)
+        assert (
+            excinfo.value.message
+            == "Maximum length must be less than or equal to 50"
+        )
     else:
         breed_name = BreedName(value)
         assert value == breed_name.value
@@ -35,7 +41,7 @@ def test_breed_name(value: str, exc_class: type[FieldError] | None) -> None:
 @pytest.mark.parametrize(
     ("value", "exc_class"),
     [
-        (-1, CatAgeMaxError),
+        (-1, CatAgeMinError),
         (0, None),
         (99, None),
         (100, CatAgeMaxError),
@@ -43,8 +49,15 @@ def test_breed_name(value: str, exc_class: type[FieldError] | None) -> None:
 )
 def test_cat_age(value: int, exc_class: type[FieldError] | None) -> None:
     if exc_class:
-        with pytest.raises(exc_class):
+        with pytest.raises(exc_class) as excinfo:
             CatAge(value)
+
+        min_age = 0
+        if value < min_age:
+            msg = "The minimum age of the cat should not be less than 0"
+        else:
+            msg = "The maximum age of a cat should not exceed 99"
+        assert excinfo.value.message == msg
     else:
         cat_age = CatAge(value)
         assert value == cat_age.value
@@ -55,19 +68,26 @@ def test_cat_age(value: int, exc_class: type[FieldError] | None) -> None:
 @pytest.mark.parametrize(
     ("value", "exc_class"),
     [
-        ("aa", CatColorLengthError),
-        ("aaa", None),
+        ("a" * 2, CatColorMinLengthError),
+        ("a" * 3, None),
         ("a" * 50, None),
-        ("a" * 100, CatColorLengthError),
+        ("a" * 100, CatColorMaxLengthError),
     ],
 )
-def test_cat_description(
+def test_cat_color(
     value: str,
     exc_class: type[FieldError] | None,
 ) -> None:
     if exc_class:
-        with pytest.raises(exc_class):
+        with pytest.raises(exc_class) as excinfo:
             CatColor(value)
+
+        color_min_length = 3
+        if len(value) < color_min_length:
+            msg = "The color length should not be less than 3"
+        else:
+            msg = "The color length should not exceed 50"
+        assert excinfo.value.message == msg
     else:
         cat_color = CatColor(value)
         assert value == cat_color.value
@@ -84,10 +104,17 @@ def test_cat_description(
         ("a" * 2002, CatDescriptionLengthError),
     ],
 )
-def test_cat_color(value: str, exc_class: type[FieldError] | None) -> None:
+def test_cat_description(
+    value: str,
+    exc_class: type[FieldError] | None,
+) -> None:
     if exc_class:
-        with pytest.raises(exc_class):
+        with pytest.raises(exc_class) as excinfo:
             CatDescription(value)
+        assert (
+            excinfo.value.message
+            == "The description length should not exceed 1000"
+        )
     else:
         cat_description = CatDescription(value)
         assert value == cat_description.value
