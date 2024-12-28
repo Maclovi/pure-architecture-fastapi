@@ -22,13 +22,13 @@ from cats.entities.cat.services import CatService
 from cats.entities.common.tracker import Tracker
 from cats.infrastructure.adapters.breed import BreedMapperAlchemy
 from cats.infrastructure.adapters.cat import CatMapperAlchemy, CatReaderAlchemy
+from cats.infrastructure.adapters.tracker import TrackerAlchemy
 from cats.infrastructure.bootstrap.configs import APIConfig, PostgresConfig
 from cats.infrastructure.persistence.db_provider import (
     get_engine,
     get_session,
     get_sessionmaker,
 )
-from cats.infrastructure.persistence.tracker import TrackerAlchemy
 
 
 def configs_provider() -> Provider:

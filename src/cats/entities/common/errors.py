@@ -12,13 +12,9 @@ class DomainError(Exception):
 
 @dataclass(eq=False)
 class FieldError(DomainError):
-    @property
-    def message(self) -> str:
-        raise NotImplementedError
+    pass
 
 
 @dataclass(eq=False)
 class InsertProcessingError(DomainError):
-    @property
-    def message(self) -> str:
-        raise NotImplementedError
+    pass

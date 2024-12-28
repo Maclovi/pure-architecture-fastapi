@@ -1,20 +1,36 @@
+from unittest.mock import Mock
+
+from cats.entities.breed.models import Breed
+from cats.entities.breed.services import BreedService
+from cats.entities.breed.value_objects import BreedName
 from cats.entities.cat.models import Cat
 from cats.entities.cat.services import CatService
-from cats.entities.cat.value_objects import CatDescription
-from tests.mocks.common.tracker import FakeTracker
+from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
 
 
-async def test_cat_service(fake_tracker: FakeTracker) -> None:
-    cat_service = CatService(fake_tracker)
+async def test_cat_service(fake_tracker: Mock) -> None:
+    service = CatService(fake_tracker)
+    new_cat = service.create_cat(
+        None,
+        CatAge(3),
+        CatColor("blue"),
+        CatDescription("biba and boba"),
+    )
+    service.add_cat(new_cat)
+    service.change_description(new_cat, CatDescription("new descr"))
+    await service.remove_cat(new_cat)
 
-    created_cat = cat_service.create_cat(None, 3, "blue", "biba and boba")
-    assert isinstance(created_cat, Cat)
+    fake_tracker.add_one.assert_called_once_with(new_cat)
+    fake_tracker.delete.assert_called_once_with(new_cat)
+    assert new_cat.description.value == "new descr"
+    assert isinstance(new_cat, Cat)
 
-    cat_service.add_cat(created_cat)
-    assert fake_tracker.entities[0] == created_cat
 
-    cat_service.change_description(created_cat, CatDescription("new descr"))
-    assert created_cat.description.value == "new descr"
+async def test_breed_service(fake_tracker: Mock) -> None:
+    service = BreedService(fake_tracker)
+    new_breed = service.create_breed(BreedName("boba"))
+    service.add_breed(new_breed)
 
-    await cat_service.remove_cat(created_cat)
-    assert created_cat not in fake_tracker.entities
+    fake_tracker.add_one.assert_called_once_with(new_breed)
+    assert new_breed.name.value == "boba"
+    assert isinstance(new_breed, Breed)

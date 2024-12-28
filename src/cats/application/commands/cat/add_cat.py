@@ -7,6 +7,7 @@ from cats.entities.breed.services import BreedService
 from cats.entities.breed.value_objects import BreedName
 from cats.entities.cat.models import CatID
 from cats.entities.cat.services import CatService
+from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,9 +38,9 @@ class NewCatCommandHandler:
             breed_id = None
         new_cat = self._cat_service.create_cat(
             breed_id,
-            data.age,
-            data.color,
-            data.description,
+            CatAge(data.age),
+            CatColor(data.color),
+            CatDescription(data.description),
         )
         self._cat_service.add_cat(new_cat)
         await self._transaction.commit()

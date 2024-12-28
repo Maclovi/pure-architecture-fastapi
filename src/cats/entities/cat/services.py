@@ -10,19 +10,19 @@ class CatService:
     def __init__(self, tracker: Tracker) -> None:
         self._tracker = tracker
 
+    @staticmethod
     def create_cat(
-        self,
         breed_id: BreedID | None,
-        age: int,
-        color: str,
-        description: str,
+        age: CatAge,
+        color: CatColor,
+        description: CatDescription,
     ) -> Cat:
         return Cat(
             oid=cast(CatID, None),
             breed_id=breed_id,
-            age=CatAge(age),
-            color=CatColor(color),
-            description=CatDescription(description),
+            age=age,
+            color=color,
+            description=description,
         )
 
     def change_description(self, cat: Cat, new: CatDescription) -> None:

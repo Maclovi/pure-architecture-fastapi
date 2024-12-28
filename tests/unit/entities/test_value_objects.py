@@ -1,6 +1,9 @@
 import pytest
 
-from cats.entities.breed.errors import BreedNamelengthError
+from cats.entities.breed.errors import (
+    BreedNameMaxlengthError,
+    BreedNameMinlengthError,
+)
 from cats.entities.breed.value_objects import BreedName
 from cats.entities.cat.errors import (
     CatAgeMaxError,
@@ -17,20 +20,23 @@ from cats.entities.common.errors import FieldError
 @pytest.mark.parametrize(
     ("value", "exc_class"),
     [
-        ("a", BreedNamelengthError),
+        ("a", BreedNameMinlengthError),
         ("a" * 13, None),
         ("a" * 50, None),
-        ("a" * 51, BreedNamelengthError),
+        ("a" * 51, BreedNameMaxlengthError),
     ],
 )
 def test_breed_name(value: str, exc_class: type[FieldError] | None) -> None:
     if exc_class:
         with pytest.raises(exc_class) as excinfo:
             BreedName(value)
-        assert (
-            excinfo.value.message
-            == "Maximum length must be less than or equal to 50"
-        )
+
+        breed_min_length = 2
+        if len(value) < breed_min_length:
+            msg = "The minimum length must not be less than 2"
+        else:
+            msg = "Maximum length must be less than or equal to 50"
+        assert excinfo.value.message == msg
     else:
         breed_name = BreedName(value)
         assert value == breed_name.value
