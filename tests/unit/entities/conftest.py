@@ -1,22 +1,14 @@
+from unittest.mock import AsyncMock, Mock
+
 import pytest
 
-from cats.entities.breed.models import Breed, BreedID
-from cats.entities.breed.value_objects import BreedName
-from cats.entities.cat.models import Cat, CatID
-from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
+from cats.entities.common.tracker import Tracker
 
 
 @pytest.fixture
-def new_cat() -> Cat:
-    return Cat(
-        CatID(1),
-        BreedID(1),
-        CatAge(3),
-        CatColor("red"),
-        CatDescription("biba"),
-    )
-
-
-@pytest.fixture
-def new_breed() -> Breed:
-    return Breed(BreedID(1), BreedName("boba"))
+def fake_tracker() -> Tracker:
+    fake = Mock()
+    fake.add_one = Mock(return_value=None)
+    fake.add_many = Mock(return_value=None)
+    fake.delete = AsyncMock(return_value=None)
+    return fake

@@ -4,7 +4,16 @@ from cats.entities.common.errors import FieldError
 
 
 @dataclass(eq=False)
-class BreedNamelengthError(FieldError):
+class BreedNameMinlengthError(FieldError):
+    length: int
+
+    @property
+    def message(self) -> str:
+        return f"The minimum length must not be less than {self.length!r}"
+
+
+@dataclass(eq=False)
+class BreedNameMaxlengthError(FieldError):
     length: int
 
     @property
