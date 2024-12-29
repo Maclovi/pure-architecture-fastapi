@@ -9,7 +9,7 @@ from cats.entities.cat.services import CatService
 
 @dataclass(frozen=True, slots=True)
 class DeleteCatCommand:
-    id: int
+    cat_id: int
 
 
 class DeleteCatCommandHandler:
@@ -24,7 +24,7 @@ class DeleteCatCommandHandler:
         self._cat_service = cat_service
 
     async def run(self, data: DeleteCatCommand) -> None:
-        cat = await self._cat_gateway.with_id(CatID(data.id))
-        assert validate_cat(cat, data.id)
+        cat = await self._cat_gateway.with_id(CatID(data.cat_id))
+        assert validate_cat(cat, data.cat_id)
         await self._cat_service.remove_cat(cat)
         await self._transaction.commit()

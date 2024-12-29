@@ -9,8 +9,8 @@
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/Maclovi/fastapi-template
-cd fastapi-template
+git clone https://github.com/Maclovi/pure-architecture-fastapi
+cd pure-architecture-fastapi
 ```
 ## How to run
 

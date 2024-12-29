@@ -103,12 +103,7 @@ fix = true
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = [
-    "D",      # https://docs.astral.sh/ruff/rules/#pydocstyle-d
-    "A002",   # https://docs.astral.sh/ruff/rules/raw-string-in-exception/
-    "EM101",  # https://docs.astral.sh/ruff/rules/raw-string-in-exception/
-    "TRY003", # https://docs.astral.sh/ruff/rules/raise-vanilla-args/
-]
+ignore = ["D"]
 
 [tool.ruff.format]
 docstring-code-format = true

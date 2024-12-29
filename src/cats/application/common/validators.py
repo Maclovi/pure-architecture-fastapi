@@ -7,7 +7,7 @@ from cats.entities.cat.models import Cat
 CatT = TypeVar("CatT", Cat, CatView)
 
 
-def validate_cat(cat: CatT | None, id: int) -> TypeGuard[CatT]:
+def validate_cat(cat: CatT | None, oid: int) -> TypeGuard[CatT]:
     if cat is None:
-        raise CatNotFoundError(id)
+        raise CatNotFoundError(oid)
     return True

@@ -15,8 +15,8 @@ from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
 @pytest.mark.parametrize(
     ("dto"),
     [
-        NewCatCommand(3, "yellow", "some description 1", "some breed"),
-        NewCatCommand(3, "black", "some description 2", None),
+        NewCatCommand(1, "yellow", "some description 1", "random breed 1"),
+        NewCatCommand(2, "black", "some description 2", None),
     ],
 )
 async def test_add_cat(
@@ -42,7 +42,12 @@ async def test_add_cat(
     if dto.breed_name:
         breed_name = BreedName(dto.breed_name)
         fake_breed_gateway.with_name.assert_called_once_with(breed_name)
-        fake_cat_service.create_cat.assert_called_once()
+        fake_cat_service.create_cat.assert_called_once_with(
+            cat.breed_id,
+            cat.age,
+            cat.color,
+            cat.description,
+        )
 
     fake_cat_service.add_cat.assert_called_once_with(cat)
     fake_transaction.commit.assert_called_once()

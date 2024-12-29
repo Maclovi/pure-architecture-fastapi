@@ -1,4 +1,6 @@
-from unittest.mock import Mock
+from unittest.mock import AsyncMock, Mock
+
+import pytest
 
 from cats.entities.breed.models import Breed
 from cats.entities.breed.services import BreedService
@@ -6,6 +8,16 @@ from cats.entities.breed.value_objects import BreedName
 from cats.entities.cat.models import Cat
 from cats.entities.cat.services import CatService
 from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
+from cats.entities.common.tracker import Tracker
+
+
+@pytest.fixture
+def fake_tracker() -> Tracker:
+    fake = Mock()
+    fake.add_one = Mock()
+    fake.add_many = Mock()
+    fake.delete = AsyncMock()
+    return fake
 
 
 async def test_cat_service(fake_tracker: Mock) -> None:

@@ -77,10 +77,10 @@ async def get_by_breed(
     responses={status.HTTP_404_NOT_FOUND: {"model": ExceptionSchema}},
 )
 async def get_by_id(
-    id: Annotated[int, Path()],
+    oid: Annotated[int, Path(alias="id")],
     interactor: FromDishka[GetCatWithIDQueryHandler],
 ) -> CatOutput:
-    return await interactor.run(GetCatWithIDQuery(id))
+    return await interactor.run(GetCatWithIDQuery(oid))
 
 
 @router.post("/add", summary="Add cat", status_code=status.HTTP_201_CREATED)
