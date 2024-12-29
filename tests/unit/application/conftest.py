@@ -4,6 +4,7 @@ import pytest
 
 from cats.application.common.persistence.breed import BreedGateway
 from cats.application.common.persistence.cat import CatGateway, CatReader
+from cats.application.common.persistence.view_models import CatView
 from cats.application.common.transaction import Transaction
 from cats.entities.breed.models import Breed
 from cats.entities.breed.services import BreedService
@@ -55,8 +56,8 @@ def fake_cat_gateway(new_cat: Cat) -> CatGateway:
 
 
 @pytest.fixture
-def fake_cat_reader(new_cat: Cat) -> CatReader:
-    cats = [new_cat]
+def fake_cat_reader() -> CatReader:
+    cats = [CatView(1, None, 10, "pink", "some biba")]
     fake = Mock()
     fake.with_id = AsyncMock(return_value=cats[0])
     fake.with_breed_name = AsyncMock(return_value=cats)

@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import Mock
 
 import pytest
 
@@ -61,7 +61,7 @@ async def test_add_breed_gateway_mocked(
 ) -> None:
     breed_name_raw = "some breed"
     dto = NewCatCommand(3, "red", "some description", breed_name_raw)
-    fake_breed_gateway.with_name = AsyncMock(return_value=None)
+    fake_breed_gateway.with_name.return_value = None
     interactor = NewCatCommandHandler(
         fake_transaction,
         fake_breed_gateway,

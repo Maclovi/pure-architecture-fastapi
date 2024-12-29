@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, Mock
+from unittest.mock import Mock
 
 import pytest
 
@@ -36,7 +36,7 @@ async def test_update_cat_descruption_noncat(
     fake_cat_service: Mock,
     fake_transaction: Mock,
 ) -> None:
-    fake_cat_gateway.with_id = AsyncMock(return_value=None)
+    fake_cat_gateway.with_id.return_value = None
     dto = UpdateCatDescriptionCommand(cat_id=1, description="new desc")
     interactor = UpdateCatDescriptionCommandHandler(
         fake_cat_gateway,
