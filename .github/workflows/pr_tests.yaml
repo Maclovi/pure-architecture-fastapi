@@ -24,7 +24,7 @@ jobs:
           version: "latest"
 
       - name: Install Dependencies
-        run: uv pip install --system .[lint]
+        run: uv pip install --system -e .[lint]
 
       - uses: actions/cache@v4
         with:
