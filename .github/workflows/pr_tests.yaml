@@ -23,8 +23,15 @@ jobs:
         with:
           version: "latest"
 
-      - name: Install Dependencies
-        run: uv pip install --system -e .[lint]
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: ${{ env.pythonLocation }}
+          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
+
+      - name: Install Dependencies and library
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: uv pip install --system .[lint]
 
       - uses: actions/cache@v4
         with:
