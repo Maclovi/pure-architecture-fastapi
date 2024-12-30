@@ -24,7 +24,7 @@ jobs:
           version: "latest"
 
       - name: Install Dependencies
-        run: uv pip install --no-deps --system .[lint]
+        run: uv pip install ruff mypy codespell
 
       - uses: actions/cache@v4
         with:
