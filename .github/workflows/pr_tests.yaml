@@ -63,6 +63,6 @@ jobs:
 
       - name: Install Dependencies and library
         if: steps.cache.outputs.cache-hit != 'true'
-        run: uv pip install --system -e .[dev]
+        run: uv pip install --system .[dev]
 
       - run: bash scripts/test.sh
