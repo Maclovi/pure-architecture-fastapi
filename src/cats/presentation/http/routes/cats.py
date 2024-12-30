@@ -60,14 +60,14 @@ async def get_all(
     status_code=status.HTTP_200_OK,
 )
 async def get_by_breed(
-    query: Annotated[CatsWithBreedSchema, Query()],
-    intteractor: FromDishka[GetCatsWithBreedQueryHandler],
+    query: Annotated[CatsWithBreedSchema, Path()],
+    interactor: FromDishka[GetCatsWithBreedQueryHandler],
 ) -> CatsOutput:
     dto = GetCatsWithBreedQuery(
         query.breed,
         Pagination(query.offset, query.limit, query.order),
     )
-    return await intteractor.run(dto)
+    return await interactor.run(dto)
 
 
 @router.get(
@@ -92,28 +92,27 @@ async def add(
 
 
 @router.patch(
-    "/update_description/{cat_id}",
+    "/update_description/",
     summary="Update cat",
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     responses={status.HTTP_404_NOT_FOUND: {"model": ExceptionSchema}},
 )
 async def update_description(
     command_data: UpdateCatDescriptionCommand,
     interactor: FromDishka[UpdateCatDescriptionCommandHandler],
-) -> dict[str, str]:
-    await interactor.run(command_data)
-    return {"message": "cat updated"}
+) -> None:
+    return await interactor.run(command_data)
 
 
 @router.delete(
     "/delete/{id}",
     summary="Delete cat by id",
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     responses={status.HTTP_404_NOT_FOUND: {"model": ExceptionSchema}},
 )
 async def delete_by_id(
-    command_data: DeleteCatCommand,
+    oid: Annotated[int, Path(alias="id")],
     interactor: FromDishka[DeleteCatCommandHandler],
-) -> dict[str, str]:
-    await interactor.run(command_data)
-    return {"message": "Cat deleted"}
+) -> None:
+    dto = DeleteCatCommand(oid)
+    await interactor.run(dto)

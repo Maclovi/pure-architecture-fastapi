@@ -1,31 +1,25 @@
 ---
+default_stages: [pre-commit, pre-merge-commit, manual]
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
-        stages: [pre-commit, pre-merge-commit, manual]
       - id: end-of-file-fixer
-        stages: [pre-commit, pre-merge-commit, manual]
       - id: check-yaml
-        stages: [pre-commit, pre-merge-commit, manual]
       - id: check-toml
-        stages: [pre-commit, pre-merge-commit, manual]
       - id: check-added-large-files
-        stages: [pre-commit, pre-merge-commit, manual]
 
   - repo: https://github.com/Yelp/detect-secrets
     rev: v1.5.0
     hooks:
       - id: detect-secrets
         args: ['--baseline', '.secrets.baseline']
-        stages: [pre-commit, pre-merge-commit, manual]
 
   - repo: local
     hooks:
       - id: lint
         name: Linter
-        stages: [pre-commit, pre-merge-commit, manual]
         entry: "scripts/lint.sh"
         language: python
         types: [python]
@@ -36,6 +30,7 @@ repos:
     hooks:
       - id: static-analysis
         name: Static analysis
+        stages: [pre-commit, pre-merge-commit]
         entry: "scripts/static_analysis.sh"
         language: python
         types: [python]
