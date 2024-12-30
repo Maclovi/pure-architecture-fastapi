@@ -23,18 +23,10 @@ jobs:
         with:
           version: "latest"
 
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          path: ${{ env.pythonLocation }}
-          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
-
-      - name: Install Dependencies and library
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: uv pip install --system -e .[dev]
-
-      - name: Run pre-commit
-        uses: pre-commit/action@v3.0.1
+      - with:
+          path: ~/.cache/pre-commit
+          key: pre-commit|${{ hashFiles('.pre-commit-config.yaml') }}
+      - uses: pre-commit/action@v3.0.1
 
   test-basic:
     if: github.event.pull_request.draft == false
@@ -43,7 +35,6 @@ jobs:
       matrix:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
-
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
@@ -62,6 +53,6 @@ jobs:
 
       - name: Install Dependencies and library
         if: steps.cache.outputs.cache-hit != 'true'
-        run: uv pip install --system .[dev]
+        run: uv pip install --system .[test]
 
       - run: bash scripts/test.sh
