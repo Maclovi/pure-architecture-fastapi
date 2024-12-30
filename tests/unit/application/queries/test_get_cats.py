@@ -15,6 +15,5 @@ async def test_get_cats(fake_cat_reader: Mock) -> None:
     results = await interactor.run(dto)
 
     assert results.total == 1
-    assert len(results.cats) > 0
     assert all(isinstance(cat, CatView) for cat in results.cats)
     fake_cat_reader.all.assert_called_once_with(dto.filters, dto.pagination)

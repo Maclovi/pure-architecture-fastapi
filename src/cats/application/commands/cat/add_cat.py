@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from cats.application.common.persistence.breed import BreedGateway
 from cats.application.common.transaction import Transaction
-from cats.entities.breed.models import Breed, BreedID
+from cats.entities.breed.models import BreedID
 from cats.entities.breed.services import BreedService
 from cats.entities.breed.value_objects import BreedName
 from cats.entities.cat.models import CatID
@@ -49,11 +49,7 @@ class NewCatCommandHandler:
     async def _get_breed_id(self, breed_name: BreedName) -> BreedID:
         breed = await self._breed_gateway.with_name(breed_name)
         if breed is None:
-            breed = await self._create_breed(breed_name)
+            breed = self._breed_service.create_breed(breed_name)
+            self._breed_service.add_breed(breed)
+            await self._transaction.flush()
         return breed.oid
-
-    async def _create_breed(self, breed_name: BreedName) -> Breed:
-        new_breed = self._breed_service.create_breed(breed_name)
-        self._breed_service.add_breed(new_breed)
-        await self._transaction.flush()
-        return new_breed

@@ -14,6 +14,5 @@ async def test_get_breeds(fake_breed_gateway: Mock, new_breed: Breed) -> None:
     results = await interactor.run(dto)
 
     assert results.total == 1
-    assert len(results.breeds) > 0
     assert results.breeds[0] == new_breed
     fake_breed_gateway.all.assert_called_once_with(dto.pagination)
