@@ -33,10 +33,6 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: uv pip install --system -e .[lint]
 
-      - uses: actions/cache@v4
-        with:
-          path: ~/.cache/pre-commit
-          key: pre-commit|${{ hashFiles('.pre-commit-config.yaml') }}
       - uses: pre-commit/action@v3.0.1
 
   test-basic:
