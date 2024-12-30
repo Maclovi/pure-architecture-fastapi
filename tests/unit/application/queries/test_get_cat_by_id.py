@@ -33,5 +33,4 @@ async def test_get_cat_with_id(
     else:
         result = await interactor.run(dto)
         assert isinstance(result.cat, CatView)
-
     fake_cat_reader.with_id.assert_called_once_with(CatID(dto.id))

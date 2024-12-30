@@ -30,7 +30,7 @@ dependencies = [
     "uvicorn==0.31.*",
     "httptools==0.6.*",
     "alembic==1.13.*",
-    "sqlalchemy==2.*",
+    "sqlalchemy[asyncio]==2.*",
     "psycopg[binary]==3.*",
     "python-json-logger==2.*",
 ]
@@ -41,6 +41,7 @@ test = [
     "pytest",
     "pytest-asyncio",
     "httpx==0.28.*",
+    "aiosqlite==0.20.0",
 ]
 lint = [
     "ruff",
@@ -68,7 +69,6 @@ testpaths = ["tests"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
 markers = ["value_objects"]
-filterwarnings = []
 
 [tool.mypy]
 exclude = [".venv"]
