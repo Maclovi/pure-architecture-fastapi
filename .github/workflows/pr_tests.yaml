@@ -27,11 +27,11 @@ jobs:
         id: cache
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
+          key: lint|${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
 
       - name: Install Dependencies and library
         if: steps.cache.outputs.cache-hit != 'true'
-        run: uv pip install --system .[dev]
+        run: uv pip install --system .[lint]
 
       - uses: actions/cache@v4
         with:
@@ -60,10 +60,10 @@ jobs:
         id: cache
         with:
           path: ${{ env.pythonLocation }}
-          key: ${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
+          key: test|${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
 
       - name: Install Dependencies and library
         if: steps.cache.outputs.cache-hit != 'true'
-        run: uv pip install --system .[dev]
+        run: uv pip install --system .[test]
 
       - run: bash scripts/test.sh
