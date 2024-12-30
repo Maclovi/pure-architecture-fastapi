@@ -3,7 +3,9 @@ class DomainError(Exception):
 
 
 class FieldError(DomainError):
-    message: str
+    @property
+    def message(self) -> str:
+        raise NotImplementedError
 
 
 class InsertProcessingError(DomainError):

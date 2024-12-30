@@ -41,7 +41,6 @@ test = [
     "pytest",
     "pytest-asyncio",
     "httpx==0.28.*",
-    "aiosqlite==0.20.0",
 ]
 lint = [
     "ruff",
@@ -135,8 +134,10 @@ exclude_also = [
     "raise NotImplementedError",
     "pass",
     '\.\.\.',
+    "lifespan",
 ]
 omit = [
+    'src/cats/infrastructure/persistence/alembic/env.py',
     '*/__main__.py',
     '*/__init__.py',
 ]
