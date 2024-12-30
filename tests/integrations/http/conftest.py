@@ -1,3 +1,4 @@
+import os
 from collections.abc import AsyncIterator
 
 import pytest
@@ -9,6 +10,17 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 from cats.infrastructure.bootstrap.ioc import setup_providers
 from cats.infrastructure.persistence.models.base import metadata
 from cats.web import create_app
+
+
+def _load_env() -> None:
+    os.environ["POSTGRES_USER"] = ""
+    os.environ["POSTGRES_PASSWORD"] = ""
+    os.environ["POSTGRES_HOST"] = ""
+    os.environ["POSTGRES_PORT"] = ""
+    os.environ["POSTGRES_DB"] = ""
+    os.environ["POSTGRES_DEBUG"] = ""
+    os.environ["UVICORN_HOST"] = "127.0.0.1"
+    os.environ["UVICORN_PORT"] = "8000"
 
 
 def _get_engine() -> AsyncEngine:
@@ -24,6 +36,7 @@ def container() -> AsyncContainer:
 
 @pytest.fixture(scope="session")
 async def app(container: AsyncContainer) -> AsyncIterator[FastAPI]:
+    _load_env()
     app = create_app()
     app.state.dishka_container = container
 

@@ -7,7 +7,7 @@ class PostgresConfig:
     user: str
     password: str
     host: str
-    port: int
+    port: str
     db_name: str
     debug: bool
 
@@ -19,7 +19,7 @@ class PostgresConfig:
 @dataclass(frozen=True, slots=True)
 class APIConfig:
     host: str
-    port: int
+    port: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,12 +34,12 @@ def load_configs() -> Configs:
             user=env["POSTGRES_USER"],
             password=env["POSTGRES_PASSWORD"],
             host=env["POSTGRES_HOST"],
-            port=int(env["POSTGRES_PORT"]),
+            port=env["POSTGRES_PORT"],
             db_name=env["POSTGRES_DB"],
             debug=env["POSTGRES_DEBUG"] == "true",
         ),
         api=APIConfig(
             host=env["UVICORN_HOST"],
-            port=int(env["UVICORN_PORT"]),
+            port=env["UVICORN_PORT"],
         ),
     )
