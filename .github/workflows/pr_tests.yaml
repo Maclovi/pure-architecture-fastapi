@@ -42,6 +42,12 @@ jobs:
       matrix:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
       fail-fast: false
+    services:
+      image: postgres:alpine
+      env:
+        POSTRES_DB: test
+        POSTRES_USER: test
+        POSTRES_PASSWORD: test
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
@@ -62,4 +68,4 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: uv pip install --system .[test]
 
-      - run: bash scripts/test.sh
+      - run: bash scripts/test_cov.sh
