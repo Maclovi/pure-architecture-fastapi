@@ -45,10 +45,10 @@ jobs:
     services:
       postgres:
         image: postgres:alpine
-      env:
-        POSTRES_DB: test
-        POSTRES_USER: test
-        POSTRES_PASSWORD: test
+        env:
+          POSTRES_DB: test
+          POSTRES_USER: test
+          POSTRES_PASSWORD: test
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
