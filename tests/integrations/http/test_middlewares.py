@@ -4,11 +4,11 @@ from httpx import AsyncClient
 from starlette import status
 
 
-@mock.patch("cats.presentation.http.middlewares.tracing.logger.info")
+@mock.patch("cats.presentation.http.middlewares.tracing.logger")
 async def test_log_requests_middleware(
     mock_logger: mock.Mock,
     client: AsyncClient,
 ) -> None:
     response = await client.get("/")
     assert response.status_code == status.HTTP_200_OK
-    mock_logger.assert_called()
+    mock_logger.info.assert_called_once()
