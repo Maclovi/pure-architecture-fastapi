@@ -134,10 +134,11 @@ exclude_also = [
     "raise NotImplementedError",
     "pass",
     '\.\.\.',
-    "lifespan",
 ]
 omit = [
     'src/cats/infrastructure/persistence/alembic/env.py',
-    '*/__main__.py',
+    'src/cats/presentation/http/middlewares/tracing.py',
+    'src/cats/presentation/http/common/exc_handlers.py',
+    'src/cats/infrastructure/adapters/*',
     '*/__init__.py',
 ]

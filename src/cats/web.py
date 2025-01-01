@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI, /) -> AsyncIterator[None]:
+async def lifespan(app: FastAPI, /) -> AsyncIterator[None]:  # pragma: no cover
     yield None
     await app.state.dishka_container.close()
 
