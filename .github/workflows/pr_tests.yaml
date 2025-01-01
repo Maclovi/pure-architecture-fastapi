@@ -46,9 +46,9 @@ jobs:
       postgres:
         image: postgres:alpine
         env:
-          POSTRES_DB: test
-          POSTRES_USER: test
-          POSTRES_PASSWORD: test
+          POSTGRES_DB: test
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
