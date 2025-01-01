@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from starlette.middleware.cors import CORSMiddleware
 
-from .tracing import TracingMiddleware
+from .tracing import LoggingMiddleware
 
 if TYPE_CHECKING:
     from fastapi import FastAPI
@@ -21,4 +21,4 @@ def setup_middlewares(app: "FastAPI", /, api_config: "APIConfig") -> None:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    app.add_middleware(TracingMiddleware)
+    app.add_middleware(LoggingMiddleware)

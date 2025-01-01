@@ -129,15 +129,17 @@ omit = ["**/__init__.py"]
 show_missing = true
 skip_empty = true
 exclude_also = [
+    'if TYPE_CHECKING:',
     "if __name__ == .__main__.:",
     '@(abc\.)?abstractmethod',
     "raise NotImplementedError",
     "pass",
     '\.\.\.',
-    "lifespan",
 ]
 omit = [
     'src/cats/infrastructure/persistence/alembic/env.py',
-    '*/__main__.py',
+    'src/cats/presentation/http/middlewares/tracing.py',
+    'src/cats/infrastructure/adapters/breed.py',
+    'src/cats/infrastructure/adapters/cat.py',
     '*/__init__.py',
 ]

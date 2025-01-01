@@ -19,7 +19,7 @@ class BoundCode(IntEnum):
     CLIENT_ERROR = 499
 
 
-class TracingMiddleware(BaseHTTPMiddleware):
+class LoggingMiddleware(BaseHTTPMiddleware):
     async def dispatch(
         self,
         request: Request,
