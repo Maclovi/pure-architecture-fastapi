@@ -75,4 +75,4 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: uv pip install --system .[test]
 
-      - run: bash scripts/test_cov.sh
+      - run: bash scripts/test.sh

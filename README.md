@@ -1,5 +1,9 @@
 # Simple cats api
-
+Implementation of Clean Architecture(Uncle Bob) on FastAPI.
+---
+[![GitHub License](https://img.shields.io/github/license/Maclovi/pure-architecture-fastapi)](https://github.com/Maclovi/pure-acrhitecture-fastapi/blob/master/LICENSE)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Maclovi/pure-architecture-fastapi/pr_tests.yaml)](https://github.com/Maclovi/pure-architecture-fastapi/actions)
+---
 ## Installation
 ### Requirements
 - Git
