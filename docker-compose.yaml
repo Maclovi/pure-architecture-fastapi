@@ -16,7 +16,7 @@ services:
 
   web-backend:
     build: .
-    restart: unless-stopped
+    restart: always
     env_file: ".env"
     environment:
       - POSTGRES_HOST=postgres

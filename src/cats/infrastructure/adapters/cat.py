@@ -1,7 +1,8 @@
-from typing import Any
+from typing import Any, Final, cast
 
 from sqlalchemy import RowMapping, Select, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from typing_extensions import override
 
 from cats.application.common.persistence.cat import (
     CatFilters,
@@ -18,8 +19,9 @@ from cats.infrastructure.persistence.models.cat import cats_table
 
 class CatMapperAlchemy(CatGateway):
     def __init__(self, session: AsyncSession) -> None:
-        self._session = session
+        self._session: Final = session
 
+    @override
     async def with_id(self, cat_id: CatID) -> Cat | None:
         stmt = select(Cat).where(cats_table.c.cat_id == cat_id)
         result = await self._session.execute(stmt)
@@ -28,9 +30,9 @@ class CatMapperAlchemy(CatGateway):
 
 class CatReaderAlchemy(CatReader):
     def __init__(self, session: AsyncSession) -> None:
-        self._session = session
+        self._session: Final = session
 
-    def _make_join(self, *, isouter: bool = False) -> Select[tuple[Any, ...]]:
+    def _make_join(self, *, isouter: bool = False) -> Select[tuple[Any, ...]]:  # pyright: ignore [reportExplicitAny]
         return select(
             cats_table.c.cat_id,
             cats_table.c.cat_age,
@@ -45,13 +47,14 @@ class CatReaderAlchemy(CatReader):
 
     def _load_catview(self, row: RowMapping) -> CatView:
         return CatView(
-            row.cat_id,
-            row.breed_name,
-            row.cat_age,
-            row.cat_color,
-            row.cat_description,
+            cast(CatID, row.cat_id),
+            cast(str | None, row.breed_name),
+            cast(int, row.cat_age),
+            cast(str, row.cat_color),
+            cast(str, row.cat_description),
         )
 
+    @override
     async def with_id(self, cat_id: CatID) -> CatView | None:
         stmt = self._make_join(isouter=True).where(
             cats_table.c.cat_id == cat_id,
@@ -60,6 +63,7 @@ class CatReaderAlchemy(CatReader):
         row = result.mappings().one_or_none()
         return self._load_catview(row) if row else None
 
+    @override
     async def all(
         self,
         filters: CatFilters,
@@ -79,6 +83,7 @@ class CatReaderAlchemy(CatReader):
         result = await self._session.execute(stmt)
         return [self._load_catview(row) for row in result.mappings()]
 
+    @override
     async def with_breed_name(
         self,
         breed_name: BreedName,

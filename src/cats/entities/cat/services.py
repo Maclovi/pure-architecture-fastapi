@@ -1,4 +1,4 @@
-from typing import cast
+from typing import Final, cast
 
 from cats.entities.breed.models import BreedID
 from cats.entities.cat.models import Cat, CatID
@@ -8,7 +8,7 @@ from cats.entities.common.tracker import Tracker
 
 class CatService:
     def __init__(self, tracker: Tracker) -> None:
-        self._tracker = tracker
+        self._tracker: Final = tracker
 
     @staticmethod
     def create_cat(
@@ -18,7 +18,7 @@ class CatService:
         description: CatDescription,
     ) -> Cat:
         return Cat(
-            oid=cast(CatID, None),
+            oid=cast(CatID, cast(object, None)),
             breed_id=breed_id,
             age=age,
             color=color,

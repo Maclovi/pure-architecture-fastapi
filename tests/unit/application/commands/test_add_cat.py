@@ -32,7 +32,7 @@ async def test_add_cat(
         fake_cat_service,
         fake_breed_service,
     )
-    await interactor.run(dto)
+    cat_id = await interactor.run(dto)
     cat = CatService.create_cat(
         None,
         CatAge(dto.age),
@@ -51,6 +51,7 @@ async def test_add_cat(
 
     fake_cat_service.add_cat.assert_called_once_with(cat)
     fake_transaction.commit.assert_called_once()
+    assert cat_id is None
 
 
 async def test_add_breed_gateway_mocked(
@@ -70,7 +71,6 @@ async def test_add_breed_gateway_mocked(
     )
     output = await interactor.run(dto)
 
-    assert output is None
     breed = BreedService.create_breed(BreedName(breed_name_raw))
     cat = CatService.create_cat(
         breed.oid,
@@ -89,3 +89,4 @@ async def test_add_breed_gateway_mocked(
     fake_cat_service.add_cat.assert_called_once_with(cat)
     fake_transaction.flush.assert_called_once()
     fake_transaction.commit.assert_called_once()
+    assert output is None

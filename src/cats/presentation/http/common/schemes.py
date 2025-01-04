@@ -7,6 +7,10 @@ class ExceptionSchema(BaseModel):
     detail: str
 
 
+class BreedSchema(BaseModel):
+    breed: str
+
+
 class PaginationSchema(BaseModel):
     offset: int | None = None
     limit: int | None = None
@@ -20,10 +24,6 @@ class CatFiltersSchema(BaseModel):
 
 class CatsAllSchema(PaginationSchema, CatFiltersSchema):
     pass
-
-
-class BreedSchema(BaseModel):
-    breed: str
 
 
 class CatsWithBreedSchema(BreedSchema, PaginationSchema):

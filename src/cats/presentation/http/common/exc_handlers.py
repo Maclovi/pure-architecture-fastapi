@@ -1,5 +1,5 @@
 from functools import partial as part
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, ClassVar, cast
 
 from starlette import status as code
 from starlette.responses import JSONResponse
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from starlette.requests import Request
 
     class StubError(Exception):
-        message: str
+        message: ClassVar[str]
 
 
 async def _validate(_: "Request", exc: Exception, status: int) -> JSONResponse:

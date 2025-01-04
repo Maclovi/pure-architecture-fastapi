@@ -1,12 +1,8 @@
 class DomainError(Exception):
-    pass
+    @property
+    def message(self) -> str:
+        return "Domain error occurred"
 
 
 class FieldError(DomainError):
-    @property
-    def message(self) -> str:
-        raise NotImplementedError
-
-
-class InsertProcessingError(DomainError):
     pass

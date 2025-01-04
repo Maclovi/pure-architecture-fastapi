@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Final
 
 from cats.application.common.persistence.cat import CatGateway
 from cats.application.common.transaction import Transaction
@@ -21,9 +22,9 @@ class UpdateCatDescriptionCommandHandler:
         cat_service: CatService,
         transaction: Transaction,
     ) -> None:
-        self._cat_gateway = cat_gateway
-        self._cat_service = cat_service
-        self._transaction = transaction
+        self._cat_gateway: Final = cat_gateway
+        self._cat_service: Final = cat_service
+        self._transaction: Final = transaction
 
     async def run(self, data: UpdateCatDescriptionCommand) -> None:
         description = CatDescription(data.description)

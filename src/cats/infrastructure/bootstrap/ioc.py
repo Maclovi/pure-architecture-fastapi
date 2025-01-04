@@ -33,16 +33,16 @@ from cats.infrastructure.persistence.db_provider import (
 
 def configs_provider() -> Provider:
     provider = Provider()
-    provider.from_context(provides=APIConfig, scope=Scope.APP)
-    provider.from_context(provides=PostgresConfig, scope=Scope.APP)
+    _ = provider.from_context(provides=APIConfig, scope=Scope.APP)
+    _ = provider.from_context(provides=PostgresConfig, scope=Scope.APP)
     return provider
 
 
 def db_provider() -> Provider:
     provider = Provider()
-    provider.provide(get_engine, scope=Scope.APP)
-    provider.provide(get_sessionmaker, scope=Scope.APP)
-    provider.provide(
+    _ = provider.provide(get_engine, scope=Scope.APP)
+    _ = provider.provide(get_sessionmaker, scope=Scope.APP)
+    _ = provider.provide(
         get_session,
         provides=AnyOf[Transaction, AsyncSession],
         scope=Scope.REQUEST,
@@ -52,22 +52,22 @@ def db_provider() -> Provider:
 
 def gateways_provider() -> Provider:
     provider = Provider(scope=Scope.REQUEST)
-    provider.provide(TrackerAlchemy, provides=Tracker)
-    provider.provide(CatMapperAlchemy, provides=CatGateway)
-    provider.provide(CatReaderAlchemy, provides=CatReader)
-    provider.provide(BreedMapperAlchemy, provides=BreedGateway)
+    _ = provider.provide(TrackerAlchemy, provides=Tracker)
+    _ = provider.provide(CatMapperAlchemy, provides=CatGateway)
+    _ = provider.provide(CatReaderAlchemy, provides=CatReader)
+    _ = provider.provide(BreedMapperAlchemy, provides=BreedGateway)
     return provider
 
 
 def services_provider() -> Provider:
     provider = Provider(scope=Scope.REQUEST)
-    provider.provide_all(CatService, BreedService)
+    _ = provider.provide_all(CatService, BreedService)
     return provider
 
 
 def interactors_provider() -> Provider:
     provider = Provider(scope=Scope.REQUEST)
-    provider.provide_all(
+    _ = provider.provide_all(
         GetBreedsQueryHandler,
         GetCatsQueryHandler,
         GetCatWithIDQueryHandler,

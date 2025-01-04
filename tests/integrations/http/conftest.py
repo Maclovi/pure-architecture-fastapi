@@ -1,7 +1,9 @@
 import os
 from collections.abc import AsyncIterator
+from typing import cast
 
 import pytest
+from dishka import AsyncContainer
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncEngine
@@ -25,7 +27,7 @@ def _load_env() -> None:
 async def app() -> AsyncIterator[FastAPI]:
     _load_env()
     app = create_app()
-    container = app.state.dishka_container
+    container = cast(AsyncContainer, app.state.dishka_container)
 
     engine = await container.get(AsyncEngine)
     async with engine.begin() as conn:

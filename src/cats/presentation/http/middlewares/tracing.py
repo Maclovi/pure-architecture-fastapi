@@ -8,6 +8,7 @@ from starlette.middleware.base import (
 )
 from starlette.requests import Request
 from starlette.responses import Response
+from typing_extensions import override
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +21,7 @@ class BoundCode(IntEnum):
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):
+    @override
     async def dispatch(
         self,
         request: Request,

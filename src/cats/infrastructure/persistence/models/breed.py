@@ -30,7 +30,7 @@ breeds_table = sa.Table(
 
 
 def map_breed_table() -> None:
-    mapper_registry.map_imperatively(
+    _ = mapper_registry.map_imperatively(
         Breed,
         breeds_table,
         properties={

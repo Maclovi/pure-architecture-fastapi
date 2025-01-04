@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Final
 
 from cats.application.common.persistence.breed import BreedGateway
 from cats.application.common.transaction import Transaction
@@ -26,10 +27,10 @@ class NewCatCommandHandler:
         cat_service: CatService,
         breed_service: BreedService,
     ) -> None:
-        self._transaction = transaction
-        self._breed_gateway = breed_gateway
-        self._cat_service = cat_service
-        self._breed_service = breed_service
+        self._transaction: Final = transaction
+        self._breed_gateway: Final = breed_gateway
+        self._cat_service: Final = cat_service
+        self._breed_service: Final = breed_service
 
     async def run(self, data: NewCatCommand) -> CatID:
         if data.breed_name:

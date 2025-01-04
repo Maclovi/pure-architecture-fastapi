@@ -29,7 +29,7 @@ from cats.entities.common.errors import FieldError
 def test_breed_name(value: str, exc_class: type[FieldError] | None) -> None:
     if exc_class:
         with pytest.raises(exc_class) as excinfo:
-            BreedName(value)
+            _ = BreedName(value)
 
         breed_min_length = 2
         if len(value) < breed_min_length:
@@ -56,7 +56,7 @@ def test_breed_name(value: str, exc_class: type[FieldError] | None) -> None:
 def test_cat_age(value: int, exc_class: type[FieldError] | None) -> None:
     if exc_class:
         with pytest.raises(exc_class) as excinfo:
-            CatAge(value)
+            _ = CatAge(value)
 
         min_age = 0
         if value < min_age:
@@ -86,7 +86,7 @@ def test_cat_color(
 ) -> None:
     if exc_class:
         with pytest.raises(exc_class) as excinfo:
-            CatColor(value)
+            _ = CatColor(value)
 
         color_min_length = 3
         if len(value) < color_min_length:
@@ -116,7 +116,7 @@ def test_cat_description(
 ) -> None:
     if exc_class:
         with pytest.raises(exc_class) as excinfo:
-            CatDescription(value)
+            _ = CatDescription(value)
         assert (
             excinfo.value.message
             == "The description length should not exceed 1000"

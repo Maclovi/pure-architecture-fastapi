@@ -1,5 +1,7 @@
 class ApplicationError(Exception):
-    pass
+    @property
+    def message(self) -> str:
+        return "Application error occurred"
 
 
 class EntityNotFoundError(ApplicationError):

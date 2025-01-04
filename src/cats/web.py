@@ -1,8 +1,9 @@
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
+from typing import cast
 
-from dishka import make_async_container
+from dishka import AsyncContainer, make_async_container
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
@@ -25,7 +26,7 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI, /) -> AsyncIterator[None]:
     yield None
-    await app.state.dishka_container.close()
+    await cast(AsyncContainer, app.state.dishka_container).close()
 
 
 def create_app() -> FastAPI:

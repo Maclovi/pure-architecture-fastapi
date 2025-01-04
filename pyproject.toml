@@ -12,15 +12,20 @@ where = ["src"]
 name = "cats"
 dynamic = ["version"]
 description = "Simple api cats"
+requires-python = ">=3.10"
 readme = "README.md"
+license = {text = "MIT"}
 authors = [
     { name = "Sergey Yavorsky", email = "maclovi.dev@gmail.com" },
 ]
-requires-python = ">=3.10"
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
+    "Typing :: Typed",
 ]
 dependencies = [
     "dishka==1.*",
@@ -49,6 +54,7 @@ lint = [
     "codespell",
     #types
     "mypy",
+    "basedpyright",
 ]
 dev = [
     "cats[test,lint]",
@@ -69,29 +75,34 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "session"
 markers = ["value_objects"]
 
+[tool.basedpyright]
+pythonVersion = "3.10"
+include = ["src", "tests"]
+exclude = ["**/__pycache__", "**/alembic"]
+ignore = ["**/__pycache__", "**/alembic"]
+
 [tool.mypy]
-exclude = [".venv"]
+packages = ["src", "tests"]
 python_version = "3.10"
+
 strict = true
 pretty = true
-
-no_implicit_optional = true
-check_untyped_defs = true
+warn_return_any = true
+warn_unreachable = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+allow_redefinition = true
+allow_untyped_calls = true
+disallow_any_explicit = false
+disallow_any_generics = false
+disallow_subclassing_any = false
+disallow_untyped_decorators = false
 show_error_codes = true
-implicit_reexport = true
+show_error_context = true
+show_column_numbers = true
+check_untyped_defs = true
 namespace_packages = true
 ignore_missing_imports = true
-
-warn_unused_ignores = true
-warn_return_any = true
-warn_redundant_casts = true
-
-allow_untyped_calls = true
-allow_subclassing_any = true
-allow_untyped_decorators = true
-
-disallow_incomplete_defs = true
-disallow_any_unimported = false
 
 [tool.ruff]
 src = ["src"]
@@ -104,18 +115,16 @@ fix = true
 select = ["ALL"]
 ignore = ["D"]
 
-[tool.ruff.format]
-docstring-code-format = true
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-
 [tool.ruff.lint.per-file-ignores]
 "src/cats/infrastructure/persistence/alembic/**" = ["ERA001", "INP001"]
 "src/cats/application/**" = ["S101"]
 "tests/**" = ["S101"]
 
-[lint.isort]
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.isort]
+known-first-party = ["src", "tests"]
 no-lines-before = ["local-folder"]
 
 [tool.coverage.run]

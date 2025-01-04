@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Final
 
 from cats.application.common.persistence.breed import BreedGateway
 from cats.application.common.persistence.filters import Pagination
@@ -18,7 +19,7 @@ class BreedsOutput:
 
 class GetBreedsQueryHandler:
     def __init__(self, breed_gateway: BreedGateway) -> None:
-        self._breed_gateway = breed_gateway
+        self._breed_gateway: Final = breed_gateway
 
     async def run(self, data: GetBreedsQuery) -> BreedsOutput:
         breeds = await self._breed_gateway.all(data.pagination)

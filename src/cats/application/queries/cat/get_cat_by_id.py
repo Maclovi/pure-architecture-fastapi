@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Final
 
 from cats.application.common.persistence.cat import CatReader
 from cats.application.common.persistence.view_models import CatView
@@ -18,7 +19,7 @@ class CatOutput:
 
 class GetCatWithIDQueryHandler:
     def __init__(self, cat_reader: CatReader) -> None:
-        self._cat_reader = cat_reader
+        self._cat_reader: Final = cat_reader
 
     async def run(self, data: GetCatWithIDQuery) -> CatOutput:
         cat = await self._cat_reader.with_id(CatID(data.id))

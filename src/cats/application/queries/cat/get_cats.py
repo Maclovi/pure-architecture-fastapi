@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Final
 
 from cats.application.common.persistence.cat import (
     CatFilters,
@@ -16,7 +17,7 @@ class GetCatsQuery:
 
 class GetCatsQueryHandler:
     def __init__(self, cat_reader: CatReader) -> None:
-        self._cat_reader = cat_reader
+        self._cat_reader: Final = cat_reader
 
     async def run(self, data: GetCatsQuery) -> CatsOutput:
         cats = await self._cat_reader.all(data.filters, data.pagination)

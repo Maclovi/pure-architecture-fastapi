@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from typing_extensions import override
+
 from cats.entities.common.errors import FieldError
 
 
@@ -8,6 +10,7 @@ class BreedNameMinlengthError(FieldError):
     length: int
 
     @property
+    @override
     def message(self) -> str:
         return f"The minimum length must not be less than {self.length!r}"
 
@@ -17,5 +20,6 @@ class BreedNameMaxlengthError(FieldError):
     length: int
 
     @property
+    @override
     def message(self) -> str:
         return f"Maximum length must be less than or equal to {self.length!r}"

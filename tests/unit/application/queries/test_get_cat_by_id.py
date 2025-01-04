@@ -28,7 +28,7 @@ async def test_get_cat_with_id(
     if exc_class:
         fake_cat_reader.with_id.return_value = None
         with pytest.raises(CatNotFoundError) as exinfo:
-            await interactor.run(dto)
+            _ = await interactor.run(dto)
         assert exinfo.value.message == f"Cat with id={dto.id} not found"
     else:
         result = await interactor.run(dto)

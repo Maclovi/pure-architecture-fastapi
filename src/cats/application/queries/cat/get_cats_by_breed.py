@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Final
 
 from cats.application.common.persistence.cat import CatReader
 from cats.application.common.persistence.filters import Pagination
@@ -14,7 +15,7 @@ class GetCatsWithBreedQuery:
 
 class GetCatsWithBreedQueryHandler:
     def __init__(self, cat_reader: CatReader) -> None:
-        self._cat_reader = cat_reader
+        self._cat_reader: Final = cat_reader
 
     async def run(self, data: GetCatsWithBreedQuery) -> CatsOutput:
         cats = await self._cat_reader.with_breed_name(

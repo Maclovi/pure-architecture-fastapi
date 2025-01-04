@@ -38,7 +38,7 @@ cats_table = sa.Table(
 
 
 def map_cat_table() -> None:
-    mapper_registry.map_imperatively(
+    _ = mapper_registry.map_imperatively(
         Cat,
         cats_table,
         properties={

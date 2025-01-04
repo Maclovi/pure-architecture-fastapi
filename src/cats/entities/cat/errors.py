@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from typing_extensions import override
+
 from cats.entities.common.errors import FieldError
 
 
@@ -8,6 +10,7 @@ class CatAgeMinError(FieldError):
     limit: int
 
     @property
+    @override
     def message(self) -> str:
         return (
             f"The minimum age of the cat should not be less than {self.limit}"
@@ -19,6 +22,7 @@ class CatAgeMaxError(FieldError):
     age: int
 
     @property
+    @override
     def message(self) -> str:
         return f"The maximum age of a cat should not exceed {self.age!r}"
 
@@ -28,6 +32,7 @@ class CatColorMinLengthError(FieldError):
     length: int
 
     @property
+    @override
     def message(self) -> str:
         return f"The color length should not be less than {self.length}"
 
@@ -37,6 +42,7 @@ class CatColorMaxLengthError(FieldError):
     length: int
 
     @property
+    @override
     def message(self) -> str:
         return f"The color length should not exceed {self.length}"
 
@@ -46,5 +52,6 @@ class CatDescriptionLengthError(FieldError):
     length: int
 
     @property
+    @override
     def message(self) -> str:
         return f"The description length should not exceed {self.length!r}"
