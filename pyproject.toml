@@ -76,10 +76,10 @@ asyncio_default_fixture_loop_scope = "session"
 markers = ["value_objects"]
 
 [tool.basedpyright]
-pythonVersion = "3.10"
 include = ["src", "tests"]
-exclude = ["**/__pycache__", "**/alembic"]
 ignore = ["**/__pycache__", "**/alembic"]
+pythonVersion = "3.10"
+reportAny = false
 
 [tool.mypy]
 packages = ["src", "tests"]
