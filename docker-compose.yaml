@@ -19,9 +19,10 @@ services:
     restart: always
     env_file: ".env"
     environment:
+      - POSTGRES_DB=postgres
       - POSTGRES_HOST=postgres
       - UVICORN_HOST=0.0.0.0
-    command: /bin/sh -cx "./scripts/start.sh"
+    command: /bin/sh -cx "./start.sh"
     ports:
       - 127.0.0.1:8000:8000
     depends_on:

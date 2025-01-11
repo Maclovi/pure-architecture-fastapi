@@ -13,8 +13,8 @@ from cats.web import create_app
 
 
 def _load_env() -> None:
-    os.environ["POSTGRES_USER"] = "test"
-    os.environ["POSTGRES_PASSWORD"] = "test"  # noqa: S105
+    os.environ["POSTGRES_USER"] = "postgres"
+    os.environ["POSTGRES_PASSWORD"] = "postgres"  # noqa: S105
     os.environ["POSTGRES_HOST"] = "localhost"
     os.environ["POSTGRES_PORT"] = "5432"
     os.environ["POSTGRES_DB"] = "test"
