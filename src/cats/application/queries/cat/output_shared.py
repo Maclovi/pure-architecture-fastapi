@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from cats.application.common.persistence.view_models import CatView
+from cats.application.common.ports.view_models import CatView
 
 
 @dataclass(frozen=True, slots=True)

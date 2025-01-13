@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Final
 
-from cats.application.common.persistence.breed import BreedGateway
-from cats.application.common.persistence.filters import Pagination
+from cats.application.common.ports.breed import BreedGateway
+from cats.application.common.ports.filters import Pagination
 from cats.entities.breed.models import Breed
 
 

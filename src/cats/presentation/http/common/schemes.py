@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from cats.application.common.persistence.filters import SortOrder
+from cats.application.common.ports.filters import SortOrder
 
 
 class ExceptionSchema(BaseModel):

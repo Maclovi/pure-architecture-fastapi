@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from cats.application.common.persistence.filters import Pagination
+from cats.application.common.ports.filters import Pagination
 from cats.application.queries.breed.get_breeds import (
     GetBreedsQuery,
     GetBreedsQueryHandler,

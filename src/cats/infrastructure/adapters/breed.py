@@ -4,8 +4,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing_extensions import override
 
-from cats.application.common.persistence.breed import BreedGateway
-from cats.application.common.persistence.filters import Pagination
+from cats.application.common.ports.breed import BreedGateway
+from cats.application.common.ports.filters import Pagination
 from cats.entities.breed.models import Breed, BreedID
 from cats.entities.breed.value_objects import BreedName
 from cats.infrastructure.persistence.models.breed import breeds_table

@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Protocol
 
-from cats.application.common.persistence.filters import Pagination
+from cats.application.common.ports.filters import Pagination
 from cats.entities.breed.models import Breed, BreedID
 from cats.entities.breed.value_objects import BreedName
 

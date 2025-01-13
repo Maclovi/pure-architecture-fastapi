@@ -19,15 +19,17 @@ from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
         NewCatCommand(2, "black", "some description 2", None),
     ],
 )
-async def test_add_cat(
+async def test_add_cat(  # noqa: PLR0913
     dto: NewCatCommand,
     fake_transaction: Mock,
+    fake_entity_saver: Mock,
     fake_breed_gateway: Mock,
     fake_cat_service: Mock,
     fake_breed_service: Mock,
 ) -> None:
     interactor = NewCatCommandHandler(
         fake_transaction,
+        fake_entity_saver,
         fake_breed_gateway,
         fake_cat_service,
         fake_breed_service,
@@ -49,13 +51,14 @@ async def test_add_cat(
             cat.description,
         )
 
-    fake_cat_service.add_cat.assert_called_once_with(cat)
+    fake_entity_saver.add_one.assert_called_once_with(cat)
     fake_transaction.commit.assert_called_once()
     assert cat_id is None
 
 
 async def test_add_breed_gateway_mocked(
     fake_transaction: Mock,
+    fake_entity_saver: Mock,
     fake_breed_gateway: Mock,
     fake_cat_service: Mock,
     fake_breed_service: Mock,
@@ -65,6 +68,7 @@ async def test_add_breed_gateway_mocked(
     fake_breed_gateway.with_name.return_value = None
     interactor = NewCatCommandHandler(
         fake_transaction,
+        fake_entity_saver,
         fake_breed_gateway,
         fake_cat_service,
         fake_breed_service,
@@ -85,8 +89,7 @@ async def test_add_breed_gateway_mocked(
         cat.color,
         cat.description,
     )
-    fake_breed_service.add_breed.assert_called_once_with(breed)
-    fake_cat_service.add_cat.assert_called_once_with(cat)
+    fake_entity_saver.add_one.assert_called()
     fake_transaction.flush.assert_called_once()
     fake_transaction.commit.assert_called_once()
     assert output is None

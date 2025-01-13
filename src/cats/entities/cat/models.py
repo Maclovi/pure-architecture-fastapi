@@ -14,3 +14,6 @@ class Cat(BaseEntity[CatID]):
     age: CatAge
     color: CatColor
     description: CatDescription
+
+    def change_description(self, new: CatDescription) -> None:
+        self.description = new

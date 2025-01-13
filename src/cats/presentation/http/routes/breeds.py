@@ -4,7 +4,7 @@ from typing import Annotated
 from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from fastapi import APIRouter, Query, status
 
-from cats.application.common.persistence.filters import Pagination
+from cats.application.common.ports.filters import Pagination
 from cats.application.queries.breed.get_breeds import (
     BreedsOutput,
     GetBreedsQuery,

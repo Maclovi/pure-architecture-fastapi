@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from typing import Final
 
-from cats.application.common.persistence.cat import (
+from cats.application.common.ports.cat import (
     CatFilters,
     CatReader,
 )
-from cats.application.common.persistence.filters import Pagination
+from cats.application.common.ports.filters import Pagination
 from cats.application.queries.cat.output_shared import CatsOutput
 
 

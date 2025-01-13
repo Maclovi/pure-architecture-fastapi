@@ -16,8 +16,8 @@ from cats.application.commands.cat.update_cat import (
     UpdateCatDescriptionCommand,
     UpdateCatDescriptionCommandHandler,
 )
-from cats.application.common.persistence.cat import CatFilters
-from cats.application.common.persistence.filters import Pagination
+from cats.application.common.ports.cat import CatFilters
+from cats.application.common.ports.filters import Pagination
 from cats.application.queries.cat.get_cat_by_id import (
     CatOutput,
     GetCatWithIDQuery,

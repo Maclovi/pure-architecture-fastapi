@@ -1,8 +1,8 @@
 from unittest.mock import Mock
 
-from cats.application.common.persistence.cat import CatFilters
-from cats.application.common.persistence.filters import Pagination
-from cats.application.common.persistence.view_models import CatView
+from cats.application.common.ports.cat import CatFilters
+from cats.application.common.ports.filters import Pagination
+from cats.application.common.ports.view_models import CatView
 from cats.application.queries.cat.get_cats import (
     GetCatsQuery,
     GetCatsQueryHandler,

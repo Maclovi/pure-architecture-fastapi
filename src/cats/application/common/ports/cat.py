@@ -2,8 +2,8 @@ from abc import abstractmethod
 from dataclasses import dataclass, field
 from typing import Protocol
 
-from cats.application.common.persistence.filters import Pagination
-from cats.application.common.persistence.view_models import CatView
+from cats.application.common.ports.filters import Pagination
+from cats.application.common.ports.view_models import CatView
 from cats.entities.breed.value_objects import BreedName
 from cats.entities.cat.models import Cat, CatID
 

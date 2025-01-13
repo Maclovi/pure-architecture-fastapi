@@ -4,7 +4,7 @@ import pytest
 
 from cats.application.common.errors.base import EntityNotFoundError
 from cats.application.common.errors.cat import CatNotFoundError
-from cats.application.common.persistence.view_models import CatView
+from cats.application.common.ports.view_models import CatView
 from cats.application.queries.cat.get_cat_by_id import (
     GetCatWithIDQuery,
     GetCatWithIDQueryHandler,

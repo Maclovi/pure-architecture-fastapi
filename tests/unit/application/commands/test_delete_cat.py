@@ -22,24 +22,24 @@ async def test_delete_cat_with_id(  # noqa: PLR0913
     dto: DeleteCatCommand,
     exc_class: type[EntityNotFoundError] | None,
     fake_transaction: Mock,
+    fake_entity_saver: Mock,
     fake_cat_gateway: Mock,
-    fake_cat_service: Mock,
     new_cat: Cat,
 ) -> None:
     interactor = DeleteCatCommandHandler(
         fake_transaction,
+        fake_entity_saver,
         fake_cat_gateway,
-        fake_cat_service,
     )
     if exc_class:
         fake_cat_gateway.with_id.return_value = None
         with pytest.raises(CatNotFoundError) as excinfo:
             await interactor.run(dto)
         assert excinfo.value.message == f"Cat with id={dto.cat_id} not found"
-        fake_cat_service.remove_cat.assert_not_called()
+        fake_entity_saver.remove.assert_not_called()
         fake_transaction.commit.assert_not_called()
     else:
         await interactor.run(dto)
         fake_cat_gateway.with_id.assert_called_once_with(CatID(1))
-        fake_cat_service.remove_cat.assert_called_once_with(new_cat)
+        fake_entity_saver.delete.assert_called_once_with(new_cat)
         fake_transaction.commit.assert_called_once()

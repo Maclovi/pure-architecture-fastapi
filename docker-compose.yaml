@@ -4,6 +4,8 @@ services:
     image: postgres:alpine
     restart: unless-stopped
     env_file: ".env"
+    environment:
+      - POSTGRES_DB=test
     ports:
       - 127.0.0.1:5432:5432
     volumes:
@@ -19,7 +21,6 @@ services:
     restart: always
     env_file: ".env"
     environment:
-      - POSTGRES_DB=postgres
       - POSTGRES_HOST=postgres
       - UVICORN_HOST=0.0.0.0
     command: /bin/sh -cx "./start.sh"

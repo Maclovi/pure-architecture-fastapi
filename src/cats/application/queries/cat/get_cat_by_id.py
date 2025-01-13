@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Final
 
-from cats.application.common.persistence.cat import CatReader
-from cats.application.common.persistence.view_models import CatView
+from cats.application.common.ports.cat import CatReader
+from cats.application.common.ports.view_models import CatView
 from cats.application.common.validators import validate_cat
 from cats.entities.cat.models import CatID
 

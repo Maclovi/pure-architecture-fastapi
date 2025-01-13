@@ -8,17 +8,14 @@ from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from cats.infrastructure.bootstrap.configs import (
-    APIConfig,
-    PostgresConfig,
-    load_configs,
-)
-from cats.infrastructure.bootstrap.ioc import setup_providers
-from cats.infrastructure.bootstrap.log import setup_logger
-from cats.infrastructure.persistence.models import map_tables
-from cats.presentation.http.common.exc_handlers import setup_exc_handlers
-from cats.presentation.http.middlewares import setup_middlewares
-from cats.presentation.http.routes import setup_routes
+from cats.bootstrap.configs import load_configs
+from cats.bootstrap.db_tables import map_tables
+from cats.bootstrap.exc_handlers import setup_exc_handlers
+from cats.bootstrap.ioc import setup_providers
+from cats.bootstrap.log import setup_logger
+from cats.bootstrap.middlewares import setup_middlewares
+from cats.bootstrap.routes import setup_routes
+from cats.infrastructure.configs import APIConfig, PostgresConfig
 
 logger = logging.getLogger(__name__)
 

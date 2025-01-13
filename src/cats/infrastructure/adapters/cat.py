@@ -4,13 +4,13 @@ from sqlalchemy import RowMapping, Select, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing_extensions import override
 
-from cats.application.common.persistence.cat import (
+from cats.application.common.ports.cat import (
     CatFilters,
     CatGateway,
     CatReader,
 )
-from cats.application.common.persistence.filters import Pagination
-from cats.application.common.persistence.view_models import CatView
+from cats.application.common.ports.filters import Pagination
+from cats.application.common.ports.view_models import CatView
 from cats.entities.breed.value_objects import BreedName
 from cats.entities.cat.models import Cat, CatID
 from cats.infrastructure.persistence.models.breed import breeds_table
@@ -47,7 +47,7 @@ class CatReaderAlchemy(CatReader):
 
     def _load_catview(self, row: RowMapping) -> CatView:
         return CatView(
-            cast(CatID, row.cat_id),
+            cast(int, row.cat_id),
             cast(str | None, row.breed_name),
             cast(int, row.cat_age),
             cast(str, row.cat_color),

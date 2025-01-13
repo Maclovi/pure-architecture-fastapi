@@ -1,7 +1,7 @@
 from typing import TypeGuard, TypeVar
 
 from cats.application.common.errors.cat import CatNotFoundError
-from cats.application.common.persistence.view_models import CatView
+from cats.application.common.ports.view_models import CatView
 from cats.entities.cat.models import Cat
 
 CatT = TypeVar("CatT", Cat, CatView)
