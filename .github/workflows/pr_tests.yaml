@@ -21,9 +21,9 @@ jobs:
           python-version: "3.10"
       - uses: astral-sh/setup-uv@v5
         with:
+          version: "latest"
           enable-cache: true
           cache-dependency-glob: "pyproject.toml"
-          version: "latest"
 
       - name: Install Dependencies and library
         run: uv pip install --system -e .[dev]
@@ -56,9 +56,9 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - uses: astral-sh/setup-uv@v5
         with:
+          version: "latest"
           enable-cache: true
           cache-dependency-glob: "pyproject.toml"
-          version: "latest"
 
       - name: Install Dependencies and library
         run: uv pip install --system .[dev]
