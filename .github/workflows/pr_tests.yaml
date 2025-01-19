@@ -16,23 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
       - uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
-
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          path: ${{ env.pythonLocation }}
-          key: lint|${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
 
       - name: Install Dependencies and library
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: uv pip install --system -e .[lint]
-
+        run: uv pip install --system -e .[dev]
       - uses: pre-commit/action@v3.0.1
 
   test-basic:
@@ -60,19 +52,10 @@ jobs:
       - uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
           python-version: ${{ matrix.python-version }}
-
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          path: ${{ env.pythonLocation }}
-          key: test|${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
 
       - name: Install Dependencies and library
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: uv pip install --system .[test]
-
+        run: uv pip install --system .[dev]
       - run: bash scripts/test.sh
