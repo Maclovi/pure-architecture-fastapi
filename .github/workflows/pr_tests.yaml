@@ -19,21 +19,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+
       - uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
-
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          path: ${{ env.pythonLocation }}
-          key: lint|${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
 
       - name: Install Dependencies and library
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: uv pip install --system -e .[lint]
+        run: uv pip install --system -e .[dev]
 
-      - uses: pre-commit/action@v3.0.1
+      - name: Load cached Pre-Commit Dependencies
+        id: cached-pre-commit-dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit/
+          key: pre-commit-4|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - name: Execute Pre-Commit
+        run: pre-commit run --show-diff-on-failure --color=always --all-files
 
   test-basic:
     if: github.event.pull_request.draft == false
@@ -57,22 +61,15 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
       - uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - uses: actions/cache@v4
-        id: cache
-        with:
-          path: ${{ env.pythonLocation }}
-          key: test|${{ runner.os }}-python-${{ env.pythonLocation }}-${{ hashFiles('pyproject.toml') }}-uv
+          enable-cache: true
+          cache-dependency-glob: "pyproject.toml"
 
       - name: Install Dependencies and library
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: uv pip install --system .[test]
-
+        run: uv pip install --system .[dev]
       - run: bash scripts/test.sh
