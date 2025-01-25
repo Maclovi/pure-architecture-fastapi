@@ -1,4 +1,4 @@
-<h1 align="center"> Implementation of Clean Architecture (Uncle Bob) on FastAPI </h1>
+<h2 align="center"> Implementation of Clean Architecture (Uncle Bob) on FastAPI </h2>
 
 ---
 
