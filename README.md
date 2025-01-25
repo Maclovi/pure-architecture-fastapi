@@ -1,14 +1,17 @@
-<h1 align="center">Implementation of Clean Architecture(Uncle Bob) on FastAPI.</h1>
+<p align="center"> Implementation of Clean Architecture (Uncle Bob) on FastAPI </p>
+
+---
 
 <p align="center">
   <a href="https://github.com/Maclovi/pure-architecture-fastapi/actions/workflows/pr_tests.yaml" target="_blank">
-	  <img src="https://github.com/Maclovi/pure-architecture-fastapi/actions/workflows/pr_tests.yaml/badge.svg?branch=main" alt="Test Passing"/>
+    <img src="https://github.com/Maclovi/pure-architecture-fastapi/actions/workflows/pr_tests.yaml/badge.svg?branch=main" alt="Test Passing"/>
   </a>
 
   <a href="https://github.com/Maclovi/pure-architecture-fastapi/blob/main/LICENSE" target="_blank">
     <img src="https://img.shields.io/github/license/Maclovi/pure-architecture-fastapi.png" alt="License"/>
   </a>
 </p>
+
 ---
 
 ### Requirements
