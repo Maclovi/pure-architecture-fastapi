@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI, /) -> AsyncIterator[None]:
     yield None
-    await cast(AsyncContainer, app.state.dishka_container).close()
+    await cast("AsyncContainer", app.state.dishka_container).close()
 
 
 def create_app() -> FastAPI:

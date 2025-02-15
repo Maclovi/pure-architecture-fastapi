@@ -14,25 +14,47 @@
 
 ---
 
+<!--toc:start-->
+
+- [Requirements](#requirements)
+- [Cloning the Repository](#cloning-the-repository)
+- [How to run](#how-to-run)
+- [How to use](#how-to-use)
+- [Author](#author)
+<!--toc:end-->
+
 ### Requirements
+
 - Git
 - Docker & Docker-compose latest
 
-### Cloning the Repository
+### Cloning the Repository and Setup
+
 ```bash
 git clone https://github.com/Maclovi/pure-architecture-fastapi
 cd pure-architecture-fastapi
+cp .env.dist .env
+
+python -m venv .venv
+source .venv/bin/activate
+source ./scripts/set_variables.sh
+
+pip install uv && uv pip install -e ".[dev]"
+pre-commit install
 ```
 
 ## How to run
+
 Just:
+
 ```bash
-cp .env.dist .env
 docker-compose up
 ```
 
 ## How to use
+
 Follow this [swagger](http://localhost:8000/docs) link and test the API
 
 ## Author
+
 **Sergey** - [GitHub Profile](https://github.com/Maclovi)
