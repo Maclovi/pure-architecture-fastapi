@@ -1,7 +1,21 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "weekly"
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    target-branch: main
+
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      pip:
+        patterns:
+          - "*"
     target-branch: main

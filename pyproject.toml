@@ -28,38 +28,38 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "dishka==1.*",
-    "uvloop==0.21.*",
-    "orjson==3.*",
-    "fastapi==0.115.*",
-    "uvicorn==0.31.*",
-    "httptools==0.6.*",
-    "alembic==1.13.*",
-    "sqlalchemy[asyncio]==2.*",
-    "psycopg[binary]==3.*",
-    "python-json-logger==2.*",
+    "dishka==1.4.1",
+    "uvloop==0.21.0",
+    "orjson==3.10.15",
+    "fastapi==0.115.11",
+    "uvicorn==0.34.0",
+    "httptools==0.6.4",
+    "alembic==1.15.1",
+    "sqlalchemy[asyncio]==2.0.39",
+    "psycopg[binary]==3.2.6",
+    "python-json-logger==2.0.7",
 ]
 
 [project.optional-dependencies]
 test = [
-    "coverage[toml]==7.*",
-    "pytest",
-    "pytest-asyncio",
-    "httpx==0.28.*",
+    "coverage[toml]==7.7.0",
+    "pytest==8.3.5",
+    "pytest-asyncio==0.25.3",
+    "httpx==0.28.1",
 ]
 lint = [
-    "ruff",
-    "bandit",
-    "semgrep",
-    "codespell",
+    "ruff==0.11.0",
+    "bandit==1.8.3",
+    "semgrep==1.112.0",
+    "codespell==2.4.1",
     #types
-    "mypy",
-    "basedpyright",
+    "mypy==1.15.0",
+    "basedpyright==1.28.1",
 ]
 dev = [
     "cats[test,lint]",
-    "pre-commit==4.*",
-    "detect-secrets==1.*",
+    "pre-commit==4.1.0",
+    "detect-secrets==1.5.0",
 ]
 
 [project.urls]
