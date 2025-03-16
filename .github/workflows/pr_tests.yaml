@@ -9,6 +9,7 @@ on:
       - opened
       - synchronize
       - ready_for_review
+  workflow_dispatch:
 
 jobs:
   pre-commit-check:
