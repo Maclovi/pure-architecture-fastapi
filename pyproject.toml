@@ -28,7 +28,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "dishka==1.4.1",
+    "dishka==1.4.2",
     "uvloop==0.21.0",
     "orjson==3.10.15",
     "fastapi==0.115.11",
@@ -37,7 +37,7 @@ dependencies = [
     "alembic==1.15.1",
     "sqlalchemy[asyncio]==2.0.39",
     "psycopg[binary]==3.2.6",
-    "python-json-logger==2.0.7",
+    "python-json-logger==3.3.0",
 ]
 
 [project.optional-dependencies]
