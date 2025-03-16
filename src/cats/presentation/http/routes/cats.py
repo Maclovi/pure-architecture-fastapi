@@ -27,14 +27,9 @@ from cats.application.queries.cat.get_cats import (
     GetCatsQuery,
     GetCatsQueryHandler,
 )
-from cats.application.queries.cat.get_cats_by_breed import (
-    GetCatsWithBreedQuery,
-    GetCatsWithBreedQueryHandler,
-)
 from cats.application.queries.cat.output_shared import CatsOutput
 from cats.presentation.http.common.schemes import (
     CatsAllSchema,
-    CatsWithBreedSchema,
     ExceptionSchema,
 )
 
@@ -55,22 +50,6 @@ async def get_all(
 
 
 @router.get(
-    "/breed/{breed}",
-    summary="Get cats by breed",
-    status_code=status.HTTP_200_OK,
-)
-async def get_by_breed(
-    query: Annotated[CatsWithBreedSchema, Path()],
-    interactor: FromDishka[GetCatsWithBreedQueryHandler],
-) -> CatsOutput:
-    dto = GetCatsWithBreedQuery(
-        query.breed,
-        Pagination(query.offset, query.limit, query.order),
-    )
-    return await interactor.run(dto)
-
-
-@router.get(
     "/{id}",
     summary="Get cat by id",
     status_code=status.HTTP_200_OK,
@@ -83,7 +62,7 @@ async def get_by_id(
     return await interactor.run(GetCatWithIDQuery(oid))
 
 
-@router.post("/add", summary="Add cat", status_code=status.HTTP_201_CREATED)
+@router.post("/", summary="Add cat", status_code=status.HTTP_201_CREATED)
 async def add(
     command_data: NewCatCommand,
     interactor: FromDishka[NewCatCommandHandler],
@@ -92,7 +71,7 @@ async def add(
 
 
 @router.patch(
-    "/update_description/",
+    "/",
     summary="Update cat",
     status_code=status.HTTP_204_NO_CONTENT,
     responses={status.HTTP_404_NOT_FOUND: {"model": ExceptionSchema}},
@@ -105,7 +84,7 @@ async def update_description(
 
 
 @router.delete(
-    "/delete/{id}",
+    "/{id}",
     summary="Delete cat by id",
     status_code=status.HTTP_204_NO_CONTENT,
     responses={status.HTTP_404_NOT_FOUND: {"model": ExceptionSchema}},

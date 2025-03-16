@@ -14,9 +14,6 @@ from cats.application.common.ports.transaction import EntitySaver, Transaction
 from cats.application.queries.breed.get_breeds import GetBreedsQueryHandler
 from cats.application.queries.cat.get_cat_by_id import GetCatWithIDQueryHandler
 from cats.application.queries.cat.get_cats import GetCatsQueryHandler
-from cats.application.queries.cat.get_cats_by_breed import (
-    GetCatsWithBreedQueryHandler,
-)
 from cats.entities.breed.services import BreedService
 from cats.entities.cat.services import CatService
 from cats.infrastructure.adapters.breed import BreedMapperAlchemy
@@ -70,7 +67,6 @@ def interactors_provider() -> Provider:
         GetBreedsQueryHandler,
         GetCatsQueryHandler,
         GetCatWithIDQueryHandler,
-        GetCatsWithBreedQueryHandler,
         NewCatCommandHandler,
         DeleteCatCommandHandler,
         UpdateCatDescriptionCommandHandler,

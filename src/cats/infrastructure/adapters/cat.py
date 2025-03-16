@@ -47,11 +47,11 @@ class CatReaderAlchemy(CatReader):
 
     def _load_catview(self, row: RowMapping) -> CatView:
         return CatView(
-            cast(int, row.cat_id),
-            cast(str | None, row.breed_name),
-            cast(int, row.cat_age),
-            cast(str, row.cat_color),
-            cast(str, row.cat_description),
+            cast("int", row.cat_id),
+            cast("str | None", row.breed_name),
+            cast("int", row.cat_age),
+            cast("str", row.cat_color),
+            cast("str", row.cat_description),
         )
 
     @override
@@ -71,7 +71,7 @@ class CatReaderAlchemy(CatReader):
     ) -> list[CatView]:
         stmt = self._make_join(isouter=True)
         if filters.breed:
-            stmt = stmt.where(breeds_table.c.breed_id == filters.breed)
+            stmt = stmt.where(breeds_table.c.breed_name == filters.breed)
         if filters.color:
             stmt = stmt.where(cats_table.c.color == filters.color)
 

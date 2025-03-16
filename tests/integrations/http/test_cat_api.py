@@ -9,7 +9,7 @@ async def test_get_cats(client: AsyncClient) -> None:
 
 
 async def test_get_cats_by_breed(client: AsyncClient) -> None:
-    response = await client.get("/cats/breed/biba")
+    response = await client.get("/cats/?breed=plain")
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {"total": 0, "cats": []}
 
@@ -27,7 +27,7 @@ async def test_scenarios_cat(client: AsyncClient) -> None:
         "description": "biba blyt",
         "breed_name": "plain",
     }
-    response = await client.post("/cats/add", json=payload)
+    response = await client.post("/cats/", json=payload)
     assert response.status_code == status.HTTP_201_CREATED
     assert response.read() == b"1"
 
@@ -42,12 +42,12 @@ async def test_scenarios_cat(client: AsyncClient) -> None:
     }
 
     json = {"cat_id": 1, "description": "nixya ne biba"}
-    response = await client.patch("/cats/update_description/", json=json)
+    response = await client.patch("/cats/", json=json)
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
     response = await client.get("/cats/1")
     assert response.status_code == status.HTTP_200_OK
     assert response.json()["cat"]["description"] == "nixya ne biba"
 
-    response = await client.delete("/cats/delete/1")
+    response = await client.delete("/cats/1")
     assert response.status_code == status.HTTP_204_NO_CONTENT

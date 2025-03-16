@@ -14,7 +14,7 @@ class CatService:
         description: CatDescription,
     ) -> Cat:
         return Cat(
-            oid=cast(CatID, cast(object, None)),
+            oid=cast("CatID", cast("object", None)),
             breed_id=breed_id,
             age=age,
             color=color,

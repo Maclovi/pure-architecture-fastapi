@@ -1,15 +1,17 @@
 import os
 from collections.abc import AsyncIterator
-from typing import cast
+from typing import TYPE_CHECKING
 
 import pytest
-from dishka import AsyncContainer
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncEngine
 
 from cats.infrastructure.persistence.models.base import metadata
 from cats.web import create_app
+
+if TYPE_CHECKING:
+    from dishka import AsyncContainer
 
 
 def _load_env() -> None:
@@ -27,12 +29,14 @@ def _load_env() -> None:
 async def app() -> AsyncIterator[FastAPI]:
     _load_env()
     app = create_app()
-    container = cast(AsyncContainer, app.state.dishka_container)
+    container: AsyncContainer = app.state.dishka_container
 
     engine = await container.get(AsyncEngine)
     async with engine.begin() as conn:
         await conn.run_sync(metadata.create_all)
+
     yield app
+
     async with engine.begin() as conn:
         await conn.run_sync(metadata.drop_all)
 

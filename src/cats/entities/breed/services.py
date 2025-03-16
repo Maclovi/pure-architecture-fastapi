@@ -8,6 +8,6 @@ class BreedService:
     @staticmethod
     def create_breed(breed_name: BreedName) -> Breed:
         return Breed(
-            oid=cast(BreedID, cast(object, None)),
+            oid=cast("BreedID", cast("object", None)),
             name=breed_name,
         )
