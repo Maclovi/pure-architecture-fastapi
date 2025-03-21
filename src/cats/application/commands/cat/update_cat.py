@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from typing import Final
+from typing import Final, NamedTuple
 
 from cats.application.common.ports.cat import CatGateway
 from cats.application.common.ports.transaction import Transaction
@@ -8,8 +7,7 @@ from cats.entities.cat.models import CatID
 from cats.entities.cat.value_objects import CatDescription
 
 
-@dataclass(frozen=True, slots=True)
-class UpdateCatDescriptionCommand:
+class UpdateCatDescriptionCommand(NamedTuple):
     cat_id: int
     description: str
 
@@ -26,6 +24,6 @@ class UpdateCatDescriptionCommandHandler:
     async def run(self, data: UpdateCatDescriptionCommand) -> None:
         description = CatDescription(data.description)
         cat = await self._cat_gateway.with_id(CatID(data.cat_id))
-        assert validate_cat(cat, data.cat_id)
+        cat = validate_cat(cat, data.cat_id)
         cat.change_description(description)
         await self._transaction.commit()

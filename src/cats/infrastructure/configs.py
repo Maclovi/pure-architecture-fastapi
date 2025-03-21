@@ -1,8 +1,7 @@
-from dataclasses import dataclass
+from typing import NamedTuple
 
 
-@dataclass(frozen=True, slots=True)
-class PostgresConfig:
+class PostgresConfig(NamedTuple):
     user: str
     password: str
     host: str
@@ -12,16 +11,12 @@ class PostgresConfig:
 
     @property
     def uri(self) -> str:
-        return f"postgresql+psycopg://{self.user}:{self.password}@{self.host}:{self.port}/{self.db_name}"
+        full_url = "postgresql+psycopg://"
+        full_url += f"{self.user}:{self.password}"
+        full_url += f"@{self.host}:{self.port}/{self.db_name}"
+        return full_url
 
 
-@dataclass(frozen=True, slots=True)
-class APIConfig:
+class APIConfig(NamedTuple):
     host: str
     port: str
-
-
-@dataclass(frozen=True, slots=True)
-class Configs:
-    db: PostgresConfig
-    api: APIConfig

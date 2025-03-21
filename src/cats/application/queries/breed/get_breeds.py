@@ -1,18 +1,15 @@
-from dataclasses import dataclass
-from typing import Final
+from typing import Final, NamedTuple
 
 from cats.application.common.ports.breed import BreedGateway
 from cats.application.common.ports.filters import Pagination
 from cats.entities.breed.models import Breed
 
 
-@dataclass(frozen=True, slots=True)
-class GetBreedsQuery:
+class GetBreedsQuery(NamedTuple):
     pagination: Pagination
 
 
-@dataclass(frozen=True, slots=True)
-class BreedsOutput:
+class BreedsOutput(NamedTuple):
     total: int
     breeds: list[Breed]
 

@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from typing import Final
+from typing import Final, NamedTuple
 
 from cats.application.common.ports.breed import BreedGateway
 from cats.application.common.ports.transaction import EntitySaver, Transaction
@@ -11,8 +10,7 @@ from cats.entities.cat.services import CatService
 from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
 
 
-@dataclass(frozen=True, slots=True)
-class NewCatCommand:
+class NewCatCommand(NamedTuple):
     age: int
     color: str
     description: str

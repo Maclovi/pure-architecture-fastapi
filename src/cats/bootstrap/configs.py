@@ -1,6 +1,12 @@
 from os import environ as env
+from typing import NamedTuple
 
-from cats.infrastructure.configs import APIConfig, Configs, PostgresConfig
+from cats.infrastructure.configs import APIConfig, PostgresConfig
+
+
+class Configs(NamedTuple):
+    db: PostgresConfig
+    api: APIConfig
 
 
 def load_configs() -> Configs:

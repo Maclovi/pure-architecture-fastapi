@@ -118,7 +118,6 @@ ignore = ["D", "CPY001", "A005"]
 
 [tool.ruff.lint.per-file-ignores]
 "src/cats/infrastructure/persistence/alembic/**" = ["ERA001", "INP001"]
-"src/cats/application/**" = ["S101"]
 "tests/**" = ["S101"]
 
 [tool.ruff.format]

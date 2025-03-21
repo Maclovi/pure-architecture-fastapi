@@ -1,5 +1,4 @@
-from dataclasses import dataclass
-from typing import Final
+from typing import Final, NamedTuple
 
 from cats.application.common.ports.cat import (
     CatFilters,
@@ -9,8 +8,7 @@ from cats.application.common.ports.filters import Pagination
 from cats.application.queries.cat.output_shared import CatsOutput
 
 
-@dataclass(frozen=True, slots=True)
-class GetCatsQuery:
+class GetCatsQuery(NamedTuple):
     filters: CatFilters
     pagination: Pagination
 
