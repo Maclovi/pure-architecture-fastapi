@@ -82,7 +82,8 @@ pythonVersion = "3.10"
 reportAny = false
 
 [tool.mypy]
-packages = ["src", "tests"]
+mypy_path = "src"
+files = ["src", "tests"]
 python_version = "3.10"
 
 strict = true
@@ -152,3 +153,13 @@ omit = [
     'src/cats/infrastructure/adapters/cat.py',
     '*/__init__.py',
 ]
+
+[tool.semgrep]
+paths = ["src"]
+include = ["src"]
+
+[tool.bandit]
+targets = "src"
+
+[tool.codespell]
+skip = "*.pyi,*.pyc,*.csv"
