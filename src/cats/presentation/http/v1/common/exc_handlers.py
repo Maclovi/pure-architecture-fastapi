@@ -31,7 +31,7 @@ async def internal_trouble(_: Request, __: Exception) -> JSONResponse:  # pyrigh
     )
 
 
-def setup_exc_handlers(app: FastAPI) -> None:
+def map_exc_handlers(app: FastAPI) -> None:
     app.add_exception_handler(
         FieldError,
         partial(validate, status=code.HTTP_422_UNPROCESSABLE_ENTITY),

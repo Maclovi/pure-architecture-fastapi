@@ -4,13 +4,13 @@ from typing import Annotated
 from dishka.integrations.fastapi import DishkaRoute, FromDishka
 from fastapi import APIRouter, Query, status
 
-from cats.application.common.ports.filters import Pagination
+from cats.application.common.persistence.filters import Pagination
 from cats.application.queries.breed.get_breeds import (
     BreedsOutput,
     GetBreedsQuery,
     GetBreedsQueryHandler,
 )
-from cats.presentation.http.common.schemes import PaginationSchema
+from cats.presentation.http.v1.common.schemes import PaginationSchema
 
 logger = getLogger(__name__)
 router = APIRouter(prefix="/breeds", tags=["Breeds"], route_class=DishkaRoute)

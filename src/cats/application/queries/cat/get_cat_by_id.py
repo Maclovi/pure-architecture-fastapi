@@ -1,22 +1,26 @@
-from typing import Final, NamedTuple
+from dataclasses import dataclass
+from typing import final
 
-from cats.application.common.ports.cat import CatReader
-from cats.application.common.ports.view_models import CatView
+from cats.application.common.persistence.cat import CatReader
+from cats.application.common.persistence.view_models import CatView
 from cats.application.common.validators import validate_cat
 from cats.entities.cat.models import CatID
 
 
-class GetCatWithIDQuery(NamedTuple):
+@dataclass(slots=True, frozen=True)
+class GetCatWithIDQuery:
     id: int
 
 
-class CatOutput(NamedTuple):
+@dataclass(slots=True, frozen=True)
+class CatOutput:
     cat: CatView
 
 
+@final
 class GetCatWithIDQueryHandler:
     def __init__(self, cat_reader: CatReader) -> None:
-        self._cat_reader: Final = cat_reader
+        self._cat_reader = cat_reader
 
     async def run(self, data: GetCatWithIDQuery) -> CatOutput:
         cat = await self._cat_reader.with_id(CatID(data.id))

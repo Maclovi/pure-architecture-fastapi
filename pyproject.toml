@@ -80,6 +80,7 @@ include = ["src", "tests"]
 ignore = ["**/__pycache__", "**/alembic"]
 pythonVersion = "3.10"
 reportAny = false
+reportUnusedCallResult = false
 
 [tool.mypy]
 mypy_path = "src"
@@ -147,9 +148,9 @@ exclude_also = [
 ]
 omit = [
     'src/cats/infrastructure/persistence/alembic/env.py',
-    'src/cats/presentation/http/middlewares/tracing.py',
-    'src/cats/infrastructure/adapters/breed.py',
-    'src/cats/infrastructure/adapters/cat.py',
+    'src/cats/infrastructure/persistence/adapters/breed.py',
+    'src/cats/infrastructure/persistence/adapters/cat.py',
+    'src/cats/presentation/http/v1/middlewares/tracing.py',
     '*/__init__.py',
 ]
 

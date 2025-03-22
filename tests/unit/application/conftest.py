@@ -2,10 +2,10 @@ from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-from cats.application.common.ports.breed import BreedGateway
-from cats.application.common.ports.cat import CatGateway, CatReader
-from cats.application.common.ports.transaction import Transaction
-from cats.application.common.ports.view_models import CatView
+from cats.application.common.persistence.breed import BreedGateway
+from cats.application.common.persistence.cat import CatGateway, CatReader
+from cats.application.common.persistence.transaction import Transaction
+from cats.application.common.persistence.view_models import CatView
 from cats.entities.breed.models import Breed
 from cats.entities.breed.services import BreedService
 from cats.entities.cat.models import Cat

@@ -3,7 +3,10 @@ from typing import Final
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing_extensions import override
 
-from cats.application.common.ports.transaction import EntitySaver, Transaction
+from cats.application.common.persistence.transaction import (
+    EntitySaver,
+    Transaction,
+)
 from cats.entities.common.base_entity import BaseEntity, OIDType
 
 

@@ -1,7 +1,11 @@
-from typing import Final, NamedTuple
+from dataclasses import dataclass
+from typing import final
 
-from cats.application.common.ports.breed import BreedGateway
-from cats.application.common.ports.transaction import EntitySaver, Transaction
+from cats.application.common.persistence.breed import BreedGateway
+from cats.application.common.persistence.transaction import (
+    EntitySaver,
+    Transaction,
+)
 from cats.entities.breed.models import BreedID
 from cats.entities.breed.services import BreedService
 from cats.entities.breed.value_objects import BreedName
@@ -10,13 +14,15 @@ from cats.entities.cat.services import CatService
 from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
 
 
-class NewCatCommand(NamedTuple):
+@dataclass(frozen=True, slots=True)
+class NewCatCommand:
     age: int
     color: str
     description: str
     breed_name: str | None
 
 
+@final
 class NewCatCommandHandler:
     def __init__(
         self,
@@ -26,11 +32,11 @@ class NewCatCommandHandler:
         cat_service: CatService,
         breed_service: BreedService,
     ) -> None:
-        self._transaction: Final = transaction
-        self._entity_saver: Final = entity_saver
-        self._breed_gateway: Final = breed_gateway
-        self._cat_service: Final = cat_service
-        self._breed_service: Final = breed_service
+        self._transaction = transaction
+        self._entity_saver = entity_saver
+        self._breed_gateway = breed_gateway
+        self._cat_service = cat_service
+        self._breed_service = breed_service
 
     async def run(self, data: NewCatCommand) -> CatID:
         if data.breed_name:

@@ -20,3 +20,8 @@ class PostgresConfig(NamedTuple):
 class APIConfig(NamedTuple):
     host: str
     port: str
+
+
+class Configs(NamedTuple):
+    db: PostgresConfig
+    api: APIConfig

@@ -1,21 +1,24 @@
-from typing import Final, NamedTuple
+from dataclasses import dataclass
+from typing import final
 
-from cats.application.common.ports.cat import (
+from cats.application.common.persistence.cat import (
     CatFilters,
     CatReader,
 )
-from cats.application.common.ports.filters import Pagination
+from cats.application.common.persistence.filters import Pagination
 from cats.application.queries.cat.output_shared import CatsOutput
 
 
-class GetCatsQuery(NamedTuple):
+@dataclass(slots=True, frozen=True)
+class GetCatsQuery:
     filters: CatFilters
     pagination: Pagination
 
 
+@final
 class GetCatsQueryHandler:
     def __init__(self, cat_reader: CatReader) -> None:
-        self._cat_reader: Final = cat_reader
+        self._cat_reader = cat_reader
 
     async def run(self, data: GetCatsQuery) -> CatsOutput:
         cats = await self._cat_reader.all(data.filters, data.pagination)

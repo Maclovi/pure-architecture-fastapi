@@ -1,25 +1,28 @@
-from typing import Final, NamedTuple
+from dataclasses import dataclass
+from typing import final
 
-from cats.application.common.ports.cat import CatGateway
-from cats.application.common.ports.transaction import Transaction
+from cats.application.common.persistence.cat import CatGateway
+from cats.application.common.persistence.transaction import Transaction
 from cats.application.common.validators import validate_cat
 from cats.entities.cat.models import CatID
 from cats.entities.cat.value_objects import CatDescription
 
 
-class UpdateCatDescriptionCommand(NamedTuple):
+@dataclass(slots=True, frozen=True)
+class UpdateCatDescriptionCommand:
     cat_id: int
     description: str
 
 
+@final
 class UpdateCatDescriptionCommandHandler:
     def __init__(
         self,
         cat_gateway: CatGateway,
         transaction: Transaction,
     ) -> None:
-        self._cat_gateway: Final = cat_gateway
-        self._transaction: Final = transaction
+        self._cat_gateway = cat_gateway
+        self._transaction = transaction
 
     async def run(self, data: UpdateCatDescriptionCommand) -> None:
         description = CatDescription(data.description)

@@ -8,14 +8,16 @@ from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 
-from cats.bootstrap.configs import load_configs
-from cats.bootstrap.db_tables import map_tables
-from cats.bootstrap.exc_handlers import setup_exc_handlers
-from cats.bootstrap.ioc import setup_providers
-from cats.bootstrap.log import setup_logger
-from cats.bootstrap.middlewares import setup_middlewares
-from cats.bootstrap.routes import setup_routes
+from cats.bootstrap import (
+    setup_configs,
+    setup_exc_handlers,
+    setup_logger,
+    setup_map_tables,
+    setup_middlewares,
+    setup_routes,
+)
 from cats.infrastructure.configs import APIConfig, PostgresConfig
+from cats.ioc import setup_providers
 
 logger = logging.getLogger(__name__)
 
@@ -27,12 +29,20 @@ async def lifespan(app: FastAPI, /) -> AsyncIterator[None]:
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(lifespan=lifespan, default_response_class=ORJSONResponse)
-    configs = load_configs()
+    app = FastAPI(
+        lifespan=lifespan,
+        default_response_class=ORJSONResponse,
+        version="1.0.0",
+        root_path="/api",
+        servers=[
+            {"url": "/api/v1", "description": "Version 1"},
+        ],
+    )
+    configs = setup_configs()
     context = {APIConfig: configs.api, PostgresConfig: configs.db}
     container = make_async_container(*setup_providers(), context=context)
-    map_tables()
     setup_logger()
+    setup_map_tables()
     setup_routes(app)
     setup_exc_handlers(app)
     setup_middlewares(app, api_config=configs.api)

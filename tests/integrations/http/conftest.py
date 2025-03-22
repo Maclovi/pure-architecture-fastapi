@@ -20,7 +20,7 @@ def _load_env() -> None:
     os.environ["POSTGRES_HOST"] = "localhost"
     os.environ["POSTGRES_PORT"] = "5432"
     os.environ["POSTGRES_DB"] = "test"
-    os.environ["POSTGRES_DEBUG"] = "true"
+    os.environ["POSTGRES_DEBUG"] = os.getenv("POSTGRES_DEBUG", "true")
     os.environ["UVICORN_HOST"] = "127.0.0.1"
     os.environ["UVICORN_PORT"] = "8888"
 

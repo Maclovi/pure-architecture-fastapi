@@ -1,8 +1,9 @@
-from typing import NamedTuple
+from dataclasses import dataclass
 
-from cats.application.common.ports.view_models import CatView
+from cats.application.common.persistence.view_models import CatView
 
 
-class CatsOutput(NamedTuple):
+@dataclass(slots=True, frozen=True)
+class CatsOutput:
     total: int
     cats: list[CatView]
