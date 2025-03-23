@@ -8,7 +8,7 @@ updates:
       github-actions:
         patterns:
           - "*"
-    target-branch: main
+    target-branch: develop
 
   - package-ecosystem: pip
     directory: /
@@ -18,4 +18,4 @@ updates:
       pip:
         patterns:
           - "*"
-    target-branch: main
+    target-branch: develop

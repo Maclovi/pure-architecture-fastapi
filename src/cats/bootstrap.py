@@ -27,7 +27,7 @@ def setup_configs() -> Configs:
             host=env["POSTGRES_HOST"],
             port=env["POSTGRES_PORT"],
             db_name=env["POSTGRES_DB"],
-            debug=env["POSTGRES_DEBUG"] == "true",
+            debug=env["SQLALCHEMY_DEBUG"] == "1",
         ),
         api=APIConfig(
             host=env["UVICORN_HOST"],

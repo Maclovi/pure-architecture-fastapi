@@ -1,0 +1,47 @@
+x-default: &default
+  restart: unless-stopped
+  networks:
+    - overlay
+
+x-healthcheck-interval: &hc-interval
+  interval: 5s
+  retries: 5
+  timeout: 10s
+
+services:
+  postgres-cat:
+    <<: *default
+    container_name: postgres-cat
+    image: postgres:alpine
+    env_file: ".env"
+    environment:
+      - POSTGRES_DB=test
+    ports:
+      - 127.0.0.1:5432:5432
+    volumes:
+      - postgres:/data/postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      <<: *hc-interval
+
+  webcat:
+    <<: *default
+    container_name: webcat
+    build:
+      context: .
+      dockerfile: ./deploy/webcat/Dockerfile
+    env_file: ".env"
+    environment:
+      - POSTGRES_HOST=postgres-cat
+    command: /bin/sh -cx "./server.sh"
+    ports:
+      - 127.0.0.1:${UVICORN_PORT}:${UVICORN_PORT}
+    depends_on:
+      postgres-cat:
+        condition: service_healthy
+
+volumes:
+  postgres:
+
+networks:
+  overlay:
