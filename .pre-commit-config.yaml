@@ -24,25 +24,27 @@ repos:
     rev: v1.5.0
     hooks:
       - id: detect-secrets
-        args: ['--baseline', '.secrets.baseline']
+        args: ["--baseline", ".secrets.baseline"]
 
   - repo: local
     hooks:
       - id: lint
         name: Linter
-        entry: "scripts/lint.sh"
+        entry: just lint
         language: python
         types: [python]
         require_serial: true
         verbose: true
+        pass_filenames: false
 
   - repo: local
     hooks:
       - id: static-analysis
         name: Static analysis
         stages: [pre-commit, pre-merge-commit]
-        entry: "scripts/static_analysis.sh"
+        entry: just static
         language: python
         types: [python]
         require_serial: true
         verbose: true
+        pass_filenames: false

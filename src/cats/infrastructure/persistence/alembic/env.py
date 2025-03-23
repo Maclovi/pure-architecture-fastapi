@@ -3,11 +3,12 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from cats.bootstrap.configs import setup_configs
+from cats.bootstrap import setup_configs, setup_map_tables
 from cats.infrastructure.persistence.models.base import metadata
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
+setup_map_tables()
 db_uri = setup_configs().db.uri
 config = context.config
 config.set_main_option("sqlalchemy.url", db_uri)

@@ -23,9 +23,9 @@ services:
     environment:
       - POSTGRES_HOST=postgres
       - UVICORN_HOST=0.0.0.0
-    command: /bin/sh -cx "./start.sh"
+    command: just run
     ports:
-      - 127.0.0.1:8000:8000
+      - 127.0.0.1:${UVICORN_PORT}:${UVICORN_PORT}
     depends_on:
       postgres:
         condition: service_healthy
