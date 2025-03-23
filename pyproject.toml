@@ -28,7 +28,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "dishka==1.4.2",
+    "dishka==1.5.0",
     "uvloop==0.21.0",
     "orjson==3.10.15",
     "fastapi==0.115.11",
@@ -42,23 +42,23 @@ dependencies = [
 
 [project.optional-dependencies]
 test = [
-    "coverage[toml]==7.7.0",
+    "coverage[toml]==7.7.1",
     "pytest==8.3.5",
     "pytest-asyncio==0.25.3",
     "httpx==0.28.1",
 ]
 lint = [
-    "ruff==0.11.0",
+    "ruff==0.11.2",
     "bandit==1.8.3",
-    "semgrep==1.112.0",
+    "semgrep==1.114.0",
     "codespell==2.4.1",
     #types
     "mypy==1.15.0",
-    "basedpyright==1.28.1",
+    "basedpyright==1.28.3",
 ]
 dev = [
     "cats[test,lint]",
-    "pre-commit==4.1.0",
+    "pre-commit==4.2.0",
     "detect-secrets==1.5.0",
 ]
 
