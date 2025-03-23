@@ -17,6 +17,7 @@ async def get_engine(config: PostgresConfig) -> AsyncIterator[AsyncEngine]:
         pool_size=15,
         max_overflow=15,
         connect_args={"connect_timeout": 5},
+        pool_pre_ping=True,
     )
     yield engine
     await engine.dispose()

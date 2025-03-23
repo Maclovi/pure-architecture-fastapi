@@ -29,27 +29,24 @@ Using the principles of Robert Martin (aka Uncle Bob).
 ```sh
 git clone https://github.com/Maclovi/pure-architecture-fastapi
 cd pure-architecture-fastapi
-cp .env.dist .env
 
 python -m venv .venv
 source .venv/bin/activate
-source ./scripts/set_variables.sh
 
-pip install uv && uv pip install -e ".[dev]"
-pre-commit install
+just bootstrap
 ```
 
-### Integration tests (can be run in CI)
+### Integration tests via coverage (can be run in CI)
 
 ```sh
-docker compose up postgres -d
-./scripts/test_cov.sh
+just infra
+just cov
 ```
 
 ## Full docker stack
 
 ```sh
-docker-compose up
+ just up
 ```
 
 ## Project Overview

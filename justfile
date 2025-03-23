@@ -1,5 +1,7 @@
 set dotenv-load
 
+DOCKER_COMPOSE_DEV := "docker-compose.dev.yaml"
+
 [doc("All command information")]
 [private]
 default:
@@ -17,30 +19,30 @@ default:
 @venv-sync:
     uv pip install -e ".[dev]"
 
-[doc("Start main application")]
-@run:
-    python -m alembic upgrade head
-    python -m uvicorn --factory cats.web:create_app --host $UVICORN_HOST --port $UVICORN_PORT
+[doc("Run server application")]
+@serve: infra
+    ./deploy/webcat/server.sh ; just stop
 
 [doc("Run all containers")]
 [group("infra")]
 @up:
-  docker compose up -d
+  docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d --build webcat
+
+[doc("Run all containers except web-backend")]
+[group("infra")]
+@infra:
+    docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d postgres-cat
 
 [doc("Stop all containers")]
 [group("infra")]
 @stop:
-  docker compose stop
+  docker compose -f {{ DOCKER_COMPOSE_DEV }} stop
 
 [doc("Down all containers")]
 [group("infra")]
 @down:
-  docker compose down
-
-[doc("Up only postgres")]
-[group("infra")]
-@up-postgres:
-    docker compose up -d postgres
+  docker compose -f {{ DOCKER_COMPOSE_DEV }} down
+  docker image prune -f
 
 [doc("Lint check")]
 [group("Lint")]
@@ -58,7 +60,7 @@ default:
 
 [doc("Run test")]
 [group("Test")]
-@test: up-postgres
+@test: infra
     coverage run -m pytest -x --ff
     just stop
 
