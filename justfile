@@ -25,13 +25,13 @@ default:
 
 [doc("Run all containers")]
 [group("infra")]
-@up:
-  docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d --build webcat
+@up *args:
+  docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d {{ args }}
 
 [doc("Run all containers except web-backend")]
 [group("infra")]
 @infra:
-    docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d postgres-cat
+    docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d db
 
 [doc("Stop all containers")]
 [group("infra")]
