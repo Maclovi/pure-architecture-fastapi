@@ -31,7 +31,7 @@ dependencies = [
     "dishka==1.5.0",
     "uvloop==0.21.0",
     "orjson==3.10.15",
-    "fastapi==0.115.11",
+    "fastapi==0.115.12",
     "uvicorn==0.34.0",
     "httptools==0.6.4",
     "alembic==1.15.1",
