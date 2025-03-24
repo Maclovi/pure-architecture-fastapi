@@ -1,13 +1,11 @@
 from typing import TypeVar
 
-from cats.application.common.errors.cat import CatNotFoundError
-from cats.application.common.persistence.view_models import CatView
-from cats.entities.cat.models import Cat
+from cats.application.common.errors.base import EntityNotFoundError
 
-CatT = TypeVar("CatT", Cat, CatView)
+T = TypeVar("T")
 
 
-def validate_cat(cat: CatT | None, oid: int) -> CatT:
+def validate_empty(cat: T | None, oid: int) -> T:
     if cat is None:
-        raise CatNotFoundError(oid)
+        raise EntityNotFoundError(oid=oid)
     return cat

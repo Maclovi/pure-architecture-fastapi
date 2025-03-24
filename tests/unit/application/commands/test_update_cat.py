@@ -7,7 +7,6 @@ from cats.application.commands.cat.update_cat import (
     UpdateCatDescriptionCommandHandler,
 )
 from cats.application.common.errors.base import EntityNotFoundError
-from cats.application.common.errors.cat import CatNotFoundError
 from cats.entities.cat.models import CatID
 
 
@@ -15,7 +14,7 @@ from cats.entities.cat.models import CatID
     ("dto", "exc_class"),
     [
         (UpdateCatDescriptionCommand(1, "new desc 1"), None),
-        (UpdateCatDescriptionCommand(2, "new desc 2"), CatNotFoundError),
+        (UpdateCatDescriptionCommand(2, "new desc 2"), EntityNotFoundError),
     ],
 )
 async def test_update_cat_description(
@@ -34,9 +33,11 @@ async def test_update_cat_description(
     )
     if exc_class:
         fake_cat_gateway.with_id.return_value = None
-        with pytest.raises(CatNotFoundError) as excinfo:
+        with pytest.raises(EntityNotFoundError) as excinfo:
             await interactor.run(dto)
-        assert excinfo.value.message == f"Cat with id={dto.cat_id} not found"
+        assert (
+            excinfo.value.message == f"Entity with id={dto.cat_id} not found"
+        )
         fake_transaction.commit.assert_not_called()
     else:
         await interactor.run(dto)

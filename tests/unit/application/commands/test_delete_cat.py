@@ -7,7 +7,6 @@ from cats.application.commands.cat.delete_cat_by_id import (
     DeleteCatCommandHandler,
 )
 from cats.application.common.errors.base import EntityNotFoundError
-from cats.application.common.errors.cat import CatNotFoundError
 from cats.entities.cat.models import Cat, CatID
 
 
@@ -15,7 +14,7 @@ from cats.entities.cat.models import Cat, CatID
     ("dto", "exc_class"),
     [
         (DeleteCatCommand(1), None),
-        (DeleteCatCommand(2), CatNotFoundError),
+        (DeleteCatCommand(2), EntityNotFoundError),
     ],
 )
 async def test_delete_cat_with_id(  # noqa: PLR0913
@@ -33,9 +32,11 @@ async def test_delete_cat_with_id(  # noqa: PLR0913
     )
     if exc_class:
         fake_cat_gateway.with_id.return_value = None
-        with pytest.raises(CatNotFoundError) as excinfo:
+        with pytest.raises(EntityNotFoundError) as excinfo:
             await interactor.run(dto)
-        assert excinfo.value.message == f"Cat with id={dto.cat_id} not found"
+        assert (
+            excinfo.value.message == f"Entity with id={dto.cat_id} not found"
+        )
         fake_entity_saver.remove.assert_not_called()
         fake_transaction.commit.assert_not_called()
     else:

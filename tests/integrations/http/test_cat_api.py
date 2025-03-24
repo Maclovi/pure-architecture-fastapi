@@ -17,7 +17,7 @@ async def test_get_cats_by_breed(client: AsyncClient) -> None:
 async def test_get_cat_by_id_noncat(client: AsyncClient) -> None:
     response = await client.get("/v1/cats/1")
     assert response.status_code == status.HTTP_404_NOT_FOUND
-    assert response.json()["detail"] == "Cat with id=1 not found"
+    assert response.json()["detail"] == "Entity with id=1 not found"
 
 
 async def test_scenarios_cat(client: AsyncClient) -> None:

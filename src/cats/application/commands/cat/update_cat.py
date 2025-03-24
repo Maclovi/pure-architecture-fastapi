@@ -3,7 +3,7 @@ from typing import final
 
 from cats.application.common.persistence.cat import CatGateway
 from cats.application.common.persistence.transaction import Transaction
-from cats.application.common.validators import validate_cat
+from cats.application.common.validators import validate_empty
 from cats.entities.cat.models import CatID
 from cats.entities.cat.value_objects import CatDescription
 
@@ -27,6 +27,6 @@ class UpdateCatDescriptionCommandHandler:
     async def run(self, data: UpdateCatDescriptionCommand) -> None:
         description = CatDescription(data.description)
         cat = await self._cat_gateway.with_id(CatID(data.cat_id))
-        cat = validate_cat(cat, data.cat_id)
+        cat = validate_empty(cat, data.cat_id)
         cat.change_description(description)
         await self._transaction.commit()

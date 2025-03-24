@@ -3,7 +3,7 @@ from typing import final
 
 from cats.application.common.persistence.cat import CatReader
 from cats.application.common.persistence.view_models import CatView
-from cats.application.common.validators import validate_cat
+from cats.application.common.validators import validate_empty
 from cats.entities.cat.models import CatID
 
 
@@ -24,5 +24,5 @@ class GetCatWithIDQueryHandler:
 
     async def run(self, data: GetCatWithIDQuery) -> CatOutput:
         cat = await self._cat_reader.with_id(CatID(data.id))
-        cat = validate_cat(cat, data.id)
+        cat = validate_empty(cat, data.id)
         return CatOutput(cat)
