@@ -1,0 +1,78 @@
+name: Deploy to server
+
+on:
+  # workflow_run:
+  #   workflows: ["Build and Push Docker Image to GHCR"]
+  #   types: [completed]
+  #   branches:
+  #     - develop
+  #     - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Выбери среду (stage или prod)"
+        required: true
+        default: "stage"
+
+env:
+  # ---- common settings ----
+  COMPOSE_FILE: ${{ vars.COMPOSE_FILE }}
+  ENVIRONMENT_SUFFIX: ${{ github.event.inputs.environment || (github.ref_name == 'main' && 'prod' || 'stage') }}
+
+  # ---- registry settings ----
+  REGISTRY: ghcr.io
+  REGISTRY_PAT: ${{ secrets.REGISTRY_PAT }}
+
+  # ---- server settings ----
+  SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+  HOST: ${{ secrets.HOST }}
+  SSH_KEY: ${{ secrets.SSH_KEY }}
+  SSH_PORT: ${{ secrets.SSH_PORT }}
+  DEPLOY_PATH: ${{ vars.DEPLOY_PATH }}
+
+jobs:
+  deploy:
+    name: Deploy and run the application
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    environment: ${{ ENVIRONMENT_SUFFIX }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create a directory if it does not exist
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.SSH_USERNAME }}
+          key: ${{ env.SSH_KEY }}
+          port: ${{ env.SSH_PORT }}
+          script: |
+            mkdir -p ${{ env.DEPLOY_PATH }}
+
+      - name: Copying files to the server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.SSH_USERNAME }}
+          key: ${{ env.SSH_KEY }}
+          port: ${{ env.SSH_PORT }}
+          source: "${{ env.COMPOSE_FILE }},deploy"
+          target: ${{ env.DEPLOY_PATH }}
+          overwrite: true
+
+      - name: Deploy and run the application on the server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.SSH_USERNAME }}
+          key: ${{ env.SSH_KEY }}
+          port: ${{ env.SSH_PORT }}
+          script: |
+            cd ${{ env.DEPLOY_PATH }}
+
+            echo ${{ secrets.REGISTRY_PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.repository_owner }} --password-stdin
+
+            docker image prune -f
+            docker compose -f ${{ env.COMPOSE_FILE }} down --remove-orphans
+            docker compose -f ${{ env.COMPOSE_FILE }} pull
+            docker compose -f ${{ env.COMPOSE_FILE }} up -d --remove-orphans
