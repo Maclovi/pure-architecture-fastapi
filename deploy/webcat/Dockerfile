@@ -4,14 +4,17 @@ WORKDIR /app
 COPY ./pyproject.toml ./alembic.ini ./deploy/webcat/server.sh ./
 COPY ./src ./src
 
-RUN uv pip install --system --target dependencies .
+RUN uv pip install --system --no-cache --target dependencies .
 
 
-FROM python:3.12-alpine
+FROM python:3.12-alpine as production
 WORKDIR /app
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONPATH "/app/dependencies"
+ENV PYTHONDONTWRITEBYTECODE 1 \
+    PYTHONUNBUFFERED 1 \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    PYTHONPATH "/app/dependencies"
 
 COPY --from=builder /app/ ./

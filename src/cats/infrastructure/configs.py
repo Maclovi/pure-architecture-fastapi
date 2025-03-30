@@ -17,11 +17,11 @@ class PostgresConfig(NamedTuple):
         return full_url
 
 
-class APIConfig(NamedTuple):
+class ASGIConfig(NamedTuple):
     host: str
-    port: str
+    port: int
 
 
 class Configs(NamedTuple):
     db: PostgresConfig
-    api: APIConfig
+    asgi: ASGIConfig

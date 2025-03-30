@@ -19,7 +19,7 @@ from cats.application.queries.cat.get_cat_by_id import GetCatWithIDQueryHandler
 from cats.application.queries.cat.get_cats import GetCatsQueryHandler
 from cats.entities.breed.services import BreedService
 from cats.entities.cat.services import CatService
-from cats.infrastructure.configs import APIConfig, PostgresConfig
+from cats.infrastructure.configs import ASGIConfig, PostgresConfig
 from cats.infrastructure.persistence.adapters.breed import BreedMapperAlchemy
 from cats.infrastructure.persistence.adapters.cat import (
     CatMapperAlchemy,
@@ -38,7 +38,7 @@ from cats.infrastructure.persistence.db_provider import (
 
 def configs_provider() -> Provider:
     provider = Provider()
-    provider.from_context(provides=APIConfig, scope=Scope.APP)
+    provider.from_context(provides=ASGIConfig, scope=Scope.APP)
     provider.from_context(provides=PostgresConfig, scope=Scope.APP)
     return provider
 

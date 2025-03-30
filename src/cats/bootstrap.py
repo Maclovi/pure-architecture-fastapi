@@ -1,16 +1,23 @@
 import logging
-import sys
 from os import environ as env
 
+from asgi_monitor.integrations.fastapi import (
+    MetricsConfig,
+    TracingConfig,
+    setup_metrics,
+    setup_tracing,
+)
+from asgi_monitor.logging import configure_logging
 from fastapi import APIRouter, FastAPI
-from pythonjsonlogger.orjson import OrjsonFormatter
+from opentelemetry import trace
+from opentelemetry.sdk.resources import Resource
+from opentelemetry.sdk.trace import TracerProvider
 from starlette.middleware.cors import CORSMiddleware
 
-from cats.infrastructure.configs import APIConfig, Configs, PostgresConfig
+from cats.infrastructure.configs import ASGIConfig, Configs, PostgresConfig
 from cats.infrastructure.persistence.models.breed import map_breed_table
 from cats.infrastructure.persistence.models.cat import map_cat_table
 from cats.presentation.http.v1.common.exc_handlers import map_exc_handlers
-from cats.presentation.http.v1.middlewares.tracing import LoggingMiddleware
 from cats.presentation.http.v1.routes import breeds, cats, index
 
 
@@ -29,9 +36,9 @@ def setup_configs() -> Configs:
             db_name=env["POSTGRES_DB"],
             debug=env["SQLALCHEMY_DEBUG"] == "1",
         ),
-        api=APIConfig(
+        asgi=ASGIConfig(
             host=env["UVICORN_HOST"],
-            port=env["UVICORN_PORT"],
+            port=int(env["UVICORN_PORT"]),
         ),
     )
 
@@ -45,7 +52,7 @@ def setup_routes(app: FastAPI, /) -> None:
     app.include_router(router_v1)
 
 
-def setup_middlewares(app: FastAPI, /, api_config: APIConfig) -> None:
+def setup_middlewares(app: FastAPI, /, api_config: ASGIConfig) -> None:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[
@@ -56,16 +63,30 @@ def setup_middlewares(app: FastAPI, /, api_config: APIConfig) -> None:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    app.add_middleware(LoggingMiddleware)
 
 
-def setup_exc_handlers(app: FastAPI) -> None:
+def setup_exc_handlers(app: FastAPI, /) -> None:
     map_exc_handlers(app)
 
 
-def setup_logger() -> None:
-    fmt = "%(levelname)s %(asctime)s %(name)s %(funcName)s %(message)s"
-    formatter = OrjsonFormatter(fmt)
-    stream_handler = logging.StreamHandler(sys.stdout)
-    stream_handler.setFormatter(formatter)
-    logging.basicConfig(level=logging.INFO, handlers=[stream_handler])
+def setup_observability(app: FastAPI, /) -> None:
+    configure_logging(
+        level=logging.INFO,
+        json_format=True,
+        include_trace=False,
+    )
+    resource = Resource.create(
+        attributes={
+            "service.name": "cats",
+        },
+    )
+    tracer_provider = TracerProvider(resource=resource)
+    trace.set_tracer_provider(tracer_provider)
+    trace_config = TracingConfig(tracer_provider=tracer_provider)
+
+    metrics_config = MetricsConfig(
+        app_name="cats",
+        include_trace_exemplar=True,
+    )
+    setup_tracing(app=app, config=trace_config)
+    setup_metrics(app=app, config=metrics_config)

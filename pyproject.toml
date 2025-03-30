@@ -28,16 +28,24 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "dishka==1.5.0",
-    "uvloop==0.21.0",
-    "orjson==3.10.15",
+    # Web
     "fastapi==0.115.12",
+    "uvloop==0.21.0",
     "uvicorn==0.34.0",
     "httptools==0.6.4",
+    "orjson==3.10.15",
+
+    # Database
     "alembic==1.15.1",
     "sqlalchemy[asyncio]==2.0.39",
     "psycopg[binary]==3.2.6",
-    "python-json-logger==3.3.0",
+
+    # Observability
+    "asgi-monitor==0.6.0",
+    "opentelemetry-exporter-otlp==1.31.1",
+
+    # Dependency injection
+    "dishka==1.5.0",
 ]
 
 [project.optional-dependencies]
