@@ -27,9 +27,46 @@ breeds_table = sa.Table(
         nullable=True,
     ),
 )
+"""SQLAlchemy table definition for breed entities.
+
+Defines the database schema for storing breed information with:
+
+Columns:
+    - breed_id: Primary key (auto-incrementing bigint)
+    - breed_name: Unique breed name (max 50 chars, required)
+    - created_at: Automatic timestamp for creation
+    - updated_at: Automatic timestamp for updates
+
+Constraints:
+    - Primary key on breed_id
+    - Unique constraint on breed_name
+    - Not null on breed_name and created_at
+
+Note:
+    - Uses the shared mapper_registry metadata
+    - Includes automatic timestamp management
+    - Follows naming conventions from base metadata
+"""
 
 
 def map_breed_table() -> None:
+    """Configures the ORM mapping between Breed entity and database table.
+
+    Uses imperative mapping to connect the Breed domain
+        model to the breeds_table,
+    including value object composition and relationship configuration.
+
+    Mapped properties:
+        - oid: Maps to breed_id column as primary key
+        - cats: One-to-many relationship with Cat entities
+        - name: Composite property using BreedName value object
+
+    Note:
+        - Uses composite() for BreedName value object mapping
+        - Sets up bidirectional relationship with Cat
+        - Imperative mapping allows cleaner separation of concerns
+        - Should be called during application startup
+    """
     _ = mapper_registry.map_imperatively(
         Breed,
         breeds_table,

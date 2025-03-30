@@ -35,9 +35,47 @@ cats_table = sa.Table(
         nullable=True,
     ),
 )
+"""SQLAlchemy table definition for cat entities.
+
+Defines the database schema for storing cat information with:
+
+Columns:
+    - cat_id: Primary key (auto-incrementing bigint)
+    - cat_age: Cat's age in years (required)
+    - cat_color: Coat color (max 50 chars, required)
+    - cat_description: Description text (max 1000 chars, required)
+    - breed_id: Optional foreign key to breeds table (SET NULL on delete)
+    - created_at: Automatic timestamp for creation
+    - updated_at: Automatic timestamp for updates
+
+Constraints:
+    - Primary key on cat_id
+    - Foreign key to breeds table
+    - Not null constraints on all required fields
+    - String length limits enforced at database level
+"""
 
 
 def map_cat_table() -> None:
+    """Configures the ORM mapping between Cat entity and database table.
+
+    Uses imperative mapping to connect the Cat domain model to the cats_table,
+    including value object composition and relationship configuration.
+
+    Mapped properties:
+        - oid: Maps to cat_id column as primary key
+        - breed: Many-to-one relationship with Breed (eager loaded)
+        - age: Composite property using CatAge value object
+        - color: Composite property using CatColor value object
+        - description: Composite property using CatDescription value object
+
+    Note:
+        - Uses composite() for value object mappings
+        - Configures eager loading (joined) for breed relationship
+        - Sets up bidirectional relationship with Breed
+        - Should be called during application startup
+        - Maintains consistency with domain model constraints
+    """
     _ = mapper_registry.map_imperatively(
         Cat,
         cats_table,
