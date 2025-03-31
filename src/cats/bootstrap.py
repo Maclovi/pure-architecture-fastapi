@@ -18,7 +18,7 @@ from cats.infrastructure.configs import ASGIConfig, Configs, PostgresConfig
 from cats.infrastructure.persistence.models.breed import map_breed_table
 from cats.infrastructure.persistence.models.cat import map_cat_table
 from cats.presentation.http.v1.common.exc_handlers import map_exc_handlers
-from cats.presentation.http.v1.routes import breeds, cats, index
+from cats.presentation.http.v1.routes import breeds, cats, healthcheck, index
 
 
 def setup_map_tables() -> None:
@@ -48,6 +48,7 @@ def setup_routes(app: FastAPI, /) -> None:
     router_v1.include_router(cats.router)
     router_v1.include_router(breeds.router)
     router_v1.include_router(index.router)
+    router_v1.include_router(healthcheck.router)
 
     app.include_router(router_v1)
 

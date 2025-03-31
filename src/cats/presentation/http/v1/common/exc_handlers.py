@@ -59,7 +59,7 @@ async def internal_trouble(_: Request, __: Exception) -> JSONResponse:  # pyrigh
         - Acts as catch-all for unhandled exceptions
         - Logs should be used to track actual error details
     """
-    return JSONResponse(
+    return JSONResponse(  # pragma: no cover
         status_code=code.HTTP_500_INTERNAL_SERVER_ERROR,
         content={"detail": "Internal server error"},
     )

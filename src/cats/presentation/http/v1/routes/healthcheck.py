@@ -1,13 +1,13 @@
 from fastapi import APIRouter, status
 
-healthcheck_router = APIRouter(
+router = APIRouter(
     prefix="/healthcheck",
     tags=["Healthcheck"],
     include_in_schema=True,
 )
 
 
-@healthcheck_router.get("/", status_code=status.HTTP_200_OK)
+@router.get("/", status_code=status.HTTP_200_OK)
 async def get_status() -> dict[str, str]:
     """Healthcheck endpoint to verify service availability.
 

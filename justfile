@@ -70,4 +70,3 @@ default:
     coverage combine
     coverage report --show-missing --skip-covered --sort=cover --precision=2
     rm .coverage*
-    just stop

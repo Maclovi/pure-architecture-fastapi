@@ -42,7 +42,7 @@ dependencies = [
 
     # Observability
     "asgi-monitor==0.6.0",
-    "opentelemetry-exporter-otlp==1.31.1",
+    "opentelemetry-exporter-otlp==1.25.0",
 
     # Dependency injection
     "dishka==1.5.0",
