@@ -1,11 +1,11 @@
 name: Build and Push Docker Image to GHCR
 
 on:
-  pull_request:
-    branches:
-      - develop
-      - main
-    types: [closed]
+  # pull_request:
+  #   branches:
+  #     - develop
+  #     - main
+  #   types: [closed]
   workflow_dispatch:
     inputs:
       environment:
@@ -35,7 +35,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    environment: ${{ ENVIRONMENT_SUFFIX }}
+    environment: ${{ env.ENVIRONMENT_SUFFIX }}
 
     steps:
       - uses: actions/checkout@v4
