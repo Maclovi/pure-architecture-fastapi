@@ -34,21 +34,22 @@ dependencies = [
     "uvicorn==0.34.0",
     "httptools==0.6.4",
     "orjson==3.10.15",
-
     # Database
     "alembic==1.15.1",
     "sqlalchemy[asyncio]==2.0.39",
     "psycopg[binary]==3.2.6",
-
     # Observability
     "asgi-monitor==0.6.0",
-    "opentelemetry-exporter-otlp==1.25.0",
-
     # Dependency injection
     "dishka==1.5.0",
 ]
 
 [project.optional-dependencies]
+prod = [
+    "opentelemetry-exporter-otlp==1.31.1",
+]
+
+
 test = [
     "coverage[toml]==7.7.1",
     "pytest==8.3.5",
@@ -58,11 +59,12 @@ test = [
 lint = [
     "ruff==0.11.2",
     "bandit==1.8.3",
-    "semgrep==1.114.0",
     "codespell==2.4.1",
-    #types
     "mypy==1.15.0",
     "basedpyright==1.28.3",
+    # semgrep depends on opentelemetry-exporter-otlp>=v1.25,<1.26
+    "semgrep==1.116.0",
+    "opentelemetry-exporter-otlp>=1.25.0,<1.26.0",
 ]
 dev = [
     "cats[test,lint]",

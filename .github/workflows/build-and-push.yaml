@@ -18,12 +18,11 @@ env:
   ENVIRONMENT_SUFFIX: ${{ github.event.inputs.environment || (github.ref_name == 'main' && 'prod' || 'stage') }}
 
   # ---- registry settings ----
-  REGISTRY: ghcr.io
+  REGISTRY: ${{ vars.REGISTRY }}
   REGISTRY_PAT: ${{ secrets.REGISTRY_PAT }}
 
   # ---- image settings ----
-  BASE_IMAGE_PATH: ${{ env.REGISTRY }}/${{ github.repository_owner }}
-  WEBCAT_IMAGE: ${{ env.BASE_IMAGE_PATH }}/webcat
+  WEBCAT_IMAGE: ${{ vars.REGISTRY }}/${{ github.repository_owner }}/webcat
 
 defaults:
   run:
