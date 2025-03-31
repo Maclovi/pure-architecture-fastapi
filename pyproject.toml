@@ -48,8 +48,6 @@ dependencies = [
 prod = [
     "opentelemetry-exporter-otlp==1.31.1",
 ]
-
-
 test = [
     "coverage[toml]==7.8.0",
     "pytest==8.3.5",
@@ -157,10 +155,8 @@ exclude_also = [
     '\.\.\.',
 ]
 omit = [
+    'src/cats/infrastructure/persistence/adapters/*.py',
     'src/cats/infrastructure/persistence/alembic/env.py',
-    'src/cats/infrastructure/persistence/adapters/breed.py',
-    'src/cats/infrastructure/persistence/adapters/cat.py',
-    'src/cats/presentation/http/v1/middlewares/tracing.py',
     '*/__init__.py',
 ]
 
@@ -172,4 +168,4 @@ include = ["src"]
 targets = "src"
 
 [tool.codespell]
-skip = "*.pyi,*.pyc,*.csv"
+skip = "*.pyi,*.pyc"

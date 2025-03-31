@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncEngine
 
+from cats.bootstrap import setup_map_tables
 from cats.infrastructure.persistence.models.base import metadata
 from cats.web import create_app
 
@@ -28,6 +29,7 @@ def _load_env() -> None:
 @pytest.fixture(scope="session")
 async def app() -> AsyncIterator[FastAPI]:
     _load_env()
+    setup_map_tables()
     app = create_app()
     container: AsyncContainer = app.state.dishka_container
 
