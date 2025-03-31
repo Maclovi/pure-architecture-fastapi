@@ -33,36 +33,36 @@ dependencies = [
     "uvloop==0.21.0",
     "uvicorn==0.34.0",
     "httptools==0.6.4",
-    "orjson==3.10.15",
+    "orjson==3.10.16",
 
     # Database
-    "alembic==1.15.1",
-    "sqlalchemy[asyncio]==2.0.39",
+    "alembic==1.15.2",
+    "sqlalchemy[asyncio]==2.0.40",
     "psycopg[binary]==3.2.6",
 
     # Observability
     "asgi-monitor==0.6.0",
-    "opentelemetry-exporter-otlp==1.25.0",
+    "opentelemetry-exporter-otlp==1.31.1",
 
     # Dependency injection
-    "dishka==1.5.0",
+    "dishka==1.5.2",
 ]
 
 [project.optional-dependencies]
 test = [
-    "coverage[toml]==7.7.1",
+    "coverage[toml]==7.8.0",
     "pytest==8.3.5",
-    "pytest-asyncio==0.25.3",
+    "pytest-asyncio==0.26.0",
     "httpx==0.28.1",
 ]
 lint = [
     "ruff==0.11.2",
     "bandit==1.8.3",
-    "semgrep==1.114.0",
+    "semgrep==1.116.0",
     "codespell==2.4.1",
     #types
     "mypy==1.15.0",
-    "basedpyright==1.28.3",
+    "basedpyright==1.28.4",
 ]
 dev = [
     "cats[test,lint]",
