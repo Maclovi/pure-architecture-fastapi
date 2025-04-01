@@ -6,11 +6,9 @@ from cats.application.common.persistence.transaction import (
     EntitySaver,
     Transaction,
 )
-from cats.entities.breed.models import BreedID
-from cats.entities.breed.services import BreedService
+from cats.entities.breed.models import Breed, BreedID
 from cats.entities.breed.value_objects import BreedName
-from cats.entities.cat.models import CatID
-from cats.entities.cat.services import CatService
+from cats.entities.cat.models import Cat, CatID
 from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
 
 
@@ -18,23 +16,21 @@ from cats.entities.cat.value_objects import CatAge, CatColor, CatDescription
 class NewCatCommand:
     """Command object for creating a new cat record.
 
-    Encapsulates all data required to create a new cat in the system.
+    Encapsulates all data required to initialize a new cat entity.
     This immutable object ensures consistent parameter passing throughout
     the application layer.
 
     Attributes:
-        age: The cat's age in years.
-        color: The primary color of the cat's coat.
-        description: Descriptive text about the cat's
-            appearance or personality.
-        breed_name: Optional name of the cat's breed.
-            None indicates a mixed-breed cat.
+        age: The cat's age in years (positive integer).
+        color: The primary color description of the cat's coat.
+        description: Text describing the cat's characteristics.
+        breed_name: Optional breed specification. None indicates
+            a mixed-breed or unknown breed.
 
     Notes:
-        - Frozen to prevent modification after creation
-        - Uses slots for memory efficiency
-        - Values will be validated and converted
-            to value objects by the handler
+        - Frozen to enforce immutability after creation
+        - Uses slots for memory optimization
+        - All values undergo validation when converted to value objects
     """
 
     age: int
@@ -45,20 +41,18 @@ class NewCatCommand:
 
 @final
 class NewCatCommandHandler:
-    """Handler for executing new cat creation commands.
+    """Handler for creating new cat records with breed resolution.
 
-    Coordinates the creation of new cat records, including:
-    - Breed resolution (creating new breeds if necessary)
-    - Cat entity creation
-    - Transaction management
-    - Persistence operations
+    Orchestrates the complete cat creation workflow including:
+    - Breed lookup/creation when specified
+    - Cat entity instantiation
+    - Transactional persistence
+    - ID generation
 
     Args:
-        transaction: Transaction manager for atomic operations.
-        entity_saver: Persistence interface for saving entities.
-        breed_gateway: Data access component for breed operations.
-        cat_service: Domain service for cat-related business logic.
-        breed_service: Domain service for breed-related business logic.
+        transaction: Coordinates atomic database operations.
+        entity_saver: Handles entity persistence.
+        breed_gateway: Provides breed data access.
     """
 
     def __init__(
@@ -66,45 +60,39 @@ class NewCatCommandHandler:
         transaction: Transaction,
         entity_saver: EntitySaver,
         breed_gateway: BreedGateway,
-        cat_service: CatService,
-        breed_service: BreedService,
     ) -> None:
-        """Initializes the handler with required dependencies.
+        """Initializes handler with persistence dependencies.
 
         Args:
-            transaction: Handles database transaction boundaries.
-            entity_saver: Manages persistence of new entities.
-            breed_gateway: Provides access to breed data.
-            cat_service: Contains cat creation business rules.
-            breed_service: Contains breed creation business rules.
+            transaction: Manages transaction boundaries.
+            entity_saver: Handles entity storage operations.
+            breed_gateway: Provides breed data access.
         """
         self._transaction = transaction
         self._entity_saver = entity_saver
         self._breed_gateway = breed_gateway
-        self._cat_service = cat_service
-        self._breed_service = breed_service
 
     async def run(self, data: NewCatCommand) -> CatID:
-        """Executes the new cat creation command.
+        """Creates and persists a new cat record.
 
         Args:
-            data: NewCatCommand containing all required cat attributes.
+            data: Contains validated cat attributes for creation.
 
         Returns:
-            CatID: The unique identifier of the newly created cat.
+            The persistent identifier of the newly created cat.
 
         Note:
-            Performs the following operations atomically:
-            1. Resolves or creates the breed (if specified)
-            2. Creates a new cat entity
-            3. Persists all changes
-            4. Returns the new cat's ID
+            Atomic operation sequence:
+            1. Breed resolution (if specified)
+            2. Cat entity instantiation
+            3. Database persistence
+            4. ID return
         """
         if data.breed_name:
             breed_id = await self._get_breed_id(BreedName(data.breed_name))
         else:
             breed_id = None
-        new_cat = self._cat_service.create_cat(
+        new_cat = Cat.create_cat(
             breed_id,
             CatAge(data.age),
             CatColor(data.color),
@@ -115,21 +103,21 @@ class NewCatCommandHandler:
         return new_cat.oid
 
     async def _get_breed_id(self, breed_name: BreedName) -> BreedID:
-        """Resolves a breed ID by name, creating the breed if necessary.
+        """Resolves breed reference, creating new breed if necessary.
 
         Args:
-            breed_name: Name of the breed to resolve.
+            breed_name: Validated breed name specification.
 
         Returns:
-            BreedID: The existing or newly created breed's identifier.
+            Persistent identifier for existing or new breed.
 
         Note:
-            If the breed doesn't exist, creates and persists a new breed
-            before returning its ID.
+            Auto-creates new breed records for unrecognized names,
+            persisting them before reference.
         """
         breed = await self._breed_gateway.with_name(breed_name)
         if breed is None:
-            breed = self._breed_service.create_breed(breed_name)
+            breed = Breed.create_breed(breed_name)
             self._entity_saver.add_one(breed)
             await self._transaction.flush()
         return breed.oid

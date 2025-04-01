@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import NewType
+from typing import NewType, cast
+
+from typing_extensions import Self
 
 from cats.entities.breed.value_objects import BreedName
 from cats.entities.common.base_entity import BaseEntity
@@ -41,3 +43,30 @@ class Breed(BaseEntity[BreedID]):
     """
 
     name: BreedName
+
+    @classmethod
+    def create_breed(cls, breed_name: BreedName) -> Self:
+        """Creates a new Breed entity with the given name.
+
+        Args:
+            breed_name: Validated breed name value object.
+
+        Returns:
+            Breed: A new Breed entity with:
+                - A temporary None ID (to be assigned during persistence)
+                - The provided breed name
+
+        Note:
+            - Uses cast for temporary None ID to satisfy type checker
+            - The actual ID should be assigned during persistence
+            - The breed_name is assumed to be already validated
+            - Caller is responsible for proper persistence
+
+        Example:
+            >>> breed = Breed.create_breed(BreedName("Siamese"))
+            >>> # Persist the breed to get a real ID
+        """
+        return cls(
+            oid=cast("BreedID", cast("object", None)),
+            name=breed_name,
+        )

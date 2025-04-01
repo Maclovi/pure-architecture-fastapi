@@ -8,13 +8,13 @@ from cats.application.commands.cat.add_cat import (
     NewCatCommand,
     NewCatCommandHandler,
 )
+from cats.application.commands.cat.cat_update import (
+    CatUpdate,
+    CatUpdateHandler,
+)
 from cats.application.commands.cat.delete_cat_by_id import (
     DeleteCatCommand,
     DeleteCatCommandHandler,
-)
-from cats.application.commands.cat.update_cat import (
-    UpdateCatDescriptionCommand,
-    UpdateCatDescriptionCommandHandler,
 )
 from cats.application.common.persistence.cat import CatFilters
 from cats.application.common.persistence.filters import Pagination
@@ -30,6 +30,7 @@ from cats.application.queries.cat.get_cats import (
 from cats.application.queries.cat.output_shared import CatsOutput
 from cats.presentation.http.v1.common.schemes import (
     CatsAllSchema,
+    CatUpdateSchema,
     ExceptionSchema,
 )
 
@@ -146,37 +147,47 @@ async def add(
 
 
 @router.patch(
-    "/",
+    "/{id}",
     summary="Update cat",
     status_code=status.HTTP_204_NO_CONTENT,
     responses={status.HTTP_404_NOT_FOUND: {"model": ExceptionSchema}},
 )
-async def update_description(
-    command_data: UpdateCatDescriptionCommand,
-    interactor: FromDishka[UpdateCatDescriptionCommandHandler],
+async def update_cat(
+    oid: Annotated[int, Path(alias="id")],
+    data: CatUpdateSchema,
+    interactor: FromDishka[CatUpdateHandler],
 ) -> None:
-    """Update the description of an existing cat.
+    """Updates attributes of an existing cat record.
 
     Args:
-        command_data: Update data containing:
-            - id: The cat's unique identifier
-            - description: New description (max 1000 chars)
-        interactor: Injected UpdateCatDescriptionCommandHandler instance
+        oid: Path parameter containing the cat's unique identifier.
+        command_data: Update payload containing:
+            - age: Optional new age value (if provided)
+            - color: Optional new color description (if provided)
+            - description: Optional new text (if provided)
+        interactor: Injected CatUpdateHandler for processing the command.
 
     Raises:
         HTTPException:
-            400: If invalid description format
             404: If no cat exists with the specified ID
-            422: If invalid request body format
+            422: If request format is invalid and any field fails validation
 
     Example:
-        PATCH /cats
+        PATCH /cats/123
         {
-            "id": 123,
-            "description": "Very fluffy and friendly"
+            "age": 5,
+            "color": "tabby",
+            "description": "Very playful"
         }
     """
-    return await interactor.run(command_data)
+    return await interactor.run(
+        CatUpdate(
+            cat_id=oid,
+            age=data.age,
+            color=data.color,
+            description=data.description,
+        ),
+    )
 
 
 @router.delete(

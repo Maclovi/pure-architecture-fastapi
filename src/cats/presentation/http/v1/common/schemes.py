@@ -66,3 +66,9 @@ class CatsAllSchema(PaginationSchema, CatFiltersSchema):
     Example URL:
     /cats?offset=0&limit=10&order=ASC&breed=siamese&color=white
     """
+
+
+class CatUpdateSchema(BaseModel):
+    age: int | None = None
+    color: str | None = None
+    description: str | None = None

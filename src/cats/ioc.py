@@ -2,11 +2,11 @@ from dishka import Provider, Scope
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from cats.application.commands.cat.add_cat import NewCatCommandHandler
+from cats.application.commands.cat.cat_update import (
+    CatUpdateHandler,
+)
 from cats.application.commands.cat.delete_cat_by_id import (
     DeleteCatCommandHandler,
-)
-from cats.application.commands.cat.update_cat import (
-    UpdateCatDescriptionCommandHandler,
 )
 from cats.application.common.persistence.breed import BreedGateway
 from cats.application.common.persistence.cat import CatGateway, CatReader
@@ -17,8 +17,6 @@ from cats.application.common.persistence.transaction import (
 from cats.application.queries.breed.get_breeds import GetBreedsQueryHandler
 from cats.application.queries.cat.get_cat_by_id import GetCatWithIDQueryHandler
 from cats.application.queries.cat.get_cats import GetCatsQueryHandler
-from cats.entities.breed.services import BreedService
-from cats.entities.cat.services import CatService
 from cats.infrastructure.configs import ASGIConfig, PostgresConfig
 from cats.infrastructure.persistence.adapters.breed import BreedMapperAlchemy
 from cats.infrastructure.persistence.adapters.cat import (
@@ -92,21 +90,6 @@ def gateways_provider() -> Provider:
     return provider
 
 
-def services_provider() -> Provider:
-    """Creates a Provider for domain services.
-
-    Provides request-scoped:
-        - CatService
-        - BreedService
-
-    Returns:
-        Provider: Configured provider instance with domain services.
-    """
-    provider = Provider(scope=Scope.REQUEST)
-    provider.provide_all(CatService, BreedService)
-    return provider
-
-
 def interactors_provider() -> Provider:
     """Creates a Provider for application interactors (CQRS handlers).
 
@@ -128,7 +111,7 @@ def interactors_provider() -> Provider:
         GetCatWithIDQueryHandler,
         NewCatCommandHandler,
         DeleteCatCommandHandler,
-        UpdateCatDescriptionCommandHandler,
+        CatUpdateHandler,
     )
     return provider
 
@@ -150,6 +133,5 @@ def setup_providers() -> tuple[Provider, ...]:
         configs_provider(),
         db_provider(),
         gateways_provider(),
-        services_provider(),
         interactors_provider(),
     )

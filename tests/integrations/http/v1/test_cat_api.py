@@ -41,8 +41,8 @@ async def test_scenarios_cat(client: AsyncClient) -> None:
         "description": "biba blyt",
     }
 
-    json = {"cat_id": 1, "description": "nixya ne biba"}
-    response = await client.patch("/v1/cats/", json=json)
+    json = {"description": "nixya ne biba"}
+    response = await client.patch("/v1/cats/1", json=json)
     assert response.status_code == status.HTTP_204_NO_CONTENT
 
     response = await client.get("/v1/cats/1")

@@ -7,23 +7,7 @@ from cats.application.common.persistence.cat import CatGateway, CatReader
 from cats.application.common.persistence.transaction import Transaction
 from cats.application.common.persistence.view_models import CatView
 from cats.entities.breed.models import Breed
-from cats.entities.breed.services import BreedService
 from cats.entities.cat.models import Cat
-from cats.entities.cat.services import CatService
-
-
-@pytest.fixture
-def fake_cat_service() -> CatService:
-    fake = Mock()
-    fake.create_cat = Mock(side_effect=CatService.create_cat)
-    return fake
-
-
-@pytest.fixture
-def fake_breed_service() -> BreedService:
-    fake = Mock()
-    fake.create_breed = Mock(side_effect=BreedService.create_breed)
-    return fake
 
 
 @pytest.fixture
