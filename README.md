@@ -3,8 +3,8 @@
 ---
 
 <p align="center">
-  <a href="https://github.com/Maclovi/pure-architecture-fastapi/actions/workflows/pr_tests.yaml" target="_blank">
-    <img src="https://github.com/Maclovi/pure-architecture-fastapi/actions/workflows/pr_tests.yaml/badge.svg?branch=main" alt="Test Passing"/>
+  <a href="https://github.com/Maclovi/pure-architecture-fastapi/actions/workflows/pr-tests.yaml" target="_blank">
+    <img src="https://github.com/Maclovi/pure-architecture-fastapi/actions/workflows/pr-tests.yaml/badge.svg?branch=develop" alt="Test Passing"/>
   </a>
 
   <a href="https://github.com/Maclovi/pure-architecture-fastapi/blob/main/LICENSE" target="_blank">

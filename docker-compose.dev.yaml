@@ -26,6 +26,7 @@ services:
   db:
     <<: *default
     container_name: cats.db
+    hostname: cats.db
     image: postgres:alpine
     environment:
       <<: *x-db-environment
@@ -40,9 +41,10 @@ services:
   api:
     <<: *default
     container_name: cats.api
+    hostname: cats.api
     build:
       context: .
-      dockerfile: ./deploy/webcat/Dockerfile
+      dockerfile: ./deploy/cats/Dockerfile
     environment:
       <<: [*x-db-environment, *x-api-environment]
       POSTGRES_HOST: db
@@ -61,6 +63,7 @@ services:
   nginx:
     <<: *default
     container_name: cats.nginx
+    hostname: cats.nginx
     image: nginx:stable-alpine
     volumes:
       - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf

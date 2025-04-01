@@ -21,7 +21,7 @@ default:
 
 [doc("Run server application")]
 @serve: infra
-    ./deploy/webcat/server.sh ; just stop
+    ./deploy/cats/server.sh ; just stop
 
 [doc("Run all containers")]
 [group("infra")]
