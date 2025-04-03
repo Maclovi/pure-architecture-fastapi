@@ -54,6 +54,13 @@ class ASGIConfig(NamedTuple):
     port: int
 
 
+class ObservabilityConfig(NamedTuple):
+    """Observability config"""
+
+    app_name: str
+    grpc_endpoint: str
+
+
 class Configs(NamedTuple):
     """Aggregate configuration container for all application settings.
 
@@ -66,3 +73,4 @@ class Configs(NamedTuple):
 
     db: PostgresConfig
     asgi: ASGIConfig
+    observability: ObservabilityConfig

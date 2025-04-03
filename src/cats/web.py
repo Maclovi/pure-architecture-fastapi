@@ -77,6 +77,7 @@ def create_app() -> FastAPI:
         default_response_class=ORJSONResponse,
         version="1.0.0",
         root_path="/api",
+        debug=True,
     )
     configs = setup_configs()
     context = {ASGIConfig: configs.asgi, PostgresConfig: configs.db}
@@ -84,7 +85,7 @@ def create_app() -> FastAPI:
     setup_map_tables()
     setup_routes(app)
     setup_exc_handlers(app)
-    setup_observability(app)
+    setup_observability(app, configs.observability)
     setup_middlewares(app, api_config=configs.asgi)
     setup_dishka(container, app)
     logger.info("App created", extra={"app_version": app.version})

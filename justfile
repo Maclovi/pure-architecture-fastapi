@@ -23,25 +23,25 @@ default:
 @serve: infra
     ./deploy/cats/server.sh ; just stop
 
-[doc("Run all containers")]
-[group("infra")]
-@up *args:
-  docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d {{ args }}
-
 [doc("Run all containers except web-backend")]
 [group("infra")]
 @infra:
     docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d db
 
+[doc("Run all containers")]
+[group("infra")]
+@up:
+  docker compose -f {{ DOCKER_COMPOSE_DEV }} --profile api --profile grafana up --build -d
+
 [doc("Stop all containers")]
 [group("infra")]
 @stop:
-  docker compose -f {{ DOCKER_COMPOSE_DEV }} stop
+  docker compose -f {{ DOCKER_COMPOSE_DEV }} --profile api --profile grafana stop
 
 [doc("Down all containers")]
 [group("infra")]
 @down:
-  docker compose -f {{ DOCKER_COMPOSE_DEV }} down
+  docker compose -f {{ DOCKER_COMPOSE_DEV }} --profile api --profile grafana down
   docker image prune -f
 
 [doc("Lint check")]

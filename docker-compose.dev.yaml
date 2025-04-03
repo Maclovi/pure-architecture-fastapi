@@ -21,25 +21,29 @@ x-api-environment: &x-api-environment
   SQLALCHEMY_DEBUG: ${SQLALCHEMY_DEBUG}
   UVICORN_HOST: ${UVICORN_HOST}
   UVICORN_PORT: ${UVICORN_PORT}
+  APP_NAME: ${APP_NAME}
+  GRPC_ENDPOINT: ${GRPC_ENDPOINT}
 
 services:
   db:
     <<: *default
+    profiles: ["api"]
     container_name: cats.db
     hostname: cats.db
     image: postgres:alpine
     environment:
       <<: *x-db-environment
     ports:
-      - ${POSTGRES_HOST}:${POSTGRES_PORT}:${POSTGRES_PORT}
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - cats.postgres.data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
       <<: *hc-interval
 
   api:
     <<: *default
+    profiles: ["api"]
     container_name: cats.api
     hostname: cats.api
     build:
@@ -50,31 +54,129 @@ services:
       POSTGRES_HOST: db
     command: /bin/sh -cx "./server.sh"
     ports:
-      - 127.0.0.1:${UVICORN_PORT}:${UVICORN_PORT}
+      - ${UVICORN_PORT}:${UVICORN_PORT}
     depends_on:
       db:
         condition: service_healthy
 
     healthcheck:
       test:
-        ["CMD-SHELL", "curl -fsSL http://localhost:${UVICORN_PORT}/healthcheck"]
+        [
+          "CMD-SHELL",
+          "curl -fsSL http://localhost:${UVICORN_PORT}/v1/healthcheck/",
+        ]
       <<: *hc-interval
 
   nginx:
     <<: *default
+    profiles: ["api"]
     container_name: cats.nginx
     hostname: cats.nginx
     image: nginx:stable-alpine
     volumes:
       - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - "80:80"
+      - 80:80
     depends_on:
-      - api
-      - db
+      api:
+        condition: service_healthy
+
+  grafana:
+    <<: *default
+    profiles: ["grafana"]
+    image: grafana/grafana:latest
+    container_name: cats.grafana
+    hostname: cats.grafana
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    volumes:
+      - cats.grafana.data:/var/lib/grafana:rw
+      - ./deploy/grafana/provisioning:/etc/grafana/provisioning:rw
+      - ./deploy/grafana/dashboards:/etc/grafana/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_DATABASE_WAL=true
+      - VIRTUAL_HOST=cats.grafana
+      - NETWORK_ACCESS=internal
+      - VIRTUAL_PORT=3000
+
+  loki:
+    <<: *default
+    profiles: ["grafana"]
+    image: grafana/loki:2.7.3
+    container_name: cats.loki
+    hostname: cats.loki
+    expose:
+      - 3100
+    ports:
+      - 3100:3100
+    volumes:
+      - ./deploy/loki/config.yaml:/etc/loki/config.yaml:ro
+      - cats.loki.data:/tmp/:rw
+    command: -config.file=/etc/loki/config.yaml
+
+  vector:
+    <<: *default
+    profiles: ["grafana"]
+    image: timberio/vector:0.27.0-alpine
+    container_name: cats.vector
+    hostname: cats.vector
+    expose:
+      - 8383
+    ports:
+      - 8383:8383
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./deploy/vector/vector.toml:/etc/vector/vector.toml:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+
+  tempo:
+    <<: *default
+    profiles: ["grafana"]
+    image: grafana/tempo:2.0.1
+    container_name: cats.tempo
+    hostname: cats.tempo
+    command:
+      [
+        "--target=all",
+        "--storage.trace.backend=local",
+        "--storage.trace.local.path=/var/tempo",
+        "--auth.enabled=false",
+      ]
+    ports:
+      - 14250:14250
+    depends_on:
+      - loki
+
+  prometheus:
+    <<: *default
+    profiles: ["grafana"]
+    image: prom/prometheus:latest
+    container_name: cats.prometheus
+    hostname: cats.prometheus
+    volumes:
+      - ./deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - cats.prometheus.data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --enable-feature=exemplar-storage
+    ports:
+      - 9090:9090
+    expose:
+      - 9090
 
 volumes:
-  postgres:
+  cats.postgres.data: {}
+  cats.grafana.data: {}
+  cats.loki.data: {}
+  cats.prometheus.data: {}
 
 networks:
   overlay:
