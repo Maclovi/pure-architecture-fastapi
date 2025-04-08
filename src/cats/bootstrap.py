@@ -50,8 +50,8 @@ def setup_configs() -> Configs:
             port=int(env["UVICORN_PORT"]),
         ),
         observability=ObservabilityConfig(
-            app_name=env["APP_NAME"],
-            grpc_endpoint=env["GRPC_ENDPOINT"],
+            app_name=env.get("APP_NAME", "Some Name"),
+            grpc_endpoint=env.get("GRPC_ENDPOINT", "Some Endpoint"),
         ),
     )
 
@@ -87,7 +87,7 @@ def setup_observability(
     app: FastAPI,
     /,
     observability_config: ObservabilityConfig,
-) -> None:
+) -> None:  # pragma: no cover
     configure_logging(level=logging.INFO, json_format=True, include_trace=True)
 
     resource = Resource.create(

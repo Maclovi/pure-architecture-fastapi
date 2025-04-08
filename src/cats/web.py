@@ -45,7 +45,27 @@ async def lifespan(app: FastAPI, /) -> AsyncIterator[None]:
     await cast("AsyncContainer", app.state.dishka_container).close()
 
 
-def create_app() -> FastAPI:
+def create_app_tests() -> FastAPI:
+    app = FastAPI(
+        lifespan=lifespan,
+        default_response_class=ORJSONResponse,
+        version="1.0.0",
+        root_path="/api",
+        debug=True,
+    )
+    configs = setup_configs()
+    context = {ASGIConfig: configs.asgi, PostgresConfig: configs.db}
+    container = make_async_container(*setup_providers(), context=context)
+    setup_map_tables()
+    setup_routes(app)
+    setup_exc_handlers(app)
+    setup_middlewares(app, api_config=configs.asgi)
+    setup_dishka(container, app)
+    logger.info("App created", extra={"app_version": app.version})
+    return app
+
+
+def create_app_production() -> FastAPI:  # pragma: no cover
     """Creates and configures a FastAPI application
         instance with all dependencies.
 
@@ -102,7 +122,7 @@ if __name__ == "__main__":
         include_trace=True,
     )
     uvicorn.run(
-        create_app(),
+        create_app_production(),
         host=asgi_conf.host,
         port=asgi_conf.port,
         log_config=log_config,

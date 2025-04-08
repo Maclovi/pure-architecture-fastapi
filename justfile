@@ -60,8 +60,8 @@ default:
 
 [doc("Run test")]
 [group("Test")]
-@test: infra
-    coverage run -m pytest -x --ff
+@test *args: infra
+    coverage run -m pytest -x --ff {{ args }}
     just stop
 
 [doc("Run test with coverage")]
