@@ -34,7 +34,7 @@ services:
     environment:
       <<: *x-db-environment
     ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+      - 127.0.0.1:${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - cats.postgres.data:/var/lib/postgresql/data
     healthcheck:
@@ -54,7 +54,7 @@ services:
       POSTGRES_HOST: db
     command: /bin/sh -cx "./server.sh"
     ports:
-      - ${UVICORN_PORT}:${UVICORN_PORT}
+      - 127.0.0.1:${UVICORN_PORT}:${UVICORN_PORT}
     depends_on:
       db:
         condition: service_healthy
@@ -67,28 +67,12 @@ services:
         ]
       <<: *hc-interval
 
-  nginx:
-    <<: *default
-    profiles: ["api"]
-    container_name: cats.nginx
-    hostname: cats.nginx
-    image: nginx:stable-alpine
-    volumes:
-      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf
-    ports:
-      - 80:80
-    depends_on:
-      api:
-        condition: service_healthy
-
   grafana:
     <<: *default
     profiles: ["grafana"]
     image: grafana/grafana:latest
     container_name: cats.grafana
     hostname: cats.grafana
-    expose:
-      - 3000
     ports:
       - 3000:3000
     volumes:
@@ -112,8 +96,6 @@ services:
     hostname: cats.loki
     expose:
       - 3100
-    ports:
-      - 3100:3100
     volumes:
       - ./deploy/loki/config.yaml:/etc/loki/config.yaml:ro
       - cats.loki.data:/tmp/:rw
@@ -127,8 +109,6 @@ services:
     hostname: cats.vector
     expose:
       - 8383
-    ports:
-      - 8383:8383
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./deploy/vector/vector.toml:/etc/vector/vector.toml:ro
@@ -150,8 +130,8 @@ services:
         "--storage.trace.local.path=/var/tempo",
         "--auth.enabled=false",
       ]
-    ports:
-      - 14250:14250
+    expose:
+      - 14250
     depends_on:
       - loki
 
@@ -167,8 +147,6 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --enable-feature=exemplar-storage
-    ports:
-      - 9090:9090
     expose:
       - 9090
 

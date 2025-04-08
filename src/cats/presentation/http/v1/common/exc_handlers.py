@@ -3,9 +3,9 @@ from functools import partial
 from typing import TYPE_CHECKING, ClassVar, cast
 
 from fastapi import FastAPI
+from fastapi.responses import ORJSONResponse
 from starlette import status as code
 from starlette.requests import Request
-from starlette.responses import JSONResponse
 
 from cats.application.common.errors.base import EntityNotFoundError
 from cats.entities.common.errors import FieldError
@@ -19,7 +19,11 @@ if TYPE_CHECKING:
         message: ClassVar[str]
 
 
-async def validate(_: "Request", exc: Exception, status: int) -> JSONResponse:
+async def validate(
+    _: "Request",
+    exc: Exception,
+    status: int,
+) -> ORJSONResponse:
     """Generic exception handler for validation and business logic errors.
 
     Converts exceptions with a 'message' attribute
@@ -38,10 +42,10 @@ async def validate(_: "Request", exc: Exception, status: int) -> JSONResponse:
         Used as base handler for FieldError and EntityNotFoundError cases.
     """
     exc = cast("StubError", exc)
-    return JSONResponse(content={"detail": exc.message}, status_code=status)
+    return ORJSONResponse(content={"detail": exc.message}, status_code=status)
 
 
-async def internal_trouble(_: Request, __: Exception) -> JSONResponse:  # pyright: ignore[reportUnusedParameter]
+async def internal_trouble(_: Request, __: Exception) -> ORJSONResponse:  # pyright: ignore[reportUnusedParameter]
     """Fallback handler for unexpected server errors.
 
     Returns a generic 500 error response when unhandled exceptions occur.
@@ -59,9 +63,9 @@ async def internal_trouble(_: Request, __: Exception) -> JSONResponse:  # pyrigh
         - Acts as catch-all for unhandled exceptions
         - Logs should be used to track actual error details
     """
-    return JSONResponse(  # pragma: no cover
-        status_code=code.HTTP_500_INTERNAL_SERVER_ERROR,
+    return ORJSONResponse(  # pragma: no cover
         content={"detail": "Internal server error"},
+        status_code=code.HTTP_500_INTERNAL_SERVER_ERROR,
     )
 
 
@@ -90,4 +94,4 @@ def map_exc_handlers(app: FastAPI) -> None:
         EntityNotFoundError,
         partial(validate, status=code.HTTP_404_NOT_FOUND),
     )
-    app.add_exception_handler(Exception, internal_trouble)
+    app.exception_handler(Exception)(internal_trouble)
