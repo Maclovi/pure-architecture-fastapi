@@ -52,6 +52,7 @@ class ASGIConfig(NamedTuple):
 
     host: str
     port: int
+    fastapi_debug: bool
 
 
 class ObservabilityConfig(NamedTuple):

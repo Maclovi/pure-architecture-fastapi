@@ -48,6 +48,7 @@ def setup_configs() -> Configs:
         asgi=ASGIConfig(
             host=env["UVICORN_HOST"],
             port=int(env["UVICORN_PORT"]),
+            fastapi_debug=bool(env.get("FASTAPI_DEBUG", "0")),
         ),
         observability=ObservabilityConfig(
             app_name=env.get("APP_NAME", "Some Name"),

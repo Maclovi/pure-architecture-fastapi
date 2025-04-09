@@ -19,3 +19,13 @@ updates:
         patterns:
           - "*"
     target-branch: develop
+
+  - package-ecosystem: docker-compose
+    directory: "/"
+    schedule:
+      interval: weekly
+    groups:
+      pip:
+        patterns:
+          - "*"
+    target-branch: develop

@@ -92,13 +92,14 @@ def create_app_production() -> FastAPI:  # pragma: no cover
         >>> app = create_app()
         >>> uvicorn.run(app)
     """
+    configs = setup_configs()
     app = FastAPI(
         lifespan=lifespan,
         default_response_class=ORJSONResponse,
         version="1.0.0",
         root_path="/api",
+        debug=configs.asgi.fastapi_debug,
     )
-    configs = setup_configs()
     context = {ASGIConfig: configs.asgi, PostgresConfig: configs.db}
     container = make_async_container(*setup_providers(), context=context)
     setup_map_tables()
