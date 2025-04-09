@@ -55,13 +55,13 @@ test = [
     "httpx==0.28.1",
 ]
 lint = [
-    "ruff==0.11.2",
+    "ruff==0.11.4",
     "bandit==1.8.3",
     "codespell==2.4.1",
     "mypy==1.15.0",
-    "basedpyright==1.28.4",
+    "basedpyright==1.28.5",
     # semgrep depends on opentelemetry-exporter-otlp>=v1.25,<1.26
-    "semgrep==1.116.0",
+    "semgrep==1.118.0",
     "opentelemetry-exporter-otlp>=1.25.0,<1.26.0",
 ]
 dev = [
