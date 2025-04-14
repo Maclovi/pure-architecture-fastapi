@@ -31,7 +31,7 @@ dependencies = [
     # Web
     "fastapi==0.115.12",
     "uvloop==0.21.0",
-    "uvicorn==0.34.0",
+    "uvicorn==0.34.1",
     "httptools==0.6.4",
     "orjson==3.10.16",
     # Database
@@ -41,7 +41,7 @@ dependencies = [
     # Observability
     "asgi-monitor==0.6.0",
     # Dependency injection
-    "dishka==1.5.2",
+    "dishka==1.5.3",
 ]
 
 [project.optional-dependencies]
@@ -55,14 +55,14 @@ test = [
     "httpx==0.28.1",
 ]
 lint = [
-    "ruff==0.11.4",
+    "ruff==0.11.5",
     "bandit==1.8.3",
     "codespell==2.4.1",
     "mypy==1.15.0",
     "basedpyright==1.28.5",
     # semgrep depends on opentelemetry-exporter-otlp>=v1.25,<1.26
     "semgrep==1.118.0",
-    "opentelemetry-exporter-otlp>=1.25.0,<1.26.0",
+    "opentelemetry-exporter-otlp>=1.25.0,<1.33.0",
 ]
 dev = [
     "cats[test,lint]",
