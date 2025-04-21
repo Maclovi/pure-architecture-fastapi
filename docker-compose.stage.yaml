@@ -118,7 +118,7 @@ services:
   vector:
     <<: *default
     profiles: ["grafana"]
-    image: timberio/vector:0.46.0-alpine
+    image: timberio/vector:0.46.1-alpine
     container_name: cats.vector
     hostname: cats.vector
     expose:
