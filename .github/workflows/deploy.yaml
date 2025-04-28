@@ -50,7 +50,7 @@ jobs:
             mkdir -p ${{ env.DEPLOY_PATH }}
 
       - name: Copying files to the server
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ env.HOST }}
           username: ${{ env.SSH_USERNAME }}
