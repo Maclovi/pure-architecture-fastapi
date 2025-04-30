@@ -1,0 +1,61 @@
+site_name: Cats API Documentation
+site_description: Documentation for the Cats API, a Clean Architecture implementation using FastAPI.
+site_author: Sergey Yavorsky
+site_url: https://github.com/Maclovi/pure-architecture-fastapi
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.expand
+
+repo_url: https://github.com/Maclovi/pure-architecture-fastapi
+repo_name: Maclovi/pure-architecture-fastapi
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quick-start.md
+      - Configuration: getting-started/configuration.md
+  - Architecture:
+      - Overview: architecture/overview.md
+      - Clean Architecture: architecture/clean-architecture.md
+      - Dependency Injection: architecture/dependency-injection.md
+  - API Reference:
+      - Endpoints: api-reference/endpoints.md
+      - Data Models: api-reference/data-models.md
+  - Development:
+      - Testing: development/testing.md
+      - CI/CD: development/cicd.md
+      - Observability: development/observability.md
+  - Contributing: contributing.md
+  - License: license.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: true
+            heading_level: 3
+            show_root_heading: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
+  - toc:
+      permalink: true

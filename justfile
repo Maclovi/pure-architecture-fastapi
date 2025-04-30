@@ -70,3 +70,11 @@ default:
     coverage combine
     coverage report --show-missing --skip-covered --sort=cover --precision=2
     rm .coverage*
+
+[doc("Build MkDocs documentation")]
+@docs-build:
+    mkdocs build
+
+[doc("Serve MkDocs documentation locally")]
+@docs-serve:
+    mkdocs serve

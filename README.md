@@ -3,6 +3,7 @@
 ---
 
 <p align="center">
+
   <a href="https://github.com/Maclovi/pure-architecture-fastapi/actions/workflows/pr-tests.yaml" target="_blank">
     <img src="https://github.com/Maclovi/pure-architecture-fastapi/actions/workflows/pr-tests.yaml/badge.svg?branch=develop" alt="Test Passing"/>
   </a>
@@ -10,6 +11,11 @@
   <a href="https://github.com/Maclovi/pure-architecture-fastapi/blob/main/LICENSE" target="_blank">
     <img src="https://img.shields.io/github/license/Maclovi/pure-architecture-fastapi.png" alt="License"/>
   </a>
+
+  <a href="https://maclovi.github.io/pure-architecture-fastapi" target="_blank">
+    <img src="https://img.shields.io/badge/Documentation-GitHub%20Pages-blue" alt="Documentation"/>
+  </a>
+
 </p>
 
 ---
@@ -21,6 +27,18 @@
 - how not to lose control when a microservice grows
 
 Using the principles of Robert Martin (aka Uncle Bob).
+
+## Documentation
+
+The project documentation is built with MkDocs and available at [GitHub Pages](https://maclovi.github.io/pure-architecture-fastapi).
+
+To build and serve locally:
+
+```bash
+just docs-serve
+```
+
+Access at http://localhost:8000
 
 ## Quick start
 
