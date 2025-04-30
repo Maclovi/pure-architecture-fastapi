@@ -22,6 +22,18 @@
 
 Using the principles of Robert Martin (aka Uncle Bob).
 
+## Documentation
+
+The project documentation is built with MkDocs and available at [GitHub Pages](https://maclovi.github.io/pure-architecture-fastapi).
+
+To build and serve locally:
+
+```bash
+just docs-serve
+```
+
+Access at http://localhost:8000
+
 ## Quick start
 
 ### Local development

@@ -123,7 +123,6 @@ def setup_providers() -> tuple[Provider, ...]:
         - Configuration
         - Database
         - Persistence gateways
-        - Domain services
         - CQRS interactors
 
     Returns:
