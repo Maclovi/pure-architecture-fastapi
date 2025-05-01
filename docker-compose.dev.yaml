@@ -25,6 +25,22 @@ x-api-environment: &x-api-environment
   GRPC_ENDPOINT: ${GRPC_ENDPOINT}
 
 services:
+  nginx:
+    <<: *default
+    profiles: ["api", "grafana"]
+    container_name: cats.nginx
+    hostname: cats.nginx
+    image: nginx:stable-alpine
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    depends_on:
+      api:
+        condition: service_healthy
+      grafana:
+        condition: service_healthy
+
   db:
     <<: *default
     profiles: ["api"]
@@ -73,8 +89,6 @@ services:
     image: grafana/grafana:latest
     container_name: cats.grafana
     hostname: cats.grafana
-    ports:
-      - 127.0.0.1:3000:3000
     volumes:
       - cats.grafana.data:/var/lib/grafana:rw
       - ./deploy/grafana/provisioning:/etc/grafana/provisioning:rw
@@ -84,9 +98,13 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_DATABASE_WAL=true
+      - GF_SERVER_ROOT_URL=http://localhost/grafana/
       - VIRTUAL_HOST=cats.grafana
       - NETWORK_ACCESS=internal
       - VIRTUAL_PORT=3000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      <<: *hc-interval
 
   loki:
     <<: *default

@@ -60,13 +60,13 @@ lint = [
     "codespell==2.4.1",
     "mypy==1.15.0",
     "basedpyright==1.29.0",
-    # semgrep depends on opentelemetry-exporter-otlp>=v1.25,<1.26
+    # semgrep depends on opentelemetry-exporter-otlp>=v1.25,<1.33.0
     "semgrep==1.119.0",
     "opentelemetry-exporter-otlp>=1.25.0,<1.33.0",
 ]
 docs = [
     "mkdocs==1.6.1",
-    "mkdocs-material==9.5.39",
+    "mkdocs-material==9.6.12",
     "mkdocstrings[python]==0.26.1",
 ]
 dev = [

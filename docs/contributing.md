@@ -1,64 +1,64 @@
-# Contributing
+# **Contributing**
 
 Contributions to the Cats API are welcome! This guide outlines how to contribute.
 
-## Getting Started
+## **Getting Started**
 
 1. **Fork the Repository**:
    Fork [Maclovi/pure-architecture-fastapi](https://github.com/Maclovi/pure-architecture-fastapi).
 
 2. **Clone Your Fork**:
-
    ```bash
-   git clone https://github.com/<your-username>/pure-architecture-fastapi
+   git clone https://github.com/<your_username>/pure-architecture-fastapi
    cd pure-architecture-fastapi
+   python3 -m venv .venv
+   source .venv/bin/activate
    ```
 
 3. **Set Up Development**:
-
    ```bash
    just bootstrap
    ```
 
 ## Making Changes
 
-1. **Create a Branch**:
+### Create a Branch:
 
-   ```bash
-   git checkout -b feature/your-feature
-   ```
+```bash
+git checkout -b feature/your-feature
+```
 
-2. **Follow Coding Standards**:
+### Follow Coding Standards:
 
-   - Use Ruff for linting (just lint).
-   - Run static analysis (just static).
-   - Write tests (just test).
+- Use Ruff for linting (`just lint`).
+- Run static analysis (`just static`).
+- Write tests (`just test`).
 
-3. **Commit Messages**: Use conventional commits (enforced by conventional-pre-commit):
+### Commit Messages: Use conventional commits (enforced by conventional-pre-commit):
 
-   - **Example**: `feat: add new cat endpoint`
-   - **Types**: `feat`, `fix`, `docs`, `chore`, `style`, `refactor`, `test`, `build`.
+- **Example**: `feat: add new cat endpoint`
+- **Types**: `feat`, `fix`, `docs`, `chore`, `style`, `refactor`, `test`, `build`.
 
-4. **Run Pre-Commit Hooks**:
+### Run Pre-Commit Hooks:
 
-   ```bash
-   pre-commit run --all-files
-   ```
+```bash
+pre-commit run --all-files
+```
 
 ## Submitting Changes
 
-1. **Push Changes**:
+### Push Changes:
 
-   ```bash
-   git push origin feature/your-feature
-   ```
+```bash
+git push origin feature/your-feature
+```
 
-2. **Create a Pull Request**:
+### Create a Pull Request:
 
-   - Target the develop branch.
-   - Describe the changes and reference any issues.
+- Target the develop branch.
+- Describe the changes and reference any issues.
 
-3. **CI Checks**: The PR will trigger pr-tests.yaml to run tests and linters. Ensure all checks pass.
+### CI Checks: The PR will trigger pr-tests.yaml to run tests and linters. Ensure all checks pass.
 
 ## Code Review
 
