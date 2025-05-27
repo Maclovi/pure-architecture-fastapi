@@ -66,7 +66,7 @@ services:
     environment:
       <<: [*x-db-environment, *x-api-environment]
       POSTGRES_HOST: db
-    command: /bin/sh -cx "./server.sh"
+    command: /bin/sh -cx "./entrypoint.sh"
     depends_on:
       db:
         condition: service_healthy

@@ -68,7 +68,7 @@ services:
     environment:
       <<: [*x-db-environment, *x-api-environment]
       POSTGRES_HOST: db
-    command: /bin/sh -cx "./server.sh"
+    command: /bin/sh -cx "./entrypoint.sh"
     ports:
       - 127.0.0.1:${UVICORN_PORT}:${UVICORN_PORT}
     depends_on:

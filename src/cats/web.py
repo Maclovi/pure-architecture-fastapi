@@ -3,7 +3,6 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import cast
 
-from asgi_monitor.logging.uvicorn import build_uvicorn_log_config
 from dishka import AsyncContainer, make_async_container
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
@@ -110,20 +109,3 @@ def create_app_production() -> FastAPI:  # pragma: no cover
     setup_dishka(container, app)
     logger.info("App created", extra={"app_version": app.version})
     return app
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    asgi_conf = setup_configs().asgi
-    log_config = build_uvicorn_log_config(
-        level=logging.INFO,
-        json_format=True,
-        include_trace=True,
-    )
-    uvicorn.run(
-        create_app_production(),
-        host=asgi_conf.host,
-        port=asgi_conf.port,
-        log_config=log_config,
-    )
