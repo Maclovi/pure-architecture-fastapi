@@ -21,7 +21,7 @@ default:
 
 [doc("Run server application")]
 @serve: infra
-    ./deploy/cats/server.sh ; just stop
+    ./deploy/cats/entrypoint.sh ; just stop
 
 [doc("Run all containers except web-backend")]
 [group("infra")]
