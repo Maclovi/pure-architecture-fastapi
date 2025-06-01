@@ -8,6 +8,9 @@ include-package-data = true
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.dynamic]
+version = { attr = "cats.__version__" }
+
 [project]
 name = "cats"
 dynamic = ["version"]
