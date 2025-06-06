@@ -25,6 +25,7 @@
 - how to organize a project and prevent it from turning into spaghetti code
 - where to store business logic so that it remains independent, clean, and extensible
 - how not to lose control when a microservice grows
+- check
 
 Using the principles of Robert Martin (aka Uncle Bob).
 
