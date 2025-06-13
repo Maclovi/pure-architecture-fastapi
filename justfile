@@ -26,7 +26,7 @@ default:
 [doc("Run all containers except web-backend")]
 [group("infra")]
 @infra:
-    docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d db
+    docker compose -f {{ DOCKER_COMPOSE_DEV }} up -d db --wait
 
 [doc("Run all containers")]
 [group("infra")]
