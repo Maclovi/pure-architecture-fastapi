@@ -138,7 +138,7 @@ services:
   tempo:
     <<: *default
     profiles: ["grafana"]
-    image: grafana/tempo:2.7.2
+    image: grafana/tempo:2.8.0
     container_name: cats.tempo
     hostname: cats.tempo
     command:
