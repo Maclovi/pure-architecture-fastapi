@@ -32,13 +32,13 @@ classifiers = [
 ]
 dependencies = [
     # Web
-    "fastapi==0.115.12",
+    "fastapi==0.115.14",
     "uvloop==0.21.0",
-    "uvicorn==0.34.3",
+    "uvicorn==0.35.0",
     "httptools==0.6.4",
     "orjson==3.10.18",
     # Database
-    "alembic==1.16.1",
+    "alembic==1.16.2",
     "sqlalchemy[asyncio]==2.0.41",
     "psycopg[binary]==3.2.9",
     # Observability
@@ -49,22 +49,22 @@ dependencies = [
 
 [project.optional-dependencies]
 prod = [
-    "opentelemetry-exporter-otlp==1.32.1",
+    "opentelemetry-exporter-otlp==1.34.1",
 ]
 test = [
-    "coverage[toml]==7.8.2",
-    "pytest==8.4.0",
-    "pytest-asyncio==0.26.0",
+    "coverage[toml]==7.9.1",
+    "pytest==8.4.1",
+    "pytest-asyncio==1.0.0",
     "httpx==0.28.1",
 ]
 lint = [
-    "ruff==0.11.13",
-    "bandit==1.8.3",
+    "ruff==0.12.1",
+    "bandit==1.8.5",
     "codespell==2.4.1",
-    "mypy==1.16.0",
-    "basedpyright==1.29.2",
+    "mypy==1.16.1",
+    "basedpyright==1.29.4",
     # semgrep depends on opentelemetry-exporter-otlp>=v1.25,<1.33.0
-    "semgrep==1.124.0",
+    "semgrep==1.127.1",
     "opentelemetry-exporter-otlp>=1.25.0,<1.35.0",
 ]
 docs = [
