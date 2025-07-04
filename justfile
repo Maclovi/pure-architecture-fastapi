@@ -52,8 +52,9 @@ default:
 
 [doc("Run test")]
 [group("Test")]
-@test *args:
+@test *args: dev-up
     coverage run -m pytest -x --ff {{ args }}
+    just dev-down
 
 
 [doc("Run test with coverage")]
@@ -67,12 +68,24 @@ default:
 
 [doc("Run all containers")]
 [group("Docker")]
-@up:
+@dev-up:
+    docker compose -f docker-compose.dev.yaml up -d --wait
+
+
+[doc("Run all containers")]
+[group("Docker")]
+@dev-down:
+    docker compose -f docker-compose.dev.yaml down
+
+
+[doc("Run all containers")]
+[group("Docker")]
+@prod-up:
   docker compose --profile api --profile grafana up --build -d --remove-orphans --wait
 
 
 [doc("Down all containers")]
 [group("Docker")]
-@down:
+@prod-down:
   docker compose --profile api --profile grafana down --remove-orphans
   docker image prune -f
