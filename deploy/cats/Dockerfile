@@ -8,7 +8,7 @@ ENV UV_NO_CACHE=1
 COPY ./pyproject.toml ./
 RUN uv pip install -r pyproject.toml --extra=prod --target dependencies
 
-COPY ./src ./justfile ./
+COPY ./src ./justfile ./alembic.ini ./
 
 
 FROM python:3.12-slim-bookworm
