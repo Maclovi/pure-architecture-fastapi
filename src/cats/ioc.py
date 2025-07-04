@@ -35,15 +35,6 @@ from cats.infrastructure.persistence.db_provider import (
 
 
 def configs_provider() -> Provider:
-    """Creates a Provider for application configuration dependencies.
-
-    Provides:
-        - ASGIConfig (app-scoped)
-        - PostgresConfig (app-scoped)
-
-    Returns:
-        Provider: Configured provider instance with application-level configs.
-    """
     provider = Provider()
     provider.from_context(provides=ASGIConfig, scope=Scope.APP)
     provider.from_context(provides=PostgresConfig, scope=Scope.APP)
@@ -51,16 +42,6 @@ def configs_provider() -> Provider:
 
 
 def db_provider() -> Provider:
-    """Creates a Provider for database-related dependencies.
-
-    Provides:
-        - get_engine (app-scoped)
-        - get_sessionmaker (app-scoped)
-        - AsyncSession (request-scoped)
-
-    Returns:
-        Provider: Configured provider instance with database connections.
-    """
     provider = Provider(scope=Scope.REQUEST)
     provider.provide(get_engine, scope=Scope.APP)
     provider.provide(get_sessionmaker, scope=Scope.APP)
@@ -69,18 +50,6 @@ def db_provider() -> Provider:
 
 
 def gateways_provider() -> Provider:
-    """Creates a Provider for persistence gateway implementations.
-
-    Provides request-scoped:
-        - CatGateway (via CatMapperAlchemy)
-        - CatReader (via CatReaderAlchemy)
-        - BreedGateway (via BreedMapperAlchemy)
-        - Transaction (via TransactionAlchemy)
-        - EntitySaver (via EntitySaverAlchemy)
-
-    Returns:
-        Provider: Configured provider instance with persistence adapters.
-    """
     provider = Provider(scope=Scope.REQUEST)
     provider.provide(CatMapperAlchemy, provides=CatGateway)
     provider.provide(CatReaderAlchemy, provides=CatReader)
@@ -91,19 +60,6 @@ def gateways_provider() -> Provider:
 
 
 def interactors_provider() -> Provider:
-    """Creates a Provider for application interactors (CQRS handlers).
-
-    Provides request-scoped handlers for:
-        - GetBreedsQuery
-        - GetCatsQuery
-        - GetCatWithIDQuery
-        - NewCatCommand
-        - DeleteCatCommand
-        - UpdateCatDescriptionCommand
-
-    Returns:
-        Provider: Configured provider instance with CQRS handlers.
-    """
     provider = Provider(scope=Scope.REQUEST)
     provider.provide_all(
         GetBreedsQueryHandler,
@@ -117,17 +73,6 @@ def interactors_provider() -> Provider:
 
 
 def setup_providers() -> tuple[Provider, ...]:
-    """Assembles all dependency providers for the application.
-
-    Combines providers for:
-        - Configuration
-        - Database
-        - Persistence gateways
-        - CQRS interactors
-
-    Returns:
-        tuple[Provider, ...]: Tuple of all configured providers.
-    """
     return (
         configs_provider(),
         db_provider(),

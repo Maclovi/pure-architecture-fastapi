@@ -1,7 +1,6 @@
 import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import cast
 
 from dishka import AsyncContainer, make_async_container
 from dishka.integrations.fastapi import setup_dishka
@@ -24,24 +23,9 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI, /) -> AsyncIterator[None]:
-    """Async context manager for FastAPI application lifecycle management.
-
-    Handles the startup and shutdown events of the FastAPI application.
-    Specifically ensures proper cleanup
-        of Dishka container resources on shutdown.
-
-    Args:
-        app: FastAPI application instance. Positional-only parameter.
-
-    Yields:
-        None: Indicates successful entry into the context.
-
-    Note:
-        The actual resource cleanup (Dishka container closure)
-            happens after yield, during the application shutdown phase.
-    """
     yield None
-    await cast("AsyncContainer", app.state.dishka_container).close()
+    container: AsyncContainer = app.state.dishka_container
+    await container.close()
 
 
 def create_app_tests() -> FastAPI:
@@ -65,32 +49,6 @@ def create_app_tests() -> FastAPI:
 
 
 def create_app_production() -> FastAPI:  # pragma: no cover
-    """Creates and configures a FastAPI application
-        instance with all dependencies.
-
-    Performs comprehensive application setup including:
-    - Configuration initialization
-    - Dependency injection container setup
-    - Database mapping
-    - Route registration
-    - Exception handlers
-    - Observability tools
-    - Middleware stack
-    - Dishka integration
-
-    Returns:
-        FastAPI: Fully configured application instance ready for use.
-
-    Side Effects:
-        - Configures global application state
-        - Initializes database mappings
-        - Sets up observability tools
-        - Registers all route handlers
-
-    Example:
-        >>> app = create_app()
-        >>> uvicorn.run(app)
-    """
     configs = setup_configs()
     app = FastAPI(
         lifespan=lifespan,

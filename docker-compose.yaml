@@ -66,7 +66,7 @@ services:
     environment:
       <<: [*x-db-environment, *x-api-environment]
       POSTGRES_HOST: db
-    command: /bin/sh -cx "./entrypoint.sh"
+    command: just serve
     depends_on:
       db:
         condition: service_healthy
@@ -134,7 +134,7 @@ services:
   tempo:
     <<: *default
     profiles: ["grafana"]
-    image: grafana/tempo:2.7.2
+    image: grafana/tempo:2.8.0
     container_name: cats.tempo
     hostname: cats.tempo
     command:
