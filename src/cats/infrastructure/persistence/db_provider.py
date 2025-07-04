@@ -11,26 +11,6 @@ from cats.infrastructure.configs import PostgresConfig
 
 
 async def get_engine(config: PostgresConfig) -> AsyncIterator[AsyncEngine]:
-    """Creates and manages the lifecycle of an async SQLAlchemy engine.
-
-    Args:
-        config: PostgreSQL configuration containing:
-            - uri: Database connection string
-            - debug: Flag to enable SQL echo output
-
-    Yields:
-        AsyncEngine: Configured SQLAlchemy async engine instance
-
-    Note:
-        - Uses connection pooling (size=15, overflow=15)
-        - Sets 5-second connection timeout
-        - Enables connection health checks (pool_pre_ping)
-        - Automatically disposes the engine when done
-
-    Example:
-        async for engine in get_engine(config):
-            # Use engine...
-    """
     engine = create_async_engine(
         config.uri,
         echo=config.debug,

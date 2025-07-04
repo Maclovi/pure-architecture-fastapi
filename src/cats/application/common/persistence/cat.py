@@ -1,4 +1,3 @@
-from abc import abstractmethod
 from dataclasses import dataclass, field
 from typing import Protocol
 
@@ -15,22 +14,18 @@ class CatFilters:
 
 
 class CatGateway(Protocol):
-    @abstractmethod
     async def with_id(self, cat_id: CatID) -> Cat | None: ...
 
 
 class CatReader(Protocol):
-    @abstractmethod
     async def with_id(self, cat_id: CatID) -> CatView | None: ...
 
-    @abstractmethod
     async def with_breed_name(
         self,
         breed_name: BreedName,
         pagination: Pagination,
     ) -> list[CatView]: ...
 
-    @abstractmethod
     async def all(
         self,
         filters: CatFilters,
