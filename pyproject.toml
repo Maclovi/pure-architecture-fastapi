@@ -62,7 +62,6 @@ lint = [
     "bandit==1.8.6",
     "codespell==2.4.1",
     "mypy==1.17.0",
-    "basedpyright==1.31.0",
     # semgrep depends on opentelemetry-exporter-otlp>=v1.25,<1.33.0
     "semgrep==1.128.1",
     "opentelemetry-exporter-otlp>=1.25.0,<1.36.0",
