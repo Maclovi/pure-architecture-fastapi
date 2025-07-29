@@ -36,14 +36,14 @@ dependencies = [
     "uvloop==0.21.0",
     "uvicorn==0.35.0",
     "httptools==0.6.4",
-    "orjson==3.11.0",
+    "orjson==3.11.1",
     # Database
     "alembic==1.16.4",
-    "sqlalchemy[asyncio]==2.0.41",
+    "sqlalchemy[asyncio]==2.0.42",
     "psycopg[binary]==3.2.9",
     # Observability
     "asgi-monitor==0.6.0",
-    "opentelemetry-exporter-otlp==1.25.0",
+    "opentelemetry-exporter-otlp==1.36.0",
     # Dependency injection
     "dishka==1.6.0",
 ]
