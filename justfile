@@ -1,4 +1,9 @@
-set dotenv-load
+# Cross-platform shell configuration
+# Use PowerShell on Windows (higher precedence than shell setting)
+set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
+# Use sh on Unix-like systems
+set shell := ["sh", "-c"]
+
 
 [doc("All command information")]
 [group("Common")]
@@ -11,14 +16,14 @@ default:
 [group("Common")]
 @bootstrap:
     cp .env.dist .env
-    uv pip install -e ".[dev]"
+    just venv-sync
     pre-commit install
 
 
 [doc("Sync latest versions of packages")]
 [group("Common")]
 @venv-sync:
-    uv pip install -e ".[dev]"
+    uv pip install -e . --group dev
 
 
 [doc("Run server application")]
