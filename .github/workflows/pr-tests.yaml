@@ -28,7 +28,7 @@ jobs:
           cache-dependency-glob: "pyproject.toml"
 
       - name: Install Dependencies and library
-        run: uv pip install --system -e .[dev]
+        run: uv pip install --system -e . --group dev
 
       - name: Load cached Pre-Commit Dependencies
         id: cached-pre-commit-dependencies
@@ -73,6 +73,6 @@ jobs:
           cache-dependency-glob: "pyproject.toml"
 
       - name: Install Dependencies and library
-        run: uv pip install --system .[dev]
+        run: uv pip install --system . --group dev
       - run: |
           coverage run -m pytest -x --ff
