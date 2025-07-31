@@ -34,7 +34,7 @@ jobs:
           cache-dependency-glob: "pyproject.toml"
 
       - name: Install Dependencies and library
-        run: uv pip install -r pyproject.toml --group docs --system
+        run: uv sync --only-group docs
 
       # - name: Lint Markdown
       #   run: |
@@ -42,7 +42,7 @@ jobs:
       #     markdownlint docs/**/*.md
 
       - name: Build MkDocs
-        run: mkdocs build
+        run: uv run mkdocs build
 
       - name: Deploy to GitHub Pages
         uses: actions/upload-pages-artifact@v3
