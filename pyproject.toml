@@ -70,9 +70,15 @@ test = [
     "pytest-asyncio==1.1.0",
     "httpx==0.28.1",
 ]
+docs = [
+    "mkdocs==1.6.1",
+    "mkdocs-material==9.6.15",
+    "mkdocstrings[python]==0.29.1",
+]
 dev = [
     {include-group = "lint"},
     {include-group = "test"},
+    {include-group = "docs"},
     "pre-commit==4.2.0",
     "detect-secrets==1.5.0",
 ]
