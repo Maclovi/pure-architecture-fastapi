@@ -34,7 +34,7 @@ jobs:
           cache-dependency-glob: "pyproject.toml"
 
       - name: Install Dependencies and library
-        run: uv sync . --only-group docs
+        run: uv -r pyproject.toml --group docs --no-deps
 
       # - name: Lint Markdown
       #   run: |
