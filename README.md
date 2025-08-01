@@ -38,7 +38,7 @@ To build and serve locally:
 just docs-serve
 ```
 
-Access at http://localhost:8000
+Access at <http://localhost:8000>
 
 ## Quick start
 
@@ -66,8 +66,6 @@ just cov
 ```sh
  just up
 ```
-
-## Project Overview
 
 ### Configuration Management: `configs.py`
 
@@ -182,7 +180,7 @@ The business logic is agnostic to specifics like PostgreSQL or REST APIs—it in
 
 For instance, fetching data from a database via an HTTP request:
 
-```
+```raw
   HTTP → Use Case
         Use Case → Repository (e.g., Postgres)
         Use Case ← Repository
@@ -191,7 +189,7 @@ For instance, fetching data from a database via an HTTP request:
 
 A more intricate flow might look like:
 
-```
+```raw
   HTTP → Use Case
         Use Case → Repository
         Use Case ← Repository
