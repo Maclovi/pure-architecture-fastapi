@@ -106,7 +106,7 @@ services:
   loki:
     <<: *default
     profiles: ["grafana"]
-    image: grafana/loki:3.5.2
+    image: grafana/loki:3.5.3
     container_name: cats.loki
     hostname: cats.loki
     expose:
