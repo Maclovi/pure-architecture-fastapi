@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Create a directory if it does not exist
-        uses: appleboy/ssh-action@v1.2.2
+        uses: appleboy/ssh-action@v1.2.3
         with:
           host: ${{ env.HOST }}
           username: ${{ env.SSH_USERNAME }}
@@ -61,7 +61,7 @@ jobs:
           overwrite: true
 
       - name: Deploy and run the application on the server
-        uses: appleboy/ssh-action@v1.2.2
+        uses: appleboy/ssh-action@v1.2.3
         with:
           host: ${{ env.HOST }}
           username: ${{ env.SSH_USERNAME }}
