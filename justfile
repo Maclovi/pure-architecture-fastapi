@@ -30,7 +30,7 @@ default:
 [group("Common")]
 @serve:
     python -m alembic upgrade head
-    python -m cats
+    exec python -m cats
 
 
 [doc("Lint check")]
