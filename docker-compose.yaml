@@ -106,7 +106,7 @@ services:
   loki:
     <<: *default
     profiles: ["grafana"]
-    image: grafana/loki:3.5.3
+    image: grafana/loki:3.6.4
     container_name: cats.loki
     hostname: cats.loki
     expose:
@@ -119,7 +119,7 @@ services:
   vector:
     <<: *default
     profiles: ["grafana"]
-    image: timberio/vector:0.49.0-alpine
+    image: timberio/vector:0.52.0-alpine
     container_name: cats.vector
     hostname: cats.vector
     expose:
@@ -135,7 +135,7 @@ services:
   tempo:
     <<: *default
     profiles: ["grafana"]
-    image: grafana/tempo:2.8.2
+    image: grafana/tempo:2.9.1
     container_name: cats.tempo
     hostname: cats.tempo
     command:
